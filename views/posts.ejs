@@ -1,0 +1,99 @@
+<%- include('partials/header'); -%>
+
+<div class="container">
+
+    <div class="row">
+    
+    <div class="col-md-9">
+            <div class="jumbotron my-4">
+                <h1 class="display-4">Bunaseara prieteni!</h1>
+                
+                <p class="lead">
+                    Suntem basic, am pus aici un jumbotron pentru ca momentan nu avem asa multe postari...
+                    <br> 
+                    Speram sa scapam in curand de el
+                </p>
+                
+                <hr class="my-4">
+                
+                <p>
+                    Enjoy :)
+                </p>
+
+            </div>
+
+            <% for(let post of posts) { %>
+                <div class="card my-2">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= post.title %>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted">by <%= post.author %> </h6>
+                        <p class="card-text my-2">
+                            <%= post.text %>
+                        </p>
+                    </div>
+                </div>
+            <% } %>
+            
+    </div>
+
+    <div class="col-md-3 my-4">
+        
+        <form class="border border-light p-2">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password">
+                <small class="form-text text-muted">Never share your password, cutie</small>
+            </div>
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </form>
+
+        <table class="table table my-5 table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>carage66</td>
+                    <td>oo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>catag</td>
+                    <td>2321</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>mihai145</td>
+                    <td>1975</td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>as</td>
+                    <td>1602</td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>MirCea</td>
+                    <td>1555</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    </div>
+
+</div>
+
+<%- include('partials/footer'); -%>
