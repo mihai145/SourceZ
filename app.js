@@ -1,7 +1,11 @@
 const express = require("express");
 const app = express();
 
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+
+const mongoose = require("mongoose");
+
+const Post = require("./models/post");
 
 ///-----------------------///
 ///APP SETUP
@@ -15,9 +19,29 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 ///-----------------------///
+///DATABASE SETUP
+///-----------------------///
+mongoose.connect('mongodb://localhost/cute_pet_project', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+///-----------------------///
 ///ROOT
 ///-----------------------///
 app.get("/", (req, res) => {
+
+    // Post.create({
+    //     title: "TEST", 
+    //     text: "TEST2",
+    //     author: "TEST3"
+    // }, (err, post) => {
+    //     if(err || !post)
+    //         console.log("FAIL");
+    //     else
+    //         console.log("SUCCESS");
+    // });
+
     res.render("root.ejs");
 })
 
@@ -55,7 +79,14 @@ const data = [
 ///FEED
 ///-----------------------///
 app.get("/posts", (req, res) => {
-    res.render("posts.ejs", { posts: data });
+    Post.find({}, (err, posts) => {
+        if(err || !posts) {
+            console.log(err);
+            res.redirect("/posts");
+        } else {
+            res.render("posts", {posts: posts});
+        }
+    });
 });
 
 ///-----------------------///
@@ -66,8 +97,14 @@ app.post("/posts", (req, res) => {
     newPost.author = "catag";
     newPost.date = "today";
 
-    data.push(newPost);
-    res.redirect("/posts");
+    Post.create(newPost, (err, post) => {
+        if(err || !post) {
+            console.log(err);
+            res.redirect("/posts");
+        } else {
+            res.redirect("/posts");
+        }
+    });
 });
 
 
