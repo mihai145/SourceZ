@@ -1,11 +1,18 @@
 const express = require("express");
 const app = express();
 
+var bodyParser = require('body-parser')
+
 ///-----------------------///
 ///APP SETUP
 ///-----------------------///
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/bootstrap"));
+
+app.use(bodyParser.json());       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+    extended: true
+})); 
 
 ///-----------------------///
 ///ROOT
@@ -50,6 +57,19 @@ const data = [
 app.get("/posts", (req, res) => {
     res.render("posts.ejs", { posts: data });
 });
+
+///-----------------------///
+///NEW POST
+///-----------------------///
+app.post("/posts", (req, res) => {
+    let newPost = req.body.post;
+    newPost.author = "catag";
+    newPost.date = "today";
+
+    data.push(newPost);
+    res.redirect("/posts");
+});
+
 
 ///-----------------------///
 ///CATCH ALL

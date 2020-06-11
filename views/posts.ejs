@@ -40,7 +40,7 @@
 
     <div class="col-md-3 my-4">
         
-        <form class="border border-light p-2">
+        <form class="border border-light my-2 p-2">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username">
@@ -53,7 +53,18 @@
             <button type="submit" class="btn btn-dark">Submit</button>
         </form>
 
-        <table class="table table my-5 table-striped table-hover">
+        <form action="/posts" method="POST" class="border border-light my-3 p-2">
+            <p>Add a new post</p>
+            <div class="form-group">
+                <input type="text" class="form-control" name="post[title]" placeholder="title">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="post[text]" placeholder="post goes here...">
+            </div>
+            <button type="submit" class="btn btn-dark">Add post</button>
+        </form>
+
+        <table class="table table my-3 p-2 table-striped table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
@@ -83,7 +94,7 @@
                     <td>1602</td>
                 </tr>
                 <tr>
-                    <th scope="row">4</th>
+                    <th scope="row">5</th>
                     <td>MirCea</td>
                     <td>1555</td>
                 </tr>
