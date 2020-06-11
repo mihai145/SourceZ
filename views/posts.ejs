@@ -23,8 +23,8 @@
             </div>
 
             <% for(let post of posts) { %>
-                <div class="card my-2">
-                    <div class="card-body">
+                <div class="card my-3">
+                    <div class="card-body bg-light">
                         <h5 class="card-title">
                             <%= post.title %>
                         </h5>
@@ -33,7 +33,39 @@
                             <%= post.text %>
                         </p>
                     </div>
+
+                    <% if(post.comments.length > 0) { %>
+                    <ul id="commentSection" class="list-group list-group-flush">
+                        <% for(let comment of post.comments) { %>
+                            <li class="list-group-item p-2">
+                                <strong>
+                                    <%= comment.author %>
+                                </strong>
+                                <br>
+                                <%= comment.text %>
+                            </li>
+                        <% } %>
+                    </ul>
+                    <% } %>
+
+                <form action="/posts/<%= post._id %>" method="POST" class="m-0 p-0">
+                    <div class="row mx-auto my-2 p-0">
+                        
+                        <div class="col-lg-10 my-2">
+                            <div class="form-group m-0">
+                                <input type="text" name="comment[text]" class="form-control"
+                                 placeholder="Add comment to <%= post.author %>`s post">
+                            </div> 
+                        </div>
+                        
+                        <div class="col-lg-2 my-auto pl-3">
+                            <button type="submit" class="btn btn-dark" id="addCommentButton">Add comment</button>
+                        </div>
+
+                    </div>
+                </form>
                 </div>
+
             <% } %>
             
     </div>

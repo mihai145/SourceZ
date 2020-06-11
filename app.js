@@ -6,12 +6,14 @@ const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 
 const Post = require("./models/post");
+const Comment = require("./models/comment");
 
 ///-----------------------///
 ///APP SETUP
 ///-----------------------///
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/bootstrap"));
+app.use(express.static(__dirname + "/cssFiles"));
 
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
@@ -41,7 +43,7 @@ app.get("/", (req, res) => {
 ///FEED
 ///-----------------------///
 app.get("/posts", (req, res) => {
-    Post.find({}, (err, posts) => {
+    Post.find({}).populate("comments").exec((err, posts) => {
         if(err || !posts) {
             console.log(err);
             res.redirect("/posts");
@@ -69,6 +71,31 @@ app.post("/posts", (req, res) => {
     });
 });
 
+
+///-----------------------///
+///NEW COMMENT
+///-----------------------///
+app.post("/posts/:id", (req, res) => {
+    let newComment = req.body.comment;
+    newComment.author = "crazyBoy";
+
+    Post.findById(req.params.id, (err, post) => {
+        if(err || !post) {
+            console.log(err);
+        } else {
+            Comment.create(newComment, (err, comment) => {
+                if(err || !comment) {
+                    console.log(err);
+                } else {
+                    post.comments.push(comment);
+                    post.save();
+                }
+            });
+        }
+    });
+
+    res.redirect("/posts");
+});
 
 ///-----------------------///
 ///CATCH ALL

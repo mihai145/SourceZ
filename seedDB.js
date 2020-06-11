@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const Post = require("./models/post");
+const Comment = require("./models/comment");
 
-const data = [
+const posts = [
     {
         title: "Placeholder af",
         text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
@@ -27,7 +28,53 @@ const data = [
     }
 ];
 
-function seedDB() {
+const comms = [
+    {
+        toPostTitle: "Ora de matematica",
+        comment: {
+            text: "Da domnu asa e, greu rau cu functile astea",
+            author: "Marinescu"
+        }
+    },
+
+    {
+        toPostTitle: "Ora de matematica",
+        comment: {
+            text: "Ce mi-ati scris in lucrare numai prostii notele sunt mici. Vedeti voi la biletele",
+            author: "carage66"
+        }
+    },
+
+    {
+        toPostTitle: "Ora de matematica",
+        comment: {
+            text: "Domnu pot sa ma duc la bae?",
+            author: "iordache123"
+        }
+    },
+
+    {
+        toPostTitle: "More placeholder",
+        comment: {
+            text: "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
+            author: "as"
+        }
+    }
+];
+
+async function addPosts() {
+    for (const post of posts) {
+        Post.create(post, (err, post) => {
+            if (err || !post) {
+                console.log(err);
+            } else {
+                console.log("OK");
+            }
+        });
+    }
+}
+
+async function seedDB() {
     Post.deleteMany({}, err => {
         if (err) {
             console.log(err);
@@ -36,12 +83,31 @@ function seedDB() {
         }
     });
 
-    for (const post of data) {
-        Post.create(post, (err, post) => {
-            if (err || !post) {
+    Comment.deleteMany({}, err=> {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("OK");
+        }
+    });
+
+    await addPosts();
+
+    for(const comm of comms) {
+        Post.findOne({title: comm.toPostTitle}, (err, post) => {
+            // console.log("FOUND");
+            // console.log(post);
+            if(err || !post) {
                 console.log(err);
             } else {
-                console.log("OK");
+                Comment.create(comm.comment, (err, comm) => {
+                    if(err || !comm) {
+                        console.log(err);
+                    } else {
+                        post.comments.push(comm);
+                    }
+                    post.save();
+                });
             }
         });
     }
