@@ -167,7 +167,7 @@ app.post("/posts/:id", authMiddleware.isLoggedIn, (req, res) => {
         }
     });
 
-    res.redirect("/posts");
+    res.redirect("/posts/" + req.params.id);
 });
 
 ///-----------------------///
