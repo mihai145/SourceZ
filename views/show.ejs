@@ -1,0 +1,55 @@
+<%- include('partials/header'); -%>
+
+<div class="container bg-light my-4">
+
+<h1 class="display-3 text-center">
+    <%= post.title %>
+</h1>
+
+<blockquote class="blockquote text-center">
+    Written by <%= post.author %>
+</blockquote>
+
+<hr>
+
+<p>
+    <%= post.text %>
+</p>
+
+<hr>
+
+<% if(post.comments.length > 0) { %>
+<ul id="commentSection" class="list-group list-group-flush">
+    <% for(let comment of post.comments) { %>
+    <li class="list-group-item p-2">
+        <strong>
+            <%= comment.author %>
+        </strong>
+        <br>
+        <%= comment.text %>
+    </li>
+    <% } %>
+</ul>
+<% } %>
+
+<form action="/posts/<%= post._id %>" method="POST" class="m-0 p-0">
+    <div class="row mx-auto my-2 p-0">
+
+        <div class="col-lg-10 my-2">
+            <div class="form-group m-0">
+                <input type="text" name="comment[text]" class="form-control"
+                    placeholder="Add comment to <%= post.author %>`s post">
+            </div>
+        </div>
+
+        <div class="col-lg-2 m-auto">
+            <button type="submit" class="btn btn-dark addCommentButton">Add comment</button>
+        </div>
+
+    </div>
+</form>
+</div>
+
+</div>
+
+<%- include('partials/footer'); -%>

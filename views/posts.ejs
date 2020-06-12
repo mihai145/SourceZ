@@ -34,7 +34,7 @@
                         </p>
                     </div>
 
-                    <% if(post.comments.length > 0) { %>
+                    <!-- <% if(post.comments.length > 0) { %>
                     <ul id="commentSection" class="list-group list-group-flush">
                         <% for(let comment of post.comments) { %>
                             <li class="list-group-item p-2">
@@ -63,7 +63,10 @@
                         </div>
 
                     </div>
-                </form>
+                </form> -->
+
+                <a href="/posts/<%= post._id%>" class="btn btn-dark m-2">Read More</a>
+
                 </div>
 
             <% } %>

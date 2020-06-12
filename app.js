@@ -65,13 +65,13 @@ seeder();
 ///-----------------------///
 app.get("/", (req, res) => {
     res.render("root.ejs");
-})
+});
 
 ///-----------------------///
 ///FEED
 ///-----------------------///
 app.get("/posts", (req, res) => {
-    Post.find({}).populate("comments").exec((err, posts) => {
+    Post.find({}, (err, posts) => {
         if(err || !posts) {
             console.log(err);
             res.redirect("/posts");
@@ -81,6 +81,23 @@ app.get("/posts", (req, res) => {
     });
 });
 
+///-----------------------///
+///SHOW FULL POST
+///-----------------------///
+app.get("/posts/:id", (req, res) => {
+    Post.findById(req.params.id).populate("comments").exec((err, post) => {
+        if(err || !post) {
+            console.log(err);
+            res.redirect("/posts");
+        } else {
+            res.render("show", {post: post});
+        }
+    });
+});
+
+///-----------------------///
+///LOGIN, REGISTRATION, LOGOUT
+///-----------------------///
 app.post('/login',
     passport.authenticate('local', {
         successRedirect: '/posts',
@@ -89,11 +106,6 @@ app.post('/login',
 
 app.get("/register", (req, res) => {
     res.render("register");
-})
-
-app.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/posts');
 });
 
 app.post("/register", function (req, res) {
@@ -107,6 +119,11 @@ app.post("/register", function (req, res) {
             res.redirect("/posts");
         });
     });
+});
+
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/posts');
 });
 
 ///-----------------------///
