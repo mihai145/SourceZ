@@ -59,7 +59,7 @@
                         </div>
                         
                         <div class="col-lg-2 my-auto pl-3">
-                            <button type="submit" class="btn btn-dark" id="addCommentButton">Add comment</button>
+                            <button type="submit" class="btn btn-dark">Add comment</button>
                         </div>
 
                     </div>
@@ -72,19 +72,22 @@
 
     <div class="col-md-3 my-4">
         
-        <form class="border border-light my-2 p-2">
+        <% if(!user || !isLoggedIn) { %>
+        <form action="/login" method="POST" class="border border-light my-2 p-2">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username">
+                <input type="text" class="form-control" name="username">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password">
+                <input type="password" class="form-control" name="password">
                 <small class="form-text text-muted">Never share your password, cutie</small>
             </div>
-            <button type="submit" class="btn btn-dark">Submit</button>
+            <button type="submit" class="btn btn-dark">Login</button>
         </form>
+        <% } %>
 
+        <% if(user && isLoggedIn) { %>
         <form action="/posts" method="POST" class="border border-light my-3 p-2">
             <p>Add a new post</p>
             <div class="form-group">
@@ -95,6 +98,7 @@
             </div>
             <button type="submit" class="btn btn-dark">Add post</button>
         </form>
+        <% } %>
 
         <table class="table table my-3 p-2 table-striped table-hover">
             <thead class="thead-dark">

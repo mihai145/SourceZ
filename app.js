@@ -7,6 +7,12 @@ const mongoose = require("mongoose");
 
 const Post = require("./models/post");
 const Comment = require("./models/comment");
+const User = require("./models/user");
+
+const passport = require('passport')
+    , LocalStrategy = require('passport-local').Strategy;
+
+const session = require("express-session");
 
 ///-----------------------///
 ///APP SETUP
@@ -19,6 +25,26 @@ app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 })); 
+
+app.use(session({ 
+    secret: "mihai145",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use(function (req, res, next) {
+    res.locals.user = req.user;
+    res.locals.isLoggedIn = req.isAuthenticated();
+    next();
+});
 
 ///-----------------------///
 ///DATABASE SETUP
@@ -38,7 +64,6 @@ app.get("/", (req, res) => {
     res.render("root.ejs");
 })
 
-
 ///-----------------------///
 ///FEED
 ///-----------------------///
@@ -50,6 +75,34 @@ app.get("/posts", (req, res) => {
         } else {
             res.render("posts", {posts: posts});
         }
+    });
+});
+
+app.post('/login',
+    passport.authenticate('local', {
+        successRedirect: '/posts',
+        failureRedirect: '/'
+}));
+
+app.get("/register", (req, res) => {
+    res.render("register");
+})
+
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/posts');
+});
+
+app.post("/register", function (req, res) {
+    var newUser = new User({ username: req.body.username });
+    User.register(newUser, req.body.password, (err, user) => {
+        if (err || !user) {
+            console.log(err);
+            res.redirect("/posts");
+        }
+        passport.authenticate("local")(req, res, function () {
+            res.redirect("/posts");
+        });
     });
 });
 
