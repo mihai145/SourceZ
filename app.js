@@ -56,9 +56,11 @@ mongoose.connect('mongodb://localhost/cute_pet_project', {
     useUnifiedTopology: true
 });
 
-const seeder = require("./seedDB");
 const { isAuthenticated } = require("./middleware/auth");
-seeder();
+
+///SEEDER
+// const seeder = require("./seedDB");
+// seeder();
 
 ///-----------------------///
 ///ROOT
@@ -82,6 +84,30 @@ app.get("/posts", (req, res) => {
 });
 
 ///-----------------------///
+///NEW POST
+///-----------------------///
+app.post("/posts", authMiddleware.isLoggedIn, (req, res) => {
+    let newPost = req.body.post;
+    newPost.author = req.user.username;
+
+    Post.create(newPost, (err, post) => {
+        if (err || !post) {
+            console.log(err);
+            res.redirect("/posts");
+        } else {
+            res.redirect("/posts");
+        }
+    });
+});
+
+///-----------------------///
+///FORM TO ADD NEW POST
+///-----------------------///
+app.get("/posts/new", authMiddleware.isLoggedIn, (req, res) => {
+    res.render("newPost");
+});
+
+///-----------------------///
 ///SHOW FULL POST
 ///-----------------------///
 app.get("/posts/:id", (req, res) => {
@@ -94,6 +120,8 @@ app.get("/posts/:id", (req, res) => {
         }
     });
 });
+
+
 
 ///-----------------------///
 ///LOGIN, REGISTRATION, LOGOUT
@@ -126,31 +154,13 @@ app.get('/logout', function (req, res) {
     res.redirect('/posts');
 });
 
-///-----------------------///
-///NEW POST
-///-----------------------///
-app.post("/posts", authMiddleware.isLoggedIn, (req, res) => {
-    let newPost = req.body.post;
-    newPost.author = "catag";
-    newPost.date = "today";
-
-    Post.create(newPost, (err, post) => {
-        if(err || !post) {
-            console.log(err);
-            res.redirect("/posts");
-        } else {
-            res.redirect("/posts");
-        }
-    });
-});
-
 
 ///-----------------------///
 ///NEW COMMENT
 ///-----------------------///
 app.post("/posts/:id", authMiddleware.isLoggedIn, (req, res) => {
     let newComment = req.body.comment;
-    newComment.author = "crazyBoy";
+    newComment.author = req.user.username;
 
     Post.findById(req.params.id, (err, post) => {
         if(err || !post) {

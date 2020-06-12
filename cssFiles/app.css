@@ -2,6 +2,11 @@
     font-size: 14px;
 }
 
-.addCommentButton {
+.needSmallerButton {
     font-size: 12px;
+}
+
+.profilePicture {
+    max-width: 200px;
+    max-height: 200px;
 }

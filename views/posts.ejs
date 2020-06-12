@@ -4,7 +4,7 @@
 
     <div class="row">
     
-    <div class="col-md-9">
+    <div class="col-lg-9">
             <div class="jumbotron my-4">
                 <h1 class="display-4">Bunaseara prieteni!</h1>
                 
@@ -73,7 +73,7 @@
             
     </div>
 
-    <div class="col-md-3 my-4">
+    <div class="col-lg-3 my-4">
         
         <% if(!user || !isLoggedIn) { %>
         <form action="/login" method="POST" class="border border-light my-2 p-2">
@@ -90,7 +90,7 @@
         </form>
         <% } %>
 
-        <% if(user && isLoggedIn) { %>
+        <!-- <% if(user && isLoggedIn) { %>
         <form action="/posts" method="POST" class="border border-light my-3 p-2">
             <p>Add a new post</p>
             <div class="form-group">
@@ -101,6 +101,18 @@
             </div>
             <button type="submit" class="btn btn-dark">Add post</button>
         </form>
+        <% } %> -->
+
+        <% if(user && isLoggedIn) { %>
+        <div class="card">
+            <img class="card-img-top profilePicture m-auto" src="https://helloclean.ro/wp-content/uploads/2014/10/no-profile-square.gif" 
+            alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title"><%= user.username %></h5>
+                <a href="#" class="btn btn-dark needSmallerButton m-1">View profile</a>
+                <a href="/posts/new" class="btn btn-dark needSmallerButton m-1">Add new post</a>
+            </div>
+        </div>
         <% } %>
 
         <table class="table table my-3 p-2 table-striped table-hover">
