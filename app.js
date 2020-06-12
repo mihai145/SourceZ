@@ -14,6 +14,8 @@ const passport = require('passport')
 
 const session = require("express-session");
 
+const authMiddleware = require("./middleware/auth");
+
 ///-----------------------///
 ///APP SETUP
 ///-----------------------///
@@ -55,6 +57,7 @@ mongoose.connect('mongodb://localhost/cute_pet_project', {
 });
 
 const seeder = require("./seedDB");
+const { isAuthenticated } = require("./middleware/auth");
 seeder();
 
 ///-----------------------///
@@ -109,7 +112,7 @@ app.post("/register", function (req, res) {
 ///-----------------------///
 ///NEW POST
 ///-----------------------///
-app.post("/posts", (req, res) => {
+app.post("/posts", authMiddleware.isLoggedIn, (req, res) => {
     let newPost = req.body.post;
     newPost.author = "catag";
     newPost.date = "today";
@@ -128,7 +131,7 @@ app.post("/posts", (req, res) => {
 ///-----------------------///
 ///NEW COMMENT
 ///-----------------------///
-app.post("/posts/:id", (req, res) => {
+app.post("/posts/:id", authMiddleware.isLoggedIn, (req, res) => {
     let newComment = req.body.comment;
     newComment.author = "crazyBoy";
 
