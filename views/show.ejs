@@ -16,6 +16,10 @@
     <%= post.text %>
 </p>
 
+<% if(user && user.username === post.author) { %>
+    <a href="/posts/<%= post._id %>/edit" class="btn border border-dark btn-light"> Edit post </a>
+<% } %>
+
 <hr>
 
 <% if(post.comments.length > 0) { %>

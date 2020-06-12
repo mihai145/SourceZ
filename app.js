@@ -13,6 +13,7 @@ const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 
 const session = require("express-session");
+const methodOverride = require("method-override");
 
 const authMiddleware = require("./middleware/auth");
 
@@ -27,6 +28,8 @@ app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 })); 
+
+app.use(methodOverride('_method'))
 
 app.use(session({ 
     secret: "mihai145",
@@ -84,6 +87,13 @@ app.get("/posts", (req, res) => {
 });
 
 ///-----------------------///
+///FORM TO ADD NEW POST
+///-----------------------///
+app.get("/posts/new", authMiddleware.isLoggedIn, (req, res) => {
+    res.render("newPost");
+}); 
+
+///-----------------------///
 ///NEW POST
 ///-----------------------///
 app.post("/posts", authMiddleware.isLoggedIn, (req, res) => {
@@ -101,11 +111,36 @@ app.post("/posts", authMiddleware.isLoggedIn, (req, res) => {
 });
 
 ///-----------------------///
-///FORM TO ADD NEW POST
+///SHOW EDIT POST FORM
 ///-----------------------///
-app.get("/posts/new", authMiddleware.isLoggedIn, (req, res) => {
-    res.render("newPost");
+app.get("/posts/:id/edit", authMiddleware.isLoggedIn, authMiddleware.isPostOwned, (req, res) => {
+    Post.findById(req.params.id, (err, post) => {
+        if(err || !post) {
+            console.log(err);
+            res.redirect("/posts");
+        } else {
+            res.render("editPost", {post: post});
+        }
+    })
 });
+
+///-----------------------///
+///EDIT POST
+///-----------------------///
+app.put("/posts/:id", authMiddleware.isLoggedIn, authMiddleware.isPostOwned, (req, res) => {
+    // res.send("BINEE");
+    const title = req.body.title;
+    const text = req.body.text;
+    Post.findByIdAndUpdate(req.params.id, { title: title, text: text }, (err, post) => {
+        if (err || !post) {
+            console.log(err);
+            res.redirect("/");
+        } else {
+            res.redirect("/posts/" + req.params.id);
+        }
+    });
+});
+
 
 ///-----------------------///
 ///SHOW FULL POST
