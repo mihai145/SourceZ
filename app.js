@@ -56,7 +56,8 @@ app.use(function (req, res, next) {
 ///-----------------------///
 mongoose.connect('mongodb://localhost/cute_pet_project', {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 const { isAuthenticated } = require("./middleware/auth");
@@ -156,7 +157,18 @@ app.get("/posts/:id", (req, res) => {
     });
 });
 
+///-----------------------///
+///DELETE POST
+///-----------------------///
+app.delete("/posts/:id", (req, res) => {
+    Post.findByIdAndRemove(req.params.id, err => {
+        if(err) {
+            console.log(err);
+        }
 
+        res.redirect("/posts");
+    })
+});
 
 ///-----------------------///
 ///LOGIN, REGISTRATION, LOGOUT

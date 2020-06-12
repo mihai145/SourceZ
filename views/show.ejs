@@ -18,6 +18,11 @@
 
 <% if(user && user.username === post.author) { %>
     <a href="/posts/<%= post._id %>/edit" class="btn border border-dark btn-light"> Edit post </a>
+    <form action="/posts/<%= post._id %>/?_method=DELETE" method="POST" class="m-2" style="display: inline;">
+        <button class="btn btn-danger">
+            Delete Post
+        </button>
+    </form>
 <% } %>
 
 <hr>
