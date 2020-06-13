@@ -228,6 +228,20 @@ app.post("/posts/:id", authMiddleware.isLoggedIn, (req, res) => {
 });
 
 ///-----------------------///
+///DELETE COMMENT
+///-----------------------///
+app.delete("/posts/:post_id/comments/:comment_id", authMiddleware.isLoggedIn, authMiddleware.isCommentOwned, (req, res) => {
+    Comment.findByIdAndDelete(req.params.comment_id, err => {
+        if(err) {
+            console.log(err);
+            res.redirect("/posts");
+        } else {
+            res.redirect("/posts/" + req.params.post_id);
+        }
+    });
+});
+
+///-----------------------///
 ///CATCH ALL
 ///-----------------------///
 app.get("*", (req, res) => {

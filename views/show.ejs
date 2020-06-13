@@ -33,6 +33,11 @@
     <li class="list-group-item p-2">
         <strong>
             <%= comment.author %>
+            <% if(user && user.username === comment.author) { %>
+            <form action="/posts/<%= post._id%>/comments/<%= comment._id%>/?_method=DELETE" method="POST" class="float-right">
+                <button class="btn btn-light needSmallerButton p-0">Delete</button>
+            </form>
+            <% } %>
         </strong>
         <br>
         <%= comment.text %>
