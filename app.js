@@ -201,9 +201,15 @@ app.post("/register", function (req, res) {
     User.register(newUser, req.body.password, (err, user) => {
         if (err || !user) {
             console.log(err);
+            req.flash("fail", err.message);
             res.redirect("/posts");
         }
         passport.authenticate("local")(req, res, function () {
+            if(user.username) {
+                req.flash("success", "Welcome, " + user.username);
+            } else {
+                req.flash("Welcome!");
+            }
             res.redirect("/posts");
         });
     });
@@ -211,6 +217,7 @@ app.post("/register", function (req, res) {
 
 app.get('/logout', function (req, res) {
     req.logout();
+    req.flash("success", "See you later!");
     res.redirect('/posts');
 });
 
