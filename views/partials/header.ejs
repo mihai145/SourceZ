@@ -54,4 +54,19 @@
     </div>
 </nav>
 
+<div class="container">
+    <% if(successFlash.length > 0) { %>
+        <div class="alert alert-success my-2" role="alert">
+            <%= successFlash %>
+        </div>
+    <% } %>
+
+    <% if(failFlash.length > 0) { %>
+        <div class="alert alert-danger my-2" role="alert">
+            <%= failFlash %>
+        </div>
+    <% } %>
+
+</div>
+
 <body>

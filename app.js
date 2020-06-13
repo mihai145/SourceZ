@@ -16,6 +16,7 @@ const session = require("express-session");
 const methodOverride = require("method-override");
 
 const authMiddleware = require("./middleware/auth");
+const flashMessages = require("./flashMessages");
 
 ///-----------------------///
 ///APP SETUP
@@ -45,9 +46,13 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(require("connect-flash")());
+
 app.use(function (req, res, next) {
     res.locals.user = req.user;
     res.locals.isLoggedIn = req.isAuthenticated();
+    res.locals.successFlash = req.flash("success");
+    res.locals.failFlash = req.flash("fail");
     next();
 });
 
@@ -59,8 +64,6 @@ mongoose.connect('mongodb://localhost/cute_pet_project', {
     useUnifiedTopology: true,
     useFindAndModify: false
 });
-
-const { isAuthenticated } = require("./middleware/auth");
 
 ///SEEDER
 // const seeder = require("./seedDB");
@@ -80,6 +83,7 @@ app.get("/posts", (req, res) => {
     Post.find({}, (err, posts) => {
         if(err || !posts) {
             console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/posts");
         } else {
             res.render("posts", {posts: posts});
@@ -104,8 +108,10 @@ app.post("/posts", authMiddleware.isLoggedIn, (req, res) => {
     Post.create(newPost, (err, post) => {
         if (err || !post) {
             console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/posts");
         } else {
+            req.flash(flashMessages.postCreated.type, flashMessages.postCreated.message);
             res.redirect("/posts");
         }
     });
@@ -118,6 +124,7 @@ app.get("/posts/:id/edit", authMiddleware.isLoggedIn, authMiddleware.isPostOwned
     Post.findById(req.params.id, (err, post) => {
         if(err || !post) {
             console.log(err);
+            req.flash(flashMessages.messages.defaultFail.type, flashMessages.messages.defaultFail.message);
             res.redirect("/posts");
         } else {
             res.render("editPost", {post: post});
@@ -135,8 +142,10 @@ app.put("/posts/:id", authMiddleware.isLoggedIn, authMiddleware.isPostOwned, (re
     Post.findByIdAndUpdate(req.params.id, { title: title, text: text }, (err, post) => {
         if (err || !post) {
             console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/");
         } else {
+            req.flash(flashMessages.postEdited.type, flashMessages.postEdited.message);
             res.redirect("/posts/" + req.params.id);
         }
     });
@@ -150,6 +159,7 @@ app.get("/posts/:id", (req, res) => {
     Post.findById(req.params.id).populate("comments").exec((err, post) => {
         if(err || !post) {
             console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/posts");
         } else {
             res.render("show", {post: post});
@@ -164,10 +174,13 @@ app.delete("/posts/:id", (req, res) => {
     Post.findByIdAndRemove(req.params.id, err => {
         if(err) {
             console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            res.redirect("/posts");
+        } else {
+            req.flash(flashMessages.postDeleted.type, flashMessages.postDeleted.message);
+            res.redirect("/posts");
         }
-
-        res.redirect("/posts");
-    })
+    });
 });
 
 ///-----------------------///
@@ -212,19 +225,30 @@ app.post("/posts/:id", authMiddleware.isLoggedIn, (req, res) => {
     Post.findById(req.params.id, (err, post) => {
         if(err || !post) {
             console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            res.redirect("/posts");
         } else {
             Comment.create(newComment, (err, comment) => {
                 if(err || !comment) {
                     console.log(err);
+                    req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+                    res.redirect("/posts");
                 } else {
                     post.comments.push(comment);
-                    post.save();
+                    post.save((err, post) => {
+                        if(err || !post) {
+                            console.log(err);
+                            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+                            res.redirect("/posts");
+                        } else {
+                            req.flash(flashMessages.addedComment.type, flashMessages.addedComment.message);
+                            res.redirect("/posts/" + req.params.id)
+                        }
+                    });
                 }
             });
         }
     });
-
-    res.redirect("/posts/" + req.params.id);
 });
 
 ///-----------------------///
@@ -234,8 +258,10 @@ app.delete("/posts/:post_id/comments/:comment_id", authMiddleware.isLoggedIn, au
     Comment.findByIdAndDelete(req.params.comment_id, err => {
         if(err) {
             console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/posts");
         } else {
+            req.flash(flashMessages.commentDeleted.type, flashMessages.commentDeleted.message);
             res.redirect("/posts/" + req.params.post_id);
         }
     });
