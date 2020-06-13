@@ -8,7 +8,8 @@
             <input type="text" class="form-control" name="title" value="<%= post.title %>">
         </div>
         <div class="form-group my-3">
-            <input type="text" class="form-control" name="text" value="<%= post.text %>">
+            <textarea name="post[text]" class="form-control" rows="10"><%= post.text %></textarea>
+            <!-- <input type="text" class="form-control" name="text" value="<%= post.text %>"> -->
         </div>
         <button type="submit" class="btn btn-dark">Done</button>
     </form>
