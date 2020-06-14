@@ -30,8 +30,25 @@
                         </h5>
                         <h6 class="card-subtitle mb-2 text-muted">by <%= post.author %> </h6>
                         <p class="card-text my-2">
-                            <%= post.text %>
+                            <% if(post.text.length < 200) { %>
+                                <%= post.text %>
+                            <% } else { %>
+                                <%= post.text.substring(0, 200) %>...
+                            <% } %>
+                            
                         </p>
+
+                        <div>
+                            <small>
+                                <% if(post.comments.length != 1) { %>
+                                    <%= post.comments.length %> <em>comments</em>,
+                                <% } else { %>
+                                    1 <em>comment</em>,
+                                <% } %>
+                                324 <em>codepreciations</em>.
+                            </small>
+                        </div>
+
                     </div>
 
                     <!-- <% if(post.comments.length > 0) { %>
