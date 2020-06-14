@@ -26,6 +26,14 @@ const messages = {
     commentDeleted: {
         type: "success",
         message: "Comment deleted"
+    },
+    codepreciated: {
+        type: "success",
+        message: "Codepreciated"
+    },
+    notCodepreciated: {
+        type: "success",
+        message: "Uncodepreciated"
     }
 };
 

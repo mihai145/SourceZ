@@ -1,13 +1,27 @@
 <%- include('partials/header'); -%>
 
-<div class="container bg-light my-4">
+<div class="container bg-light my-4 p-2">
 
-<h1 class="display-3 text-center">
+<% if(user && isLoggedIn && user.username !== post.author && apreciated !== -1) { %>
+    <span class="float-right m-1">
+        <form action="/posts/<%= post._id %>/codepreciate" method="POST">
+            <button class="btn btn-dark">
+                <% if(apreciated === 0) { %>
+                    ❤️️
+                <% } else { %>
+                    💔
+                <% } %>
+            </button>
+        </form>
+    </span>
+<% } %>
+
+<h1 class="display-3">
     <%= post.title %>
 </h1>
 
-<blockquote class="blockquote text-center">
-    Written by <%= post.author %>
+<blockquote class="blockquote">
+    Written by <cite title="Source Title"><%= post.author %></cite>
 </blockquote>
 
 <hr>

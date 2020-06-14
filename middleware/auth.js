@@ -27,6 +27,21 @@ function isPostOwned(req, res, next) {
     });
 }
 
+function isNotPostOwned(req, res, next) {
+    Post.findById(req.params.id, (err, post) => {
+        if (err || !post) {
+            console.log(err);
+            return res.redirect("/posts");
+        } else {
+            if (post.author !== req.user.username) {
+                next();
+            } else {
+                return res.redirect("/posts");
+            }
+        }
+    });
+}
+
 function isCommentOwned(req, res, next) {
     Comment.findById(req.params.comment_id, (err, comm) => {
         if (err || !comm) {
@@ -45,5 +60,7 @@ function isCommentOwned(req, res, next) {
 authMiddleware.isLoggedIn = isLoggedIn;
 authMiddleware.isPostOwned = isPostOwned;
 authMiddleware.isCommentOwned = isCommentOwned;
+
+authMiddleware.isNotPostOwned = isNotPostOwned;
 
 module.exports = authMiddleware;

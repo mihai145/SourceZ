@@ -8,7 +8,8 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
     }],
-    codepreciations: { type: Number, default: 0 }
+    codepreciations: { type: Number, default: 0 },
+    codepreciatedBy: [String]
 });
 
 module.exports = mongoose.model("Post", postSchema);

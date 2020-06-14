@@ -17,6 +17,8 @@ const methodOverride = require("method-override");
 
 const authMiddleware = require("./middleware/auth");
 const flashMessages = require("./flashMessages");
+const user = require("./models/user");
+const { isLoggedIn, isNotPostOwned } = require("./middleware/auth");
 
 ///-----------------------///
 ///APP SETUP
@@ -156,13 +158,95 @@ app.put("/posts/:id", authMiddleware.isLoggedIn, authMiddleware.isPostOwned, (re
 ///SHOW FULL POST
 ///-----------------------///
 app.get("/posts/:id", (req, res) => {
+    let apreciated = -1;
+
+    if(req.isAuthenticated()) {
+            Post.findById(req.params.id, (err, post) => {
+                if(!err && post) {
+                    for (const apreciator of post.codepreciatedBy) {
+                        if(req.user.username === apreciator) {
+                            apreciated = 1;
+                        }
+                    }
+                    
+                    if(apreciated === -1)
+                        apreciated = 0;
+                }
+            });
+    }
+
     Post.findById(req.params.id).populate("comments").exec((err, post) => {
         if(err || !post) {
             console.log(err);
             req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/posts");
         } else {
-            res.render("show", {post: post});
+            res.render("show", {post: post, apreciated: apreciated});
+        }
+    });
+});
+
+///-----------------------///
+///CODEPRECIATE POST
+///-----------------------///
+app.post("/posts/:id/codepreciate", isLoggedIn, isNotPostOwned, (req, res) => {
+    
+    Post.findById(req.params.id, (err, post) => {
+        if(err || !post) {
+            console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            res.redirect("/posts");
+        } else {
+
+            let apreciated = false;
+
+            for(const apreciator of post.codepreciatedBy) {
+                if(req.user.username === apreciator) {
+                    apreciated = true;
+                    break;
+                }
+            }
+
+            if(!apreciated) {
+                post.codepreciations += 1;
+                post.codepreciatedBy.push(req.user.username);
+                post.save((err, post) => {
+                    if(err || !post) {
+                        console.log(err);
+                        req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+                        res.redirect("/posts");
+                    } else {
+                        req.flash(flashMessages.codepreciated.type, flashMessages.codepreciated.message);
+                        res.redirect("/posts/" + req.params.id);
+                    }
+                });
+            } else {
+                post.codepreciations -= 1;
+                
+                let indexToDelete = -1;
+                for(let i = 0; i < post.codepreciatedBy.length; i++)
+                    {
+                        if(req.user.username === post.codepreciatedBy[i]) {
+                            indexToDelete = i;
+                            break;
+                        }
+                    }
+
+                if(indexToDelete !== -1) {
+                    post.codepreciatedBy.splice(indexToDelete, 1);
+                }
+
+                post.save((err, post) => {
+                    if (err || !post) {
+                        console.log(err);
+                        req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+                        res.redirect("/posts");
+                    } else {
+                        req.flash(flashMessages.notCodepreciated.type, flashMessages.notCodepreciated.message);
+                        res.redirect("/posts/" + req.params.id);
+                    }
+                });
+            }
         }
     });
 });
