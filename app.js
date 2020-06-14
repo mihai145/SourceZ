@@ -189,6 +189,35 @@ app.get("/posts/:id", (req, res) => {
 ///-----------------------///
 ///CODEPRECIATE POST
 ///-----------------------///
+
+async function AddRating(name, add) {
+    console.log("IN FUNCTION");
+
+    let userId = -1, userRating = -1;
+    
+    await User.findOne({username : name}, (err, user) => {
+        console.log(err);
+        console.log(user);
+        if(err || !user) {
+            console.log(err);
+        } else {
+            userId = user._id;
+            userRating = user.rating;
+        }
+    });
+
+    console.log(userId);
+    console.log(userRating);
+
+    if(userId && userRating && userId !== -1 && userRating !== -1) {
+        User.findByIdAndUpdate(userId, {rating : userRating + add}, (err, user) => {
+            if(err || !user) {
+                console.log(err);
+            }
+        });
+    }
+}
+
 app.post("/posts/:id/codepreciate", isLoggedIn, isNotPostOwned, (req, res) => {
     
     Post.findById(req.params.id, (err, post) => {
@@ -208,10 +237,16 @@ app.post("/posts/:id/codepreciate", isLoggedIn, isNotPostOwned, (req, res) => {
             }
 
             if(!apreciated) {
+
+                console.log("HERE!");
+
+                AddRating(post.author, +3);
+
                 post.codepreciations += 1;
                 post.codepreciatedBy.push(req.user.username);
+
                 post.save((err, post) => {
-                    if(err || !post) {
+                    if (err || !post) {
                         console.log(err);
                         req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
                         res.redirect("/posts");
@@ -220,7 +255,10 @@ app.post("/posts/:id/codepreciate", isLoggedIn, isNotPostOwned, (req, res) => {
                         res.redirect("/posts/" + req.params.id);
                     }
                 });
+
             } else {
+                AddRating(post.author, -3);
+
                 post.codepreciations -= 1;
                 
                 let indexToDelete = -1;
@@ -262,6 +300,7 @@ app.delete("/posts/:id", (req, res) => {
             return res.redirect("/posts");
         } else {
             let fail = false;
+            
             for(const commentId of post.comments) {
                 Comment.findByIdAndRemove(commentId, err => {
                     if(err) {
@@ -441,10 +480,24 @@ app.delete("/posts/:post_id/comments/:comment_id", authMiddleware.isLoggedIn, au
 });
 
 ///-----------------------///
+///ABOUT PAGE
+///-----------------------///
+app.get("/about", (req, res) => {
+    res.render("about");
+});
+
+///-----------------------///
+///VIEW PROFILE
+///-----------------------///
+app.get("/me", authMiddleware.isLoggedIn, (req, res) => {
+    res.render("me");
+});
+
+///-----------------------///
 ///CATCH ALL
 ///-----------------------///
 app.get("*", (req, res) => {
-    res.render("notFound.ejs");
+    res.render("notFound");
 });
 
 ///-----------------------///
