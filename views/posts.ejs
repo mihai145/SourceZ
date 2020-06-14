@@ -4,177 +4,161 @@
 
     <div class="row">
     
-    <div class="col-lg-9">
-            <div class="jumbotron my-4">
-                <h1 class="display-4">Bunaseara prieteni!</h1>
-                
-                <p class="lead">
-                    Suntem basic, am pus aici un jumbotron pentru ca momentan nu avem asa multe postari...
-                    <br> 
-                    Speram sa scapam in curand de el
-                </p>
-                
-                <hr class="my-4">
-                
-                <p>
-                    Enjoy :)
-                </p>
-
-            </div>
-
-            <% for(let post of posts) { %>
-                <div class="card my-3">
-                    <div class="card-body bg-light">
-                        <h5 class="card-title">
-                            <%= post.title %>
-                        </h5>
-                        <h6 class="card-subtitle mb-2 text-muted">by <%= post.author %> </h6>
-                        <p class="card-text my-2">
-                            <% if(post.text.length < 200) { %>
-                                <%= post.text %>
-                            <% } else { %>
-                                <%= post.text.substring(0, 200) %>...
-                            <% } %>
-                            
-                        </p>
-
-                        <div>
-                            <small>
-                                <% if(post.comments.length != 1) { %>
-                                    <%= post.comments.length %> <em>comments</em>,
-                                <% } else { %>
-                                    1 <em>comment</em>,
-                                <% } %>
-
-                                <% if(post.codepreciations != 1) { %>
-                                    <%= post.codepreciations %> <em>codepreciations</em>.
-                                <% } else { %>
-                                    1 <em>codepreciation</em>.
-                                <% } %>
-                            </small>
-                        </div>
-
-                    </div>
-
-                    <!-- <% if(post.comments.length > 0) { %>
-                    <ul id="commentSection" class="list-group list-group-flush">
-                        <% for(let comment of post.comments) { %>
-                            <li class="list-group-item p-2">
-                                <strong>
-                                    <%= comment.author %>
-                                </strong>
-                                <br>
-                                <%= comment.text %>
-                            </li>
-                        <% } %>
-                    </ul>
-                    <% } %>
-
-                <form action="/posts/<%= post._id %>" method="POST" class="m-0 p-0">
-                    <div class="row mx-auto my-2 p-0">
-                        
-                        <div class="col-lg-10 my-2">
-                            <div class="form-group m-0">
-                                <input type="text" name="comment[text]" class="form-control"
-                                 placeholder="Add comment to <%= post.author %>`s post">
-                            </div> 
-                        </div>
-                        
-                        <div class="col-lg-2 my-auto pl-3">
-                            <button type="submit" class="btn btn-dark addCommentButton">Add comment</button>
-                        </div>
-
-                    </div>
-                </form> -->
-
-                <a href="/posts/<%= post._id%>" class="btn btn-dark m-2">Read More</a>
+        <div class="col-lg-9">
+                <div class="jumbotron my-4">
+                    <h1 class="display-4">Bunaseara prieteni!</h1>
+                    
+                    <p class="lead">
+                        Suntem basic, am pus aici un jumbotron pentru ca momentan nu avem asa multe postari...
+                        <br> 
+                        Speram sa scapam in curand de el
+                    </p>
+                    
+                    <hr class="my-4">
+                    
+                    <p>
+                        Enjoy :)
+                    </p>
 
                 </div>
 
-            <% } %>
-            
-    </div>
+                <% for(let post of posts) { %>
+                    <div class="card my-3">
+                        <div class="card-body bg-light">
+                            <h5 class="card-title">
+                                <%= post.title %>
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">by <%= post.author %> </h6>
+                            <p class="card-text my-2">
+                                <% if(post.text.length < 200) { %>
+                                    <%= post.text %>
+                                <% } else { %>
+                                    <%= post.text.substring(0, 200) %>...
+                                <% } %>
+                                
+                            </p>
 
-    <div class="col-lg-3 my-4">
-        
-        <% if(!user || !isLoggedIn) { %>
-        <form action="/login" method="POST" class="border border-light my-2 p-2">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" name="username">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" name="password">
-                <small class="form-text text-muted">Never share your password, cutie</small>
-            </div>
-            <button type="submit" class="btn btn-dark">Login</button>
-        </form>
-        <% } %>
+                            <div>
+                                <small>
+                                    <% if(post.comments.length != 1) { %>
+                                        <%= post.comments.length %> <em>comments</em>,
+                                    <% } else { %>
+                                        1 <em>comment</em>,
+                                    <% } %>
 
-        <!-- <% if(user && isLoggedIn) { %>
-        <form action="/posts" method="POST" class="border border-light my-3 p-2">
-            <p>Add a new post</p>
-            <div class="form-group">
-                <input type="text" class="form-control" name="post[title]" placeholder="title">
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" name="post[text]" placeholder="post goes here...">
-            </div>
-            <button type="submit" class="btn btn-dark">Add post</button>
-        </form>
-        <% } %> -->
+                                    <% if(post.codepreciations != 1) { %>
+                                        <%= post.codepreciations %> <em>codepreciations</em>.
+                                    <% } else { %>
+                                        1 <em>codepreciation</em>.
+                                    <% } %>
+                                </small>
+                            </div>
 
-        <% if(user && isLoggedIn) { %>
-        <div class="card">
-            <img class="card-img-top profilePicture m-auto" src="https://helloclean.ro/wp-content/uploads/2014/10/no-profile-square.gif" 
-            alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title"><%= user.username %></h5>
-                <a href="/me" class="btn btn-dark needSmallerButton m-1">View profile</a>
-                <a href="/posts/new" class="btn btn-dark needSmallerButton m-1">Add new post</a>
-            </div>
+                        </div>
+
+                        <!-- <% if(post.comments.length > 0) { %>
+                        <ul id="commentSection" class="list-group list-group-flush">
+                            <% for(let comment of post.comments) { %>
+                                <li class="list-group-item p-2">
+                                    <strong>
+                                        <%= comment.author %>
+                                    </strong>
+                                    <br>
+                                    <%= comment.text %>
+                                </li>
+                            <% } %>
+                        </ul>
+                        <% } %>
+
+                    <form action="/posts/<%= post._id %>" method="POST" class="m-0 p-0">
+                        <div class="row mx-auto my-2 p-0">
+                            
+                            <div class="col-lg-10 my-2">
+                                <div class="form-group m-0">
+                                    <input type="text" name="comment[text]" class="form-control"
+                                    placeholder="Add comment to <%= post.author %>`s post">
+                                </div> 
+                            </div>
+                            
+                            <div class="col-lg-2 my-auto pl-3">
+                                <button type="submit" class="btn btn-dark addCommentButton">Add comment</button>
+                            </div>
+
+                        </div>
+                    </form> -->
+
+                    <a href="/posts/<%= post._id%>" class="btn btn-dark m-2">Read More</a>
+
+                    </div>
+
+                <% } %>
+                
         </div>
-        <% } %>
 
-        <table class="table table my-3 p-2 table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">User</th>
-                    <th scope="col">Rating</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>carage66</td>
-                    <td>oo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>catag</td>
-                    <td>2321</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>mihai145</td>
-                    <td>1975</td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td>as</td>
-                    <td>1602</td>
-                </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td>MirCea</td>
-                    <td>1555</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="col-lg-3 my-4">
+            
+            <% if(!user || !isLoggedIn) { %>
+            <form action="/login" method="POST" class="my-2 p-2">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password">
+                    <small class="form-text text-muted">Never share your password, cutie</small>
+                </div>
+                <button type="submit" class="btn btn-dark">Login</button>
+            </form>
+            <% } %>
 
-    </div>
+            <!-- <% if(user && isLoggedIn) { %>
+            <form action="/posts" method="POST" class="border border-light my-3 p-2">
+                <p>Add a new post</p>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="post[title]" placeholder="title">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="post[text]" placeholder="post goes here...">
+                </div>
+                <button type="submit" class="btn btn-dark">Add post</button>
+            </form>
+            <% } %> -->
+
+            <% if(user && isLoggedIn) { %>
+            <div class="card">
+                <img class="card-img-top profilePicture m-auto" src="https://helloclean.ro/wp-content/uploads/2014/10/no-profile-square.gif" 
+                alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"><%= user.username %></h5>
+                    <a href="/me" class="btn btn-dark needSmallerButton m-1">View profile</a>
+                    <a href="/posts/new" class="btn btn-dark needSmallerButton m-1">Add new post</a>
+                </div>
+            </div>
+            <% } %>
+
+            <% if(topUsers && topUsers.length > 0) { %>
+                <table class="table my-4">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i = 0; i < topUsers.length; i++) { %>
+                        <tr>
+                            <th scope="row"><%= i + 1 %></th>
+                            <td><%= topUsers[i].username %></td>
+                            <td><%= topUsers[i].rating %></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+
+        </div>
 
     </div>
 

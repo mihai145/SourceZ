@@ -1,0 +1,33 @@
+<%- include('partials/header'); -%>
+
+<div class="container">
+
+    <h1 class="display-3 text-center">
+        Top 50 codereres
+    </h1>
+
+    <table class="table my-4 table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let i = 0; i < users.length; i++) { %>
+
+                <tr>
+                    <th scope="row"><%= i + 1 %></th>
+                    <td><%= users[i].username%></td>
+                    <td><%= users[i].rating%></td>
+                </tr>
+
+            <% } %>
+
+        </tbody>
+    </table>
+
+</div>
+
+<%- include('partials/footer'); -%>

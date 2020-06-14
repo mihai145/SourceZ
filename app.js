@@ -75,7 +75,7 @@ mongoose.connect('mongodb://localhost/cute_pet_project', {
 ///ROOT
 ///-----------------------///
 app.get("/", (req, res) => {
-    res.render("root.ejs");
+    res.render("root");
 });
 
 ///-----------------------///
@@ -88,7 +88,9 @@ app.get("/posts", (req, res) => {
             req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/posts");
         } else {
-            res.render("posts", {posts: posts});
+            User.find().sort({ rating: -1 }).limit(8).then(users => {
+                res.render("posts", { posts: posts , topUsers: users});
+            });
         }
     });
 });
@@ -191,13 +193,9 @@ app.get("/posts/:id", (req, res) => {
 ///-----------------------///
 
 async function AddRating(name, add) {
-    console.log("IN FUNCTION");
-
     let userId = -1, userRating = -1;
     
     await User.findOne({username : name}, (err, user) => {
-        console.log(err);
-        console.log(user);
         if(err || !user) {
             console.log(err);
         } else {
@@ -206,8 +204,8 @@ async function AddRating(name, add) {
         }
     });
 
-    console.log(userId);
-    console.log(userRating);
+    // console.log(userId);
+    // console.log(userRating);
 
     if(userId && userRating && userId !== -1 && userRating !== -1) {
         User.findByIdAndUpdate(userId, {rating : userRating + add}, (err, user) => {
@@ -237,9 +235,6 @@ app.post("/posts/:id/codepreciate", isLoggedIn, isNotPostOwned, (req, res) => {
             }
 
             if(!apreciated) {
-
-                console.log("HERE!");
-
                 AddRating(post.author, +3);
 
                 post.codepreciations += 1;
@@ -477,6 +472,17 @@ async function DoDelete(req, res, post, comment) {
 
 app.delete("/posts/:post_id/comments/:comment_id", authMiddleware.isLoggedIn, authMiddleware.isCommentOwned, (req, res) => {
     DoDelete(req, res, req.params.post_id, req.params.comment_id);
+});
+
+app.get("/leaderboard", (req, res) => {
+    User.find().sort({rating: -1}).limit(50).then(users => {
+        if(!users || users.length === 0) {
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            return res.redirect("/posts");
+        } else {
+            res.render("leaderboard", {users : users});
+        }
+    });
 });
 
 ///-----------------------///
