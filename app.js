@@ -171,6 +171,29 @@ app.get("/posts/:id", (req, res) => {
 ///DELETE POST
 ///-----------------------///
 app.delete("/posts/:id", (req, res) => {
+    Post.findById(req.params.id, (err, post) => {
+        if(err || !post) {
+            console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            return res.redirect("/posts");
+        } else {
+            let fail = false;
+            for(const commentId of post.comments) {
+                Comment.findByIdAndRemove(commentId, err => {
+                    if(err) {
+                        console.log(err);
+                        fail = true;
+                    }
+                });
+            }
+
+            if(fail) {
+                req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+                return res.redirect("/posts");
+            }
+        }
+    });
+
     Post.findByIdAndRemove(req.params.id, err => {
         if(err) {
             console.log(err);
