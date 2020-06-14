@@ -45,7 +45,12 @@
                                 <% } else { %>
                                     1 <em>comment</em>,
                                 <% } %>
-                                324 <em>codepreciations</em>.
+
+                                <% if(post.codepreciations != 1) { %>
+                                    <%= post.codepreciations %> <em>codepreciations</em>.
+                                <% } else { %>
+                                    1 <em>codepreciation</em>.
+                                <% } %>
                             </small>
                         </div>
 

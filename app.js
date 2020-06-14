@@ -284,17 +284,76 @@ app.post("/posts/:id", authMiddleware.isLoggedIn, (req, res) => {
 ///-----------------------///
 ///DELETE COMMENT
 ///-----------------------///
-app.delete("/posts/:post_id/comments/:comment_id", authMiddleware.isLoggedIn, authMiddleware.isCommentOwned, (req, res) => {
-    Comment.findByIdAndDelete(req.params.comment_id, err => {
+async function DeleteCommentFromPost(req, res, post, comment) {
+    Post.findById(post, (err, post) => {
+        if (err || !post) {
+            console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            return res.redirect("/posts");
+        } else {
+
+            const commentId = comment.toString();
+            let indexToDelete = -1;
+
+            //-----------DEBUG CODE----------------------//
+            // console.log("-------------------BEFOR-----");
+            // for (let i = 0; i < post.comments.length; i++)
+            //     console.log(post.comments[i]._id.toString());
+            //-----------DEBUG CODE----------------------//
+
+            for (let i = 0; i < post.comments.length; i++) {
+
+                //-----------DEBUG CODE----------------------//
+                // console.log("--------------");
+                // console.log(indexToDelete);
+                // console.log(post.comments[i]._id.toString());
+                // console.log("--------------");
+                //-----------DEBUG CODE----------------------//
+
+                if (commentId === post.comments[i]._id.toString()) {
+                    indexToDelete = i;
+                }
+            }
+
+            post.comments.splice(indexToDelete, 1);
+
+            //-----------DEBUG CODE----------------------//
+            // console.log("-------------------AFTR-----");
+            // for (let i = 0; i < post.comments.length; i++)
+            //     console.log(post.comments[i]._id.toString());
+            //-----------DEBUG CODE----------------------//
+
+            post.save((err, post) => {
+                if (err || !post) {
+                    console.log(err);
+                    req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+                    return res.redirect("/posts");
+                }
+            });
+        }
+    });
+}
+
+async function DeleteComment(req, res, comment, post) {
+    Comment.findByIdAndDelete(comment, err => {
         if(err) {
             console.log(err);
             req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
-            res.redirect("/posts");
+            return res.redirect("/posts");
         } else {
             req.flash(flashMessages.commentDeleted.type, flashMessages.commentDeleted.message);
-            res.redirect("/posts/" + req.params.post_id);
+            res.redirect("/posts/" + post);
         }
     });
+}
+
+async function DoDelete(req, res, post, comment) {
+    DeleteComment(req, res, comment, post);
+    DeleteCommentFromPost(req, res, post, comment);
+}
+
+app.delete("/posts/:post_id/comments/:comment_id", authMiddleware.isLoggedIn, authMiddleware.isCommentOwned, (req, res) => {
+    DoDelete(req, res, req.params.post_id, req.params.comment_id);
 });
 
 ///-----------------------///
