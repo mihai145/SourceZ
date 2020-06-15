@@ -75,7 +75,7 @@ mongoose.connect('mongodb://localhost/cute_pet_project', {
 ///ROOT
 ///-----------------------///
 app.get("/", (req, res) => {
-    res.render("root");
+    res.render("misc/root");
 });
 
 ///-----------------------///
@@ -89,7 +89,7 @@ app.get("/posts", (req, res) => {
             res.redirect("/posts");
         } else {
             User.find().sort({ rating: -1 }).limit(8).then(users => {
-                res.render("posts", { posts: posts , topUsers: users});
+                res.render("feed/posts", { posts: posts , topUsers: users});
             });
         }
     });
@@ -99,7 +99,7 @@ app.get("/posts", (req, res) => {
 ///FORM TO ADD NEW POST
 ///-----------------------///
 app.get("/posts/new", authMiddleware.isLoggedIn, (req, res) => {
-    res.render("newPost");
+    res.render("feed/newPost");
 }); 
 
 ///-----------------------///
@@ -131,7 +131,7 @@ app.get("/posts/:id/edit", authMiddleware.isLoggedIn, authMiddleware.isPostOwned
             req.flash(flashMessages.messages.defaultFail.type, flashMessages.messages.defaultFail.message);
             res.redirect("/posts");
         } else {
-            res.render("editPost", {post: post});
+            res.render("feed/editPost", {post: post});
         }
     })
 });
@@ -183,7 +183,7 @@ app.get("/posts/:id", (req, res) => {
             req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/posts");
         } else {
-            res.render("show", {post: post, apreciated: apreciated});
+            res.render("feed/show", {post: post, apreciated: apreciated});
         }
     });
 });
@@ -334,7 +334,7 @@ app.post('/login',
 }));
 
 app.get("/register", (req, res) => {
-    res.render("register");
+    res.render("misc/register");
 });
 
 app.post("/register", function (req, res) {
@@ -480,7 +480,7 @@ app.get("/leaderboard", (req, res) => {
             req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             return res.redirect("/posts");
         } else {
-            res.render("leaderboard", {users : users});
+            res.render("misc/leaderboard", {users : users});
         }
     });
 });
@@ -489,21 +489,21 @@ app.get("/leaderboard", (req, res) => {
 ///ABOUT PAGE
 ///-----------------------///
 app.get("/about", (req, res) => {
-    res.render("about");
+    res.render("misc/about");
 });
 
 ///-----------------------///
 ///VIEW PROFILE
 ///-----------------------///
 app.get("/me", authMiddleware.isLoggedIn, (req, res) => {
-    res.render("me");
+    res.render("misc/me");
 });
 
 ///-----------------------///
 ///CATCH ALL
 ///-----------------------///
 app.get("*", (req, res) => {
-    res.render("notFound");
+    res.render("misc/notFound");
 });
 
 ///-----------------------///
