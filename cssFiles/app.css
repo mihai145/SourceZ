@@ -12,7 +12,11 @@
 }
 
 body {
-    background-image: url("https://images.unsplash.com/photo-1508615070457-7baeba4003ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+    background-image: url("https://cdn.discordapp.com/attachments/722127365085462670/722128069833261117/bluegra.png");
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.feed-table-bg {
+    background-color: rgba(255, 255, 255, 0.25);
 }
