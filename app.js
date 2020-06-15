@@ -15,10 +15,9 @@ const passport = require('passport')
 const session = require("express-session");
 const methodOverride = require("method-override");
 
-const authMiddleware = require("./middleware/auth");
-const flashMessages = require("./flashMessages");
+const authMiddleware = require("./utils/authorizationMiddleware");
+const flashMessages = require("./utils/flashMessages");
 const user = require("./models/user");
-const { isLoggedIn, isNotPostOwned } = require("./middleware/auth");
 
 ///-----------------------///
 ///APP SETUP
@@ -66,10 +65,6 @@ mongoose.connect('mongodb://localhost/cute_pet_project', {
     useUnifiedTopology: true,
     useFindAndModify: false
 });
-
-///SEEDER
-// const seeder = require("./seedDB");
-// seeder();
 
 ///-----------------------///
 ///ROOT
@@ -216,7 +211,7 @@ async function AddRating(name, add) {
     }
 }
 
-app.post("/posts/:id/codepreciate", isLoggedIn, isNotPostOwned, (req, res) => {
+app.post("/posts/:id/codepreciate", authMiddleware.isLoggedIn, authMiddleware.isNotPostOwned, (req, res) => {
     
     Post.findById(req.params.id, (err, post) => {
         if(err || !post) {
