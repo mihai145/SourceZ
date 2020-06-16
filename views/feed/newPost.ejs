@@ -5,10 +5,10 @@
     <form action="/posts" method="POST" class="border border-light my-3 p-2">
         <p class="display-3">Add a new post</p>
         <div class="form-group my-3">
-            <input type="text" class="form-control" name="post[title]" placeholder="title">
+            <input type="text" class="form-control" name="post[title]" maxlength="20" required placeholder="title">
         </div>
         <div class="form-group my-3">
-            <textarea name="post[text]" class="form-control" rows="10"></textarea>
+            <textarea name="post[text]" class="form-control" rows="10" required></textarea>
             <!-- <input type="text" class="form-control" name="post[text]" placeholder="post goes here..."> -->
         </div>
         <button type="submit" class="btn btn-dark">Add post</button>

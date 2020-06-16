@@ -25,12 +25,27 @@ router.post('/login',
         failureRedirect: '/'
     }));
 
-router.get("/register", (req, res) => {
+router.get("/register", authMiddleware.isNotLoggedIn, (req, res) => {
     res.render("misc/register");
 });
 
-router.post("/register", function (req, res) {
-    var newUser = new User({ username: req.body.username });
+router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
+    const username = req.body.username;
+    let properUsername = true;
+
+    for(let i = 0; i < username.length; i++) {
+        if(username[i] == ' ') {
+            properUsername = false;
+            break;
+        }
+    }
+
+    if(properUsername == false) {
+        req.flash("fail", "Any username should be a single word!");
+        return res.redirect("/register");
+    }
+
+    var newUser = new User({ username: username });
     User.register(newUser, req.body.password, (err, user) => {
         if (err || !user) {
             console.log(err);

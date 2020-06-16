@@ -5,10 +5,10 @@
     <form action="/posts/<%= post._id %>/?_method=PUT" method="POST" class="border border-light my-3 p-2">
         <p class="display-3">Edit your post</p>
         <div class="form-group my-3">
-            <input type="text" class="form-control" name="title" value="<%= post.title %>">
+            <input type="text" class="form-control" name="title" maxlength="20" required value="<%= post.title %>">
         </div>
         <div class="form-group my-3">
-            <textarea name="text" class="form-control" rows="10"><%= post.text %></textarea>
+            <textarea name="text" class="form-control" rows="10" required><%= post.text %></textarea>
             <!-- <input type="text" class="form-control" name="text" value="<%= post.text %>"> -->
         </div>
         <button type="submit" class="btn btn-dark">Done</button>
