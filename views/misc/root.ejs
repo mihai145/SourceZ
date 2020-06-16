@@ -17,12 +17,56 @@
 
 <body class="rootpage">
 
-<div class="crossfade">
-    <figure></figure>
-    <figure></figure>
-    <figure></figure>
-    <figure></figure>
-    <figure></figure>
+<div class="row">
+
+<div class="col-lg-4 col-xl-8">
+    <ul class="slideshow">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+
+<div class="col-lg-8 col-xl-4">
+    
+    <% if(!user || !isLoggedIn) { %>
+    <div class="landing-page-form p-2 rounded"> 
+        <h3>Welcome to Codify!</h3>
+        
+        <hr>
+    
+        <form action="/login" method="POST">
+       
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" class="form-control" name="username" placeholder="username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" placeholder="password">
+            </div>
+            <button type="submit" class="btn btn-dark">Login</button>
+        </form>
+
+        <hr>
+
+        <p>If you do not have an account, you can register <a href="/register">here</a>. </p>
+        <p>You can also enter as a <a href="/posts">guest</a>.</p>
+
+    </div>
+    <% } else { %>
+
+        <div class="float-right m-2 rounded">
+            <a href="/posts" class="btn btn-lg btn-dark m-2">Back to feed</a>
+            <a href="/logout" class="btn btn-lg btn-danger m-2">Logout</a>
+        </div>
+    
+    <% } %>
+
+</div>
+
 </div>
 
 <%- include('../partials/footer'); -%>

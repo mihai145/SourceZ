@@ -30,61 +30,75 @@ body {
     background-color: black;
 }
 
-.crossfade > figure {
-  animation: imageAnimation 50s linear infinite 0s;
-  backface-visibility: hidden;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  color: transparent;
-  height: 100%;
-  left: 0px;
-  opacity: 0;
-  position: absolute;
-  top: 0px;
+.landing-page-form {
+  margin: 60px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.slideshow { 
+  position: fixed;
   width: 100%;
-  z-index: -1;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  list-style: none;
   margin: 0;
+  padding: 0;
 }
 
-.crossfade > figure:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'); }
-
-.crossfade > figure:nth-child(2) {
-  animation-delay: 10s;
-  background-image: url('https://cdn.discordapp.com/attachments/722127365085462670/722147768453300254/iphone-notebook-pen-working-34578.jpg');
+.slideshow li { 
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: imageAnimation 50s linear infinite; 
 }
 
-.crossfade > figure:nth-child(3) {
-  animation-delay: 20s;
-  background-image: url('https://cdn.discordapp.com/attachments/722127365085462670/722147768210030602/kevin-ku-aiyBwbrWWlo-unsplash.jpg');
+.slideshow li:nth-child(1) { 
+  background-image: url(https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80) 
+}
+.slideshow li:nth-child(2) { 
+  background-image: url(https://cdn.discordapp.com/attachments/722127365085462670/722147768453300254/iphone-notebook-pen-working-34578.jpg);
+  animation-delay: 10s; 
+}
+.slideshow li:nth-child(3) { 
+  background-image: url(https://cdn.discordapp.com/attachments/722127365085462670/722147768210030602/kevin-ku-aiyBwbrWWlo-unsplash.jpg);
+  animation-delay: 20s; 
+}
+.slideshow li:nth-child(4) { 
+  background-image: url(https://cdn.discordapp.com/attachments/722127365085462670/722147771003437066/coding-924920_1920.jpg);
+  animation-delay: 30s; 
+}
+.slideshow li:nth-child(5) { 
+  background-image: url(https://cdn.discordapp.com/attachments/722127365085462670/722147771741896714/computer-1869236_1920.jpg);
+  animation-delay: 40s; 
 }
 
-.crossfade > figure:nth-child(4) {
-  animation-delay: 30s;
-  background-image: url('https://cdn.discordapp.com/attachments/722127365085462670/722147771003437066/coding-924920_1920.jpg');
+@keyframes imageAnimation { 
+  0% { 
+    opacity: 0; 
+    animation-timing-function: ease-in;
+  }
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  20% {
+    opacity: 1
+  }
+  30% {
+    opacity: 0
+  }
 }
 
-.crossfade > figure:nth-child(5) {
-  animation-delay: 40s;
-  background-image: url('https://cdn.discordapp.com/attachments/722127365085462670/722147771741896714/computer-1869236_1920.jpg');
-}
-
-@keyframes 
-imageAnimation {  0% {
- animation-timing-function: ease-in;
- opacity: 0;
-}
- 8% {
- animation-timing-function: ease-out;
- opacity: 1;
-}
- 17% {
- opacity: 1
-}
- 25% {
- opacity: 0
-}
- 100% {
- opacity: 0
-}
+/* Older browser support - class added by modernizr */
+.no-cssanimations .slideshow li {
+	opacity: 1;
 }
