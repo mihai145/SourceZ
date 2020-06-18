@@ -1,0 +1,18 @@
+---Test 1---
+Running test ../Archive/adunare/tests/adunare1.in
+Runtime error
+---Test 2---
+Running test ../Archive/adunare/tests/adunare2.in
+TLE
+---Test 3---
+Running test ../Archive/adunare/tests/adunare3.in
+OK
+---Test 4---
+Running test ../Archive/adunare/tests/adunare4.in
+Wrong Answer
+---Test 5---
+Running test ../Archive/adunare/tests/adunare5.in
+OK
+Wrong Answer: 1
+Time Limit Exceeded: 1
+Runtime Error: 1
