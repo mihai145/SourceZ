@@ -16,13 +16,37 @@
         </div>
     <% } %>
 
-    <form action="/scm" method="POST" class="my-2 p-2 rounded" id="submitArea">
-        <h3>Submit solution for problem adunare!</h3>
-        <div class="form-group">
-            <label>Your code here</label>
-            <textarea class="form-control" rows="10" name="clientSource"></textarea>
-        </div>
-        <button class="btn btn-dark">Submit!</button>
+    <form action="/problemset/newPb" method="POST">
+        <p>Add new problem</p>
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="problem[name]">
+            </div>
+            <div class="form-group">
+                <label>Statement</label>
+                <input type="text" class="form-control" name="problem[statement]">
+            </div>
+            <div class="form-group">
+                <label>InFormat</label>
+                <input type="text" class="form-control" name="problem[inFormat]">
+            </div>
+            <div class="form-group">
+                <label>OutFormat</label>
+                <input type="text" class="form-control" name="problem[outFormat]">
+            </div>
+            <div class="form-group">
+                <label>Restrictions</label>
+                <input type="text" class="form-control" name="problem[restrictions]">
+            </div>
+            <div class="form-group">
+                <label>InEx</label>
+                <input type="text" class="form-control" name="problem[inEx]">
+            </div>
+            <div class="form-group">
+                <label>OutEx</label>
+                <input type="text" class="form-control" name="problem[outEx]">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
 </div>

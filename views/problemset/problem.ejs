@@ -1,0 +1,40 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <h1 class="text-center problemName my-4"><%= problem.name %></h1>
+    
+    <p>
+        <%= problem.statement %>
+    </p>
+
+    <hr>
+
+    <p>
+        <%= problem.inFormat %>
+    </p>
+
+    <hr>
+
+    <p>
+        <%= problem.outFormat %>
+    </p>
+
+    <hr>
+
+    <p>
+        <%= problem.restrictions %>
+    </p>
+
+    <hr>
+
+    <p>
+        <%= problem.inEx %>
+    </p>
+    <p>
+        <%= problem.outEx %>
+    </p>
+
+</div>
+
+<%- include('../partials/footer'); -%>
