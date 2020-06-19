@@ -1,0 +1,1 @@
+The file scm.in has one integer on the first line, N. On the second line, there are N integers, A[1], A[2], ..., A[N].

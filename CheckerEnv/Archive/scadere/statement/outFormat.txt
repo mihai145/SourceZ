@@ -1,0 +1,1 @@
+You should output two integers on the first line: A and B.

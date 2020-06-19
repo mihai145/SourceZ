@@ -2,21 +2,23 @@
 
 <div class="container">
 
-    <h1 class="display-1 text-center">Problemset</h1>
+    <h1 class="display-1 text-center my-3">Problemset</h1>
 
     <% for(const problem of problems) { %>
         <div>
-            <div class="card my-2">
+            <div class="card my-2 rounded">
                 <div class="card-body">
+                    <span class="float-right">Solved by 12 users.</span>
                     <h5 class="card-title"> <%= problem.name %> </h5>
-                    <h6 class="card-subtitle mb-2 text-muted">By <%= problem.author %> </h6>
-                    <a href="#" class="card-link">Show problem</a>
+                    <h6 class="card-subtitle mb-2 text-muted">By _unk_KNOWN </h6>
+                    <p><%= problem.statement %></p>
+                    <a href="/problemset/<%=problem.name%>" class="btn btn-dark card-link">Show problem</a>
                 </div>
             </div>
         </div>
     <% } %>
 
-    <form action="/problemset/newPb" method="POST">
+    <form action="/problemset/newPb" method="POST" class="my-4 p-2 bg-light rounded">
         <p>Add new problem</p>
             <div class="form-group">
                 <label>Name</label>

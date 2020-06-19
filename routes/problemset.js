@@ -12,22 +12,16 @@ const flashMessages = require("../utils/flashMessages");
 
 const Problem = require("../models/problem");
 
-const problems = [
-    {
-        name: "scadere",
-        statement: "Simple problem! Just read a number and!",
-        author: "Generalul Miclaus"
-    },
-
-    {
-        name: "scm",
-        statement: "Maximum length increasing Subsequence! Read N, and then the N numbers in the array. Then, output the maximul length of an increasing Subsequence",
-        author: "brilas"
-    }
-]
-
 router.get("/problemset", (req, res) => {
-    res.render("problemset/index", {problems: problems});
+    Problem.find({}, (err, problems) => {
+        if(err || !problems) {
+            console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            res.redirect("/problemset");
+        } else {
+            res.render("problemset/index", { problems: problems });
+        }
+    });
 });
 
 router.post("/problemset/newPb", (req, res) => {
