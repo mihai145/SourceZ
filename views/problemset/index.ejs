@@ -1,0 +1,30 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <h1 class="display-1 text-center">Problemset</h1>
+
+    <% for(const problem of problems) { %>
+        <div>
+            <div class="card my-2">
+                <div class="card-body">
+                    <h5 class="card-title"> <%= problem.name %> </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">By <%= problem.author %> </h6>
+                    <a href="#" class="card-link">Show problem</a>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+    <form action="/scm" method="POST" class="my-2 p-2 rounded" id="submitArea">
+        <h3>Submit solution for problem adunare!</h3>
+        <div class="form-group">
+            <label>Your code here</label>
+            <textarea class="form-control" rows="10" name="clientSource"></textarea>
+        </div>
+        <button class="btn btn-dark">Submit!</button>
+    </form>
+
+</div>
+
+<%- include('../partials/footer'); -%>

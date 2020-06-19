@@ -1,5 +1,8 @@
 #Written by mihai145
 
+# complete here with absolute path to Checker folder
+cd D:/CutePetProject/CheckerEnv/Checker
+
 echo "----------"
 echo "----------"
 echo "----------"
@@ -11,10 +14,16 @@ echo "Clearing previous submissions results..."
 pb=$1
 echo "Start checking client code for problem ${pb}!"
 
+cat ./current.txt >> ./main.cpp
+echo "Created main.cpp from client submission"
+
 g++ -std=c++14 -Wall ./main.cpp -o ./pb.exe 2> ./compilation.txt
 
 if [[ $? != 0 ]]; then
+    > current.txt
     rm main.cpp
+    rm pb.exe
+    
     echo "Client code did not compile! Deleting client source and exiting..."
     exit 0
 fi
@@ -109,3 +118,6 @@ rm chk.cpp
 rm chk.exe
 
 echo "Deleted client source & exec and checker & exec"
+
+> current.txt
+echo "Cleared current submission"

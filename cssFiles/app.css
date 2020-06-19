@@ -10,6 +10,11 @@
     max-width: 200px;
     max-height: 200px;
 }
+
+#submitArea {
+  background-color: lightblue;
+}
+
 html, body {
     height: 100%;
 }

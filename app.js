@@ -14,6 +14,7 @@ const methodOverride = require("method-override");
 const feedRoutes = require("./routes/feed");
 const commentCodepreciateRoutes = require("./routes/commentCodepreciate");
 const miscRoutes = require("./routes/misc");
+const problemsetRoutes = require("./routes/problemset");
 
 ///-----------------------///
 ///APP SETUP
@@ -66,6 +67,7 @@ mongoose.connect('mongodb://localhost/cute_pet_project', {
 ///-----------------------///
 app.use(feedRoutes);
 app.use(commentCodepreciateRoutes);
+app.use(problemsetRoutes);
 app.use(miscRoutes);
 
 ///-----------------------///
