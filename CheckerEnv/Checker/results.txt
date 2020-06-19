@@ -1,18 +1,15 @@
 ---Test 1---
-Running test ../Archive/adunare/tests/adunare1.in
-OK
+Running test ../Archive/scm/tests/scm1.in
+Wrong Answer
 ---Test 2---
-Running test ../Archive/adunare/tests/adunare2.in
-OK
+Running test ../Archive/scm/tests/scm2.in
+Wrong Answer
 ---Test 3---
-Running test ../Archive/adunare/tests/adunare3.in
-OK
+Running test ../Archive/scm/tests/scm3.in
+Wrong Answer
 ---Test 4---
-Running test ../Archive/adunare/tests/adunare4.in
-OK
----Test 5---
-Running test ../Archive/adunare/tests/adunare5.in
-OK
-Wrong Answer: 0
+Running test ../Archive/scm/tests/scm4.in
+Wrong Answer
+Wrong Answer: 4
 Time Limit Exceeded: 0
 Runtime Error: 0

@@ -24,7 +24,11 @@ router.get("/problemset", (req, res) => {
     });
 });
 
-router.post("/problemset/newPb", (req, res) => {
+router.get("/problemset/newPb", authMiddleware.isAdmin, (req, res) => {
+    res.render("problemset/addProblem");
+});
+
+router.post("/problemset/newPb", authMiddleware.isAdmin, (req, res) => {
     const prob = req.body.problem;
 
     Problem.create(prob, (err, problem) => {
@@ -51,14 +55,14 @@ router.get("/problemset/:problemName", (req, res) => {
     });
 });
 
-router.post("/problemset/:problemName", (req, res) => {
+router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) => {
     fs.writeFileSync("CheckerEnv/Checker/current.txt", req.body.clientSource, "utf8");
-    res.send(req.body.clientSource);
 
     const commandString = "sh CheckerEnv/Checker/check.sh " + req.params.problemName;
-    console.log(commandString);
+    //console.log(commandString);
     res.redirect("/problemset");
-    //shell.exec("sh CheckerEnv/Checker/check.sh adunare");
+
+    shell.exec(commandString);
 });
 
 module.exports = router;

@@ -1,1 +1,0 @@
-This problem is not hard either. We give you a number, let`s call it X. You have to find 2 numbers, A and B, such that A - B = Y.

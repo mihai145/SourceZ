@@ -1,1 +1,0 @@
-The file adunare.in has two integers on the first line.

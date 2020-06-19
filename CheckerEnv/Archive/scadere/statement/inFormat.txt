@@ -1,1 +1,0 @@
-The file scadere.in has one integer on the first line, X.

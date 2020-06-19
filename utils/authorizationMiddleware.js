@@ -70,11 +70,25 @@ function isCommentOwned(req, res, next) {
     });
 }
 
+function isAdmin(req, res, next) {
+    if(!req.isAuthenticated()) {
+        return res.redirect("/problemset");
+    }
+
+    if(req.user.username != "mihai145") {
+        return res.redirect("/problemset");
+    }
+
+    next();
+}
+
 authMiddleware.isLoggedIn = isLoggedIn;
 authMiddleware.isPostOwned = isPostOwned;
 authMiddleware.isCommentOwned = isCommentOwned;
 
 authMiddleware.isNotLoggedIn = isNotLoggedIn;
 authMiddleware.isNotPostOwned = isNotPostOwned;
+
+authMiddleware.isAdmin = isAdmin;
 
 module.exports = authMiddleware;

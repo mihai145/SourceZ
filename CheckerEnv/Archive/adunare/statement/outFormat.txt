@@ -1,1 +1,0 @@
-You should output one integer - the sum of the two numbers in the input.

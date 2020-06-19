@@ -4,36 +4,30 @@
 
     <h1 class="text-center problemName my-4"><%= problem.name %></h1>
     
-    <p>
-        <%= problem.statement %>
-    </p>
+    <div id="content">
+        <%- problem.content -%>
+    </div>
 
-    <hr>
+    <form action="/problemset/<%= problem.name %>" method="POST" class="my-3 p-3 bg-light rounded">
 
-    <p>
-        <%= problem.inFormat %>
-    </p>
+        <h3>Submit your code for problem <%= problem.name %> </h3>
 
-    <hr>
+        <div class="my-2">
+            <textarea rows="15" name="clientSource" class="form-control p-2">
+                #include <bits/stdc++.h>
+                using namespace std;
+                ifstream cin("<%=problem.name%>.in");
+                ofstream cout("<%=problem.name%>.out");
+                ///keep this header unchanged. Place your solution under this comment
 
-    <p>
-        <%= problem.outFormat %>
-    </p>
-
-    <hr>
-
-    <p>
-        <%= problem.restrictions %>
-    </p>
-
-    <hr>
-
-    <p>
-        <%= problem.inEx %>
-    </p>
-    <p>
-        <%= problem.outEx %>
-    </p>
+                int main()
+                {
+                    return 0;
+                }
+            </textarea>
+        </div>
+        <button class="btn btn-dark">Submit!</button>
+    </form>
 
 </div>
 
