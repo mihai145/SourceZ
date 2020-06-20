@@ -72,14 +72,30 @@ function isCommentOwned(req, res, next) {
 
 function isAdmin(req, res, next) {
     if(!req.isAuthenticated()) {
+        req.flash("fail", "You are not authenticated!");
         return res.redirect("/problemset");
     }
 
-    if(req.user.username != "mihai145") {
+    if(req.user.isAdmin) {
+        return next();
+    }
+
+    req.flash("fail", "You do not have enough permissions to do that!");
+    return res.redirect("/posts");
+}
+
+function isOwner(req, res, next) {
+    if (!req.isAuthenticated()) {
+        req.flash("fail", "You are not authenticated!");
         return res.redirect("/problemset");
     }
 
-    next();
+    if (req.user.isOwner) {
+        return next();
+    }
+
+    req.flash("fail", "You do not have enough permissions to do that!");
+    return res.redirect("/posts");
 }
 
 authMiddleware.isLoggedIn = isLoggedIn;
@@ -90,5 +106,6 @@ authMiddleware.isNotLoggedIn = isNotLoggedIn;
 authMiddleware.isNotPostOwned = isNotPostOwned;
 
 authMiddleware.isAdmin = isAdmin;
+authMiddleware.isOwner = isOwner;
 
 module.exports = authMiddleware;

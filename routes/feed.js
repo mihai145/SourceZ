@@ -31,14 +31,14 @@ router.get("/posts", (req, res) => {
 ///-----------------------///
 ///FORM TO ADD NEW POST
 ///-----------------------///
-router.get("/posts/new", authMiddleware.isLoggedIn, (req, res) => {
+router.get("/posts/new", authMiddleware.isLoggedIn, authMiddleware.isAdmin, (req, res) => {
     res.render("feed/newPost");
 });
 
 ///-----------------------///
 ///NEW POST
 ///-----------------------///
-router.post("/posts", authMiddleware.isLoggedIn, (req, res) => {
+router.post("/posts", authMiddleware.isLoggedIn, authMiddleware.isAdmin, (req, res) => {
     let newPost = req.body.post;
     newPost.author = req.user.username;
 
@@ -124,7 +124,7 @@ router.get("/posts/:id", (req, res) => {
 ///-----------------------///
 ///DELETE POST
 ///-----------------------///
-router.delete("/posts/:id", (req, res) => {
+router.delete("/posts/:id", authMiddleware.isLoggedIn, authMiddleware.isPostOwned, (req, res) => {
     Post.findById(req.params.id, (err, post) => {
         if (err || !post) {
             console.log(err);

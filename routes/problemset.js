@@ -24,11 +24,11 @@ router.get("/problemset", (req, res) => {
     });
 });
 
-router.get("/problemset/newPb", authMiddleware.isAdmin, (req, res) => {
+router.get("/problemset/newPb", authMiddleware.isOwner, (req, res) => {
     res.render("problemset/addProblem");
 });
 
-router.post("/problemset/newPb", authMiddleware.isAdmin, (req, res) => {
+router.post("/problemset/newPb", authMiddleware.isOwner, (req, res) => {
     const prob = req.body.problem;
 
     Problem.create(prob, (err, problem) => {

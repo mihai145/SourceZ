@@ -132,7 +132,10 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Master <%= user.username %></h5>
                     <a href="/me" class="btn btn-dark btn-block needSmallerButton m-1">View profile</a>
-                    <a href="/posts/new" class="btn btn-dark btn-block needSmallerButton m-1">Add new post</a>
+                    
+                    <% if(user.isAdmin) { %>
+                        <a href="/posts/new" class="btn btn-dark btn-block needSmallerButton m-1">Add new post</a>
+                    <% } %>
                 </div>
             </div>
             <% } %>
