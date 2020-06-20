@@ -10,21 +10,16 @@ const Comment = require("../models/comment");
 
 const authMiddleware = require("../utils/authorizationMiddleware");
 const flashMessages = require("../utils/flashMessages");
+const post = require('../models/post');
 
 ///-----------------------///
 ///FEED
 ///-----------------------///
 router.get("/posts", (req, res) => {
-    Post.find({}, (err, posts) => {
-        if (err || !posts) {
-            console.log(err);
-            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
-            res.redirect("/posts");
-        } else {
-            User.find().sort({ rating: -1 }).limit(8).then(users => {
-                res.render("feed/posts", { posts: posts, topUsers: users });
-            });
-        }
+    Post.find({}).sort({created: -1}).limit(20).then( posts => {
+        User.find().sort({ rating: -1 }).limit(8).then(users => {
+            res.render("feed/posts", { posts: posts, topUsers: users });
+        });
     });
 });
 

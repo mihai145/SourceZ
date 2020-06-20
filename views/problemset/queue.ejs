@@ -1,0 +1,19 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <h1 class="display-1 text-center my-3">Queue</h1>
+
+    <% for(const submission of submissions) { %>
+    <nav class="nav nav-pills nav-fill my-2">
+        <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> <%= submission.created.toDateString() %> </a>
+        <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> <%= submission.author %> </a>
+        <a class="nav-item nav-link" href="#"> <%= submission.toProblem %> </a>
+        <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> <%= submission.judged %> </a>
+        <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> <%= submission.verdict %> </a>
+    </nav>
+    <% } %>
+
+</div>
+
+<%- include('../partials/footer'); -%>

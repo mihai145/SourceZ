@@ -8,6 +8,7 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
     }],
+    created: {type: Date, default: Date.now},
     codepreciations: { type: Number, default: 0 },
     codepreciatedBy: [String]
 });

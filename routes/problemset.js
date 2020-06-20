@@ -11,6 +11,10 @@ const authMiddleware = require("../utils/authorizationMiddleware");
 const flashMessages = require("../utils/flashMessages");
 
 const Problem = require("../models/problem");
+const Submission = require("../models/submission");
+const User = require('../models/user');
+const { isLoggedIn } = require('../utils/authorizationMiddleware');
+const { runInNewContext } = require('vm');
 
 router.get("/problemset", (req, res) => {
     Problem.find({}, (err, problems) => {
@@ -21,6 +25,12 @@ router.get("/problemset", (req, res) => {
         } else {
             res.render("problemset/index", { problems: problems });
         }
+    });
+});
+
+router.get("/queue", (req, res) => {
+    Submission.find({}).sort({ created: -1 }).limit(100).then(submissions => {
+        res.render("problemset/queue", {submissions: submissions});
     });
 });
 
@@ -50,19 +60,71 @@ router.get("/problemset/:problemName", (req, res) => {
             req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/problemset");
         } else {
-            res.render("problemset/problem", {problem : problem});
+            if(!isLoggedIn) {
+                res.render("problemset/problem", {problem : problem, submissions : null});
+            } else {
+                Submission.find({ author: req.user.username, toProblem: req.params.problemName }).sort({ created: -1 }).limit(5)
+                .then(submissions => {
+                    res.render("problemset/problem", { problem: problem, submissions: submissions });
+                });
+            }
         }
     });
 });
 
 router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) => {
-    fs.writeFileSync("CheckerEnv/Checker/current.txt", req.body.clientSource, "utf8");
+    
+    let now = new Date();
+    let diffMs = (now - req.user.lastSubmission);
 
-    const commandString = "sh CheckerEnv/Checker/check.sh " + req.params.problemName;
-    //console.log(commandString);
-    res.redirect("/problemset");
+    // console.log("----");
+    // console.log(now);
+    // console.log(req.user.lastSubmission);
+    // console.log("----");
 
-    shell.exec(commandString);
+    let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+
+    console.log(diffMins);
+
+    if(diffMins < 2 && (req.user.lastSubmission !== null)) {
+        req.flash("fail", "You submitted a solution less than 2 minutes ago. You can only submit once every two minutes");
+        res.redirect("/problemset");
+    } else {
+
+        User.findOneAndUpdate({ username: req.user.username }, { lastSubmission: now}, (err, user) => {
+            if(err || !user) {
+                console.log(err);
+                req.flash("fail", "Couldn`t save your submission. Try again...");
+                res.redirect("/problemset");
+            } else {
+                let submission = {};
+
+                submission.author = req.user.username;
+                submission.toProblem = req.params.problemName;
+                submission.cpp = req.body.clientSource;
+
+                Submission.create(submission, (err, subm) => {
+                    if (err || !subm) {
+                        console.log(err);
+                        req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+                        res.redirect("/problemset");
+                    } else {
+
+                        // console.log(subm);
+
+                        fs.writeFileSync("CheckerEnv/Checker/current.txt", submission.cpp, "utf8");
+
+                        const commandString = "sh CheckerEnv/Checker/check.sh " + req.params.problemName;
+                        //console.log(commandString);
+                        req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
+                        res.redirect("/problemset");
+
+                        shell.exec(commandString);
+                    }
+                });
+            }
+        }); 
+    }
 });
 
 module.exports = router;

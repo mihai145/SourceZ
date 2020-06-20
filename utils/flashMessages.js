@@ -34,6 +34,10 @@ const messages = {
     notCodepreciated: {
         type: "success",
         message: "Uncodepreciated"
+    },
+    successfullySubmited: {
+        type: "success",
+        message: "Done. Wait for the judge to evaluate your submission!"
     }
 };
 

@@ -4,27 +4,55 @@
 
     <h1 class="text-center problemName my-4"><%= problem.name %></h1>
     
-    <div id="content">
-        <%- problem.content -%>
+    <div class="row">
+
+    <div class="col-lg-8">
+    
+        <div id="content">
+            <%- problem.content -%>
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+        <% if(submissions) { %>
+        <p class="text-center my-3">Your last <%= submissions.length %> submissions</p>
+        <% for(const submission of submissions) { %>
+        <nav class="nav nav-pills nav-fill my-2">
+            <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
+                <%= submission.created.toDateString() %> </a>
+            <a class="nav-item nav-link" href="#"> <%= submission.toProblem %> </a>
+            <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> <%= submission.judged %> </a>
+            <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> <%= submission.verdict %> </a>
+        </nav>
+        <% } %>
+        <% } else { %>
+            <p>I need some serious placeholder here!</p>
+        <% } %>
+        
+        <a href="/queue" class="btn btn-dark ml-3">View queue</a>
+
+    </div>
+
     </div>
 
     <form action="/problemset/<%= problem.name %>" method="POST" class="my-3 p-3 bg-light rounded">
-
+    
         <h3>Submit your code for problem <%= problem.name %> </h3>
-
+    
         <div class="my-2">
             <textarea rows="15" name="clientSource" class="form-control p-2">
-                #include <bits/stdc++.h>
-                using namespace std;
-                ifstream cin("<%=problem.name%>.in");
-                ofstream cout("<%=problem.name%>.out");
-                ///keep this header unchanged. Place your solution under this comment
-
-                int main()
-                {
-                    return 0;
-                }
-            </textarea>
+                            #include <bits/stdc++.h>
+                            using namespace std;
+                            ifstream cin("<%=problem.name%>.in");
+                            ofstream cout("<%=problem.name%>.out");
+                            ///keep this header unchanged. Place your solution under this comment
+        
+                            int main()
+                            {
+                                return 0;
+                            }
+                        </textarea>
         </div>
         <button class="btn btn-dark">Submit!</button>
     </form>
