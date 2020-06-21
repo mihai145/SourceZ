@@ -50,11 +50,6 @@ run_test() {
     path=$1
     test=$2
 
-    if [[ $test > 0 ]]; then
-        echo "---Test $test---" >> ./results.txt
-        echo "Running test ${path}/tests/${pb}${test}.in" >> ./results.txt
-    fi
-
     # copy .in to checker folder
     cp ${path}/tests/${pb}${test}.in ./${pb}.in
     
@@ -70,15 +65,20 @@ run_test() {
         return 0
     fi
 
+    #code 0-> acc
+    #code 1-> wa
+    #code 2-> tle
+    #code 3-> rte
+
     if [[ $exitCode == 124 ]]; then
-        echo "TLE" >> ./results.txt
+        echo 2 >> ./results.txt
         let tle=tle+1
         rm ${pb}.in
         rm ${pb}.out
         rm ${pb}.ok
         return 0
     elif [[ $exitCode != 0 ]]; then
-        echo "Runtime error" >> ./results.txt
+        echo 3 >> ./results.txt
         let re=re+1
         rm ${pb}.in
         rm ${pb}.out
@@ -90,10 +90,10 @@ run_test() {
     ./chk.exe
 
     if [[ $? != 0 ]]; then
-        echo "Wrong Answer" >> ./results.txt
+        echo 1 >> ./results.txt
         let wa=wa+1
     else 
-        echo "OK" >> ./results.txt
+        echo 0 >> ./results.txt
     fi
 
     # delete .in .ok and .out
@@ -108,9 +108,9 @@ while [[ $counter -le $numOfTests ]]; do
             let counter=counter+1 
         done
 
-echo "Wrong Answer: $wa" >> ./results.txt
-echo "Time Limit Exceeded: $tle" >> ./results.txt
-echo "Runtime Error: $re" >> ./results.txt
+# echo "Wrong Answer: $wa" >> ./results.txt
+# echo "Time Limit Exceeded: $tle" >> ./results.txt
+# echo "Runtime Error: $re" >> ./results.txt
 
 rm main.cpp
 rm pb.exe

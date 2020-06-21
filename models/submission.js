@@ -6,6 +6,7 @@ const submissionSchema = new mongoose.Schema({
     cpp: String,
     created: {type: Date, default: Date.now},
     judged: {type: Boolean, default: false},
+    compilerMessage: String,
     results: [String],
     verdict: String
 });

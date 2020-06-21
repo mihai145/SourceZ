@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const readline = require('readline');
 
 const shell = require('shelljs');
 
@@ -13,9 +14,6 @@ const flashMessages = require("../utils/flashMessages");
 const Problem = require("../models/problem");
 const Submission = require("../models/submission");
 const User = require('../models/user');
-const { isLoggedIn } = require('../utils/authorizationMiddleware');
-const { runInNewContext } = require('vm');
-const { rootCertificates } = require('tls');
 
 router.get("/problemset", (req, res) => {
     Problem.find({}, (err, problems) => {
@@ -85,6 +83,61 @@ router.get("/problemset/:problemName", (req, res) => {
     });
 });
 
+
+async function processLineByLine(req, red, submId) {
+    const fileStream = fs.createReadStream("CheckerEnv/Checker/results.txt");
+
+    const rl = readline.createInterface({
+        input: fileStream,
+        crlfDelay: Infinity
+    });
+    // Note: we use the crlfDelay option to recognize all instances of CR LF
+    // ('\r\n') in input.txt as a single line break.
+
+    let res = [];
+    let verdict = "Accepted";
+
+    for await (const line of rl) {
+        // Each line in input.txt will be successively available here as `line`.
+        // console.log(`Line from file: ${line}`);
+
+        if(line === "0") {
+            res.push("Correct");
+        } else if(line === "1") {
+            res.push("Wrong answer");
+            if(verdict === "Accepted") {
+                verdict = "Wrong Answer";
+            }
+        } else if(line === "2") {
+            res.push("Time limit exceeded");
+            if (verdict === "Accepted") {
+                verdict = "Time limit exceeded";
+            }
+        } else {
+            res.push("Runtime error");
+            if (verdict === "Accepted") {
+                verdict = "Runtime Error";
+            }
+        }
+    }
+
+    if(res.length === 0) {
+        verdict = "Compilation Error";
+    }
+
+    let compilerMessage = fs.readFileSync('CheckerEnv/Checker/compilation.txt', "utf8");
+    
+    Submission.findByIdAndUpdate(submId, {judged: true, compilerMessage: compilerMessage, results: res, verdict: verdict}, (err, subm) => {
+        if(err || !subm) {
+            console.log();
+            req.flash("fail", "Couldn`t judge your submission. Please try again...");
+            red.redirect("/problemset");
+        } else {
+            red.redirect("/problemset/" + subm.toProblem);
+        }
+    });
+}
+
 router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) => {
     
     let now = new Date();
@@ -129,10 +182,12 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
 
                         const commandString = "sh CheckerEnv/Checker/check.sh " + req.params.problemName;
                         //console.log(commandString);
-                        req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
-                        res.redirect("/problemset");
+                        // req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
+                        // res.redirect("/problemset");
 
                         shell.exec(commandString);
+                        
+                        processLineByLine(req, res, subm.id);
                     }
                 });
             }

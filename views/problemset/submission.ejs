@@ -2,13 +2,50 @@
 
 <div class="container">
 
-    <ul class="list-group my-3">
+    <ul class="list-group my-3 rounded">
         <li class="list-group-item active">Submission details</li>
-        <li class="list-group-item">Submitted at: <%= submission.created%> </li>
+        <li class="list-group-item">Submitted at: <%= submission.created.toDateString() %>, <%= submission.created.toTimeString().substring(0, 8) %> </li>
         <li class="list-group-item">Submitted by: <%= submission.author%> </li>
         <li class="list-group-item">Submitted to problem: <a href="/problemset/<%= submission.toProblem %>"><%= submission.toProblem %></a> </li>
-        <li class="list-group-item">Verdict: waiting...</li>
+        <% if(submission.judged) { %>
+            <% if(submission.verdict === "Accepted") { %>
+                <li class="list-group-item" style="color:green"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
+            <% } else if(submission.verdict === "Compilation Error") { %>
+                <li class="list-group-item" style="color:yellow"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
+            <% } else { %>
+                <li class="list-group-item" style="color:red"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
+            <% } %>
+        <% } else { %>
+            <li class="list-group-item">Verdict: waiting...</li>
+        <% } %>
     </ul>
+
+    <% if(submission.judged) { %>
+        <ul class="list-group my-3 rounded">
+            <li class="list-group-item">Compilation message</li>
+            <li class="list-group-item"><%= submission.compilerMessage %></li>
+        </ul>
+    <% } %>
+
+    <% if(submission.judged) { %>
+    
+    <ul class="list-group list-group-flush my-3 rounded">
+        <li class="list-group-item">Individual test results</li>
+        <% for(let i = 0; i < submission.results.length; i++) { %>
+            <% if(submission.results[i] === "Correct") { %>
+                <li class="list-group-item">Test #<%= i + 1%>:
+                    <span style="color: green;"><%= submission.results[i] %></span> </li>
+            <% } else { %>
+                <li class="list-group-item">Test #<%= i + 1%>:
+                    <span style="color: red;"><%= submission.results[i] %></span> </li>
+            <% } %>
+        <% } %>
+    </ul>
+    <% } else { %>
+    <ul class="list-group list-group-flush my-3 rounded">
+        <li class="list-group-item"> Waiting for judge to finish... </li>
+    </ul>
+    <% } %>
 
     <form class="my-2 p-2 rounded">
         <div class="form-group">
@@ -16,18 +53,6 @@
             <textarea class="form-control" rows="15"> <%= submission.cpp %> </textarea>
         </div>
     </form>
-
-    <% if(submission.judged) { %>
-        <ul class="list-group list-group-flush my-3">
-            for(let i = 0; i < submission.results.lenght; i++) {
-                <li class="list-group-item">Test #<%= i + 1%>: <%= results[i] %> </li>
-            }
-        </ul>
-    <% } else { %>
-        <ul class="list-group list-group-flush my-3">
-            <li class="list-group-item"> Waiting for judge to finish... </li>
-        </ul>
-    <% } %> 
 
 </div>
 

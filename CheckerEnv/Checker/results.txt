@@ -1,15 +1,5 @@
----Test 1---
-Running test ../Archive/scm/tests/scm1.in
-OK
----Test 2---
-Running test ../Archive/scm/tests/scm2.in
-OK
----Test 3---
-Running test ../Archive/scm/tests/scm3.in
-OK
----Test 4---
-Running test ../Archive/scm/tests/scm4.in
-OK
-Wrong Answer: 0
-Time Limit Exceeded: 0
-Runtime Error: 0
+3
+2
+0
+1
+0
