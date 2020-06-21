@@ -1,8 +1,11 @@
 const passportLocalMongoose = require("passport-local-mongoose");
+
 const Post = require("../models/post");
 const Comment = require("../models/comment");
-const flashMessages = require("../utils/flashMessages"); 
+const Submission = require("../models/submission");
 
+const flashMessages = require("../utils/flashMessages"); 
+const submission = require("../models/submission");
 const authMiddleware = {};
 
 function isLoggedIn(req, res, next) {
@@ -98,6 +101,28 @@ function isOwner(req, res, next) {
     return res.redirect("/posts");
 }
 
+function submissionAuth(req, res, next) {
+    
+    if(req.user.isAdmin) {
+        return next();
+    }
+
+    Submission.findById(req.params.id, (err, submission) => {
+        if(err || !submission) {
+            console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            return res.redirect("/problemset/submissions");
+        } else {
+            if(req.user.username === submission.author) {
+                return next();
+            } else {
+                req.flash("fail", "You do not have enough permissions to do that!");
+                return res.redirect("/problemset/submissions");
+            }
+        }
+    });
+}
+
 authMiddleware.isLoggedIn = isLoggedIn;
 authMiddleware.isPostOwned = isPostOwned;
 authMiddleware.isCommentOwned = isCommentOwned;
@@ -107,5 +132,7 @@ authMiddleware.isNotPostOwned = isNotPostOwned;
 
 authMiddleware.isAdmin = isAdmin;
 authMiddleware.isOwner = isOwner;
+
+authMiddleware.submissionAuth = submissionAuth;
 
 module.exports = authMiddleware;

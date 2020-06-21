@@ -15,6 +15,7 @@ const Submission = require("../models/submission");
 const User = require('../models/user');
 const { isLoggedIn } = require('../utils/authorizationMiddleware');
 const { runInNewContext } = require('vm');
+const { rootCertificates } = require('tls');
 
 router.get("/problemset", (req, res) => {
     Problem.find({}, (err, problems) => {
@@ -28,9 +29,21 @@ router.get("/problemset", (req, res) => {
     });
 });
 
-router.get("/queue", (req, res) => {
+router.get("/problemset/submissions", (req, res) => {
     Submission.find({}).sort({ created: -1 }).limit(100).then(submissions => {
         res.render("problemset/queue", {submissions: submissions});
+    });
+});
+
+router.get("/problemset/submissions/:id", authMiddleware.isLoggedIn, authMiddleware.submissionAuth, (req, res) => {
+    Submission.findById(req.params.id, (err, submission) => {
+        if (err || !submission) {
+            console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            res.redirect("/problemset/submissions");
+        } else {
+            res.render("problemset/submission", {submission: submission});
+        }
     });
 });
 
@@ -60,10 +73,10 @@ router.get("/problemset/:problemName", (req, res) => {
             req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             res.redirect("/problemset");
         } else {
-            if(!isLoggedIn) {
+            if(!req.isAuthenticated()) {
                 res.render("problemset/problem", {problem : problem, submissions : null});
             } else {
-                Submission.find({ author: req.user.username, toProblem: req.params.problemName }).sort({ created: -1 }).limit(5)
+                Submission.find({ author: req.user.username, toProblem: req.params.problemName }).sort({ created: -1 }).limit(4)
                 .then(submissions => {
                     res.render("problemset/problem", { problem: problem, submissions: submissions });
                 });

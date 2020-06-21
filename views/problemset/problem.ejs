@@ -15,22 +15,64 @@
     </div>
 
     <div class="col-lg-4">
+
+        <div class="card my-2">
+            
+            <div class="card-body">
+                <h5 class="card-title">Problem <%= problem.name%> </h5>
+                <h6 class="card-subtitle mb-2 text-muted">By <%= problem.author %> </h6>
+            </div>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Time limit: 2s</li>
+                <li class="list-group-item">Memory limit: 64mb</li>
+                <li class="list-group-item">Solved by: 12 users</li>
+            </ul>
+
+        </div>
+
         <% if(submissions) { %>
-        <p class="text-center my-3">Your last <%= submissions.length %> submissions</p>
-        <% for(const submission of submissions) { %>
-        <nav class="nav nav-pills nav-fill my-2">
-            <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
-                <%= submission.created.toDateString() %> </a>
-            <a class="nav-item nav-link" href="#"> <%= submission.toProblem %> </a>
-            <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> <%= submission.judged %> </a>
-            <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> <%= submission.verdict %> </a>
-        </nav>
-        <% } %>
-        <% } else { %>
-            <p>I need some serious placeholder here!</p>
+        <!-- <h4 class="text-center mb-2">Last submissions</h4> -->
+        <table class="table my-3">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Submitted</th>
+                    <th scope="col">Verdict</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(const submission of submissions) { %>
+                    <tr>
+                        
+                        <td>
+                            <%= submission.created.toLocaleDateString() %>
+                            <br>
+                            <%= submission.created.toTimeString().substring(0, 8) %>
+                        </td>
+
+                        <% if(!submission.judged) { %>
+                            <td> Waiting for judge... </td>
+                        <% } else { %>
+                            <% if(submission.verdict === "Accepted") { %>
+                                <td style="color:green"> submission.verdict </td>
+                            <% } else if(submission.verdict === "Compilation Error") { %>
+                                <td style="color:yellow"> submission.verdict </td>
+                            <% } else { %>
+                                <td style="color:red"> submission.verdict </td>
+                            <% } %>
+                        <% } %>
+                        
+                        <td>
+                            <a href="/problemset/submissions/<%= submission._id %>">View submission</a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
         <% } %>
         
-        <a href="/queue" class="btn btn-dark ml-3">View queue</a>
+        <a href="/problemset/submissions" class="btn btn-dark my-2 m-auto" style="width: 100%;">View queue</a>
 
     </div>
 

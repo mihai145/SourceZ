@@ -2,9 +2,10 @@
 
 <div class="container">
 
-    <h1 class="display-1 text-center my-3">Problemset</h1>
-
-    <a href="/queue" class="btn btn-dark">View Queue</a>
+    <span class="float-right">
+        <a href="/problemset/submissions" class="btn btn-dark needSmallerButton">View queue</a>
+    </span>
+    <h1 class="display-2 text-center my-3">Problemset</h1>
 
     <% for(const problem of problems) { %>
         <div>
@@ -18,6 +19,7 @@
             </div>
         </div>
     <% } %>
+
 </div>
 
 <%- include('../partials/footer'); -%>
