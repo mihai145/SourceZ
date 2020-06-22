@@ -1,4 +1,0 @@
-./main.cpp: In function 'int main()':
-./main.cpp:14:20: warning: division by zero [-Wdiv-by-zero]
-         cout << 43 / 0 << '\n';
-                    ^

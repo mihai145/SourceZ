@@ -133,6 +133,38 @@ async function processLineByLine(req, red, submId) {
             req.flash("fail", "Couldn`t judge your submission. Please try again...");
             red.redirect("/problemset");
         } else {
+            
+            if(verdict === "Accepted") {
+                User.findOne({username: subm.author}, (err, user) => {
+                    if(err || !user) {
+                        ///nothing to worry really
+                    } else {
+                        let alreadySolved = false;
+
+                        for(const pb of user.solvedProblems) 
+                            if(pb === subm.toProblem) {
+                                alreadySolved = true;
+                                break;
+                            }
+
+                        if(!alreadySolved) {
+                            user.solvedProblems.push(subm.toProblem);
+                            user.rating = user.rating + 100;
+                            user.save();
+                            
+                            Problem.findOne({name: subm.toProblem}, (err, prob) => {
+                                if(err || !prob) {
+                                    ///nothing to worry really
+                                } else {
+                                    prob.solvedBy = prob.solvedBy + 1;
+                                    prob.save();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            
             red.redirect("/problemset/" + subm.toProblem);
         }
     });
@@ -150,9 +182,8 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
 
     let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
 
-    console.log(diffMins);
-
-    if(diffMins < 2 && (req.user.lastSubmission !== null)) {
+    ///final version, modify back to two mins!
+    if(diffMins < 1 && (req.user.lastSubmission !== null)) {
         req.flash("fail", "You submitted a solution less than 2 minutes ago. You can only submit once every two minutes");
         res.redirect("/problemset");
     } else {

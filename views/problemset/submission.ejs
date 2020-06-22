@@ -11,7 +11,7 @@
             <% if(submission.verdict === "Accepted") { %>
                 <li class="list-group-item" style="color:green"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
             <% } else if(submission.verdict === "Compilation Error") { %>
-                <li class="list-group-item" style="color:yellow"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
+                <li class="list-group-item" style="color:orange"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
             <% } else { %>
                 <li class="list-group-item" style="color:red"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
             <% } %>
@@ -20,7 +20,7 @@
         <% } %>
     </ul>
 
-    <% if(submission.judged) { %>
+    <% if(submission.judged && submission.compilerMessage.length > 0) { %>
         <ul class="list-group my-3 rounded">
             <li class="list-group-item">Compilation message</li>
             <li class="list-group-item"><%= submission.compilerMessage %></li>
@@ -29,7 +29,7 @@
 
     <% if(submission.judged) { %>
     
-    <ul class="list-group list-group-flush my-3 rounded">
+    <ul class="list-group list-group-flush my-3 border rounded">
         <li class="list-group-item">Individual test results</li>
         <% for(let i = 0; i < submission.results.length; i++) { %>
             <% if(submission.results[i] === "Correct") { %>

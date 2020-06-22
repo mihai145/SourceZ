@@ -5,7 +5,6 @@
 <h1 class="my-4">
     <%= user.username %>
 </h1>
-<small>The undertaker</small>
 
 <br>
 <hr>
@@ -17,6 +16,17 @@
 <p>
     Rating: <%= user.rating %>
 </p>
+
+<% if(user.solvedProblems.length > 0) { %>
+<ul class="list-group my-3 rounded">
+    <li class="list-group-item">Solved problems</li>
+    <% for(const pb of user.solvedProblems) { %>
+        <li class="list-group-item">
+            <a href="/problemset/<%= pb %>" style="color: green;"> <%= pb%> </a>
+        </li>
+    <% } %>
+</ul>
+<% } %>
 
 </div>
 

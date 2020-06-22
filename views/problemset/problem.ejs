@@ -24,9 +24,13 @@
             </div>
 
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Time limit: 2s</li>
-                <li class="list-group-item">Memory limit: 64mb</li>
-                <li class="list-group-item">Solved by: 12 users</li>
+                <li class="list-group-item">Time limit: <%= problem.timeLimit%> s</li>
+                <li class="list-group-item">Memory limit: <%= problem.memoryLimit%> mb</li>
+                <% if(problem.solvedBy !== 1) { %>
+                    <li class="list-group-item">Solved by: <%= problem.solvedBy%> users</li>
+                <% } else { %>
+                    <li class="list-group-item">Solved by: 1 user</li>
+                <% } %>
             </ul>
 
         </div>
@@ -57,7 +61,7 @@
                             <% if(submission.verdict === "Accepted") { %>
                                 <td style="color:green"> <%= submission.verdict %> </td>
                             <% } else if(submission.verdict === "Compilation Error") { %>
-                                <td style="color:yellow"> <%= submission.verdict %> </td>
+                                <td style="color:orange"> <%= submission.verdict %> </td>
                             <% } else { %>
                                 <td style="color:red"> <%= submission.verdict %> </td>
                             <% } %>
@@ -84,16 +88,16 @@
     
         <div class="my-2">
             <textarea rows="15" name="clientSource" class="form-control p-2">
-                            #include <bits/stdc++.h>
-                            using namespace std;
-                            ifstream cin("<%=problem.name%>.in");
-                            ofstream cout("<%=problem.name%>.out");
-                            ///keep this header unchanged. Place your solution under this comment
+#include <bits/stdc++.h>
+using namespace std;
+ifstream cin("<%=problem.name%>.in");
+ofstream cout("<%=problem.name%>.out");
+///keep this header unchanged. Place your solution under this comment
         
-                            int main()
-                            {
-                                return 0;
-                            }
+int main()
+{
+    return 0;
+}
                         </textarea>
         </div>
         <button class="btn btn-dark">Submit!</button>
