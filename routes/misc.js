@@ -21,9 +21,19 @@ router.get("/", (req, res) => {
 ///-----------------------///
 router.post('/login',
     passport.authenticate('local', {
-        successRedirect: '/posts',
-        failureRedirect: '/'
-    }));
+        failureRedirect: "/loginFailed"
+    }), (req, res) => {
+    req.flash("success", "Welcome!");
+    res.redirect("/posts");
+});
+
+router.get("/loginFailed", (req, res) => {
+    if(!req.user) {
+        req.flash("fail", "Invalid username or password...");
+        
+    }
+    res.redirect("/posts");
+});
 
 router.get("/register", authMiddleware.isNotLoggedIn, (req, res) => {
     res.render("misc/register");

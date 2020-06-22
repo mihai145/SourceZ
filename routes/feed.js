@@ -10,7 +10,6 @@ const Comment = require("../models/comment");
 
 const authMiddleware = require("../utils/authorizationMiddleware");
 const flashMessages = require("../utils/flashMessages");
-const post = require('../models/post');
 
 ///-----------------------///
 ///FEED

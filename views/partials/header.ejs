@@ -15,6 +15,12 @@
     <!-- APP CSS -->
     <link rel="stylesheet" type="text/css" href="/app.css">
 
+    <!-- codemirror -->
+    <link rel="stylesheet" href="/codemirror.css">
+    <link rel="stylesheet" href="/ttcn.css">
+    <script src="/codemirror.js"></script>
+    <script src="/mode/clike/clike.js"></script>
+
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -45,6 +51,9 @@
                 <a class="nav-link" href="/about">About</a>
             </li>
             <% if(!user || !isLoggedIn) { %>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Login</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/register">Register</a>
             </li>
