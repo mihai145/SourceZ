@@ -5,7 +5,7 @@ const Comment = require("../models/comment");
 const Submission = require("../models/submission");
 
 const flashMessages = require("../utils/flashMessages"); 
-const submission = require("../models/submission");
+
 const authMiddleware = {};
 
 function isLoggedIn(req, res, next) {
