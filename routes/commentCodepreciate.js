@@ -15,29 +15,30 @@ const flashMessages = require("../utils/flashMessages");
 ///CODEPRECIATE POST
 ///-----------------------///
 
-async function AddRating(name, add) {
-    let userId = -1, userRating = -1;
+//OLD CODE, I USED TO ADD RATING TO AUTHOR ON CODEPRECIATION
+// async function AddRating(name, add) {
+//     let userId = -1, userRating = -1;
 
-    await User.findOne({ username: name }, (err, user) => {
-        if (err || !user) {
-            console.log(err);
-        } else {
-            userId = user._id;
-            userRating = user.rating;
-        }
-    });
+//     await User.findOne({ username: name }, (err, user) => {
+//         if (err || !user) {
+//             console.log(err);
+//         } else {
+//             userId = user._id;
+//             userRating = user.rating;
+//         }
+//     });
 
-    // console.log(userId);
-    // console.log(userRating);
+//     // console.log(userId);
+//     // console.log(userRating);
 
-    if (userId && userRating && userId !== -1 && userRating !== -1) {
-        User.findByIdAndUpdate(userId, { rating: userRating + add }, (err, user) => {
-            if (err || !user) {
-                console.log(err);
-            }
-        });
-    }
-}
+//     if (userId && userRating && userId !== -1 && userRating !== -1) {
+//         User.findByIdAndUpdate(userId, { rating: userRating + add }, (err, user) => {
+//             if (err || !user) {
+//                 console.log(err);
+//             }
+//         });
+//     }
+// }
 
 router.post("/posts/:id/codepreciate", authMiddleware.isLoggedIn, authMiddleware.isNotPostOwned, (req, res) => {
 
@@ -58,7 +59,7 @@ router.post("/posts/:id/codepreciate", authMiddleware.isLoggedIn, authMiddleware
             }
 
             if (!apreciated) {
-                AddRating(post.author, +3);
+                // AddRating(post.author, +3);
 
                 post.codepreciations += 1;
                 post.codepreciatedBy.push(req.user.username);
@@ -75,7 +76,7 @@ router.post("/posts/:id/codepreciate", authMiddleware.isLoggedIn, authMiddleware
                 });
 
             } else {
-                AddRating(post.author, -3);
+                // AddRating(post.author, -3);
 
                 post.codepreciations -= 1;
 

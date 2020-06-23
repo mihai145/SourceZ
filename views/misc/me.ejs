@@ -2,31 +2,39 @@
 
 <div class="container">
 
-<h1 class="my-4">
-    <%= user.username %>
-</h1>
+<div class="row">
 
-<br>
-<hr>
-<br>
+<div class="col-lg-6">
+    <div class="card my-4">
+        <img class="card-img-top profilePicture mx-auto"
+            src="https://helloclean.ro/wp-content/uploads/2014/10/no-profile-square.gif" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title text-center">User <%= user.username %></h5>
+        </div>
+    </div>
+</div>
 
-<h3>
-    Info
-</h3>
-<p>
-    Rating: <%= user.rating %>
-</p>
+<div class="col-lg-6 my-4">
+    <h3>
+        Informations
+    </h3>
+    <p>
+        Rating: <%= user.rating %>
+    </p>
 
-<% if(user.solvedProblems.length > 0) { %>
-<ul class="list-group my-3 rounded">
-    <li class="list-group-item">Solved problems</li>
-    <% for(const pb of user.solvedProblems) { %>
-        <li class="list-group-item">
-            <a href="/problemset/<%= pb %>" style="color: green;"> <%= pb%> </a>
-        </li>
+    <% if(user.solvedProblems.length > 0) { %>
+    <ul class="list-group my-3 rounded">
+        <li class="list-group-item">Solved problems</li>
+        <% for(const pb of user.solvedProblems) { %>
+            <li class="list-group-item">
+                <a href="/problemset/<%= pb %>" style="color: green;"> <%= pb%> </a>
+            </li>
+        <% } %>
+    </ul>
     <% } %>
-</ul>
-<% } %>
+</div>
+
+</div>
 
 </div>
 
