@@ -84,91 +84,91 @@ router.get("/problemset/:problemName", (req, res) => {
 });
 
 
-async function processLineByLine(req, red, submId) {
-    const fileStream = fs.createReadStream("CheckerEnv/Checker/results.txt");
+// async function processLineByLine(req, red, submId) {
+//     const fileStream = fs.createReadStream("CheckerEnv/Checker/results.txt");
 
-    const rl = readline.createInterface({
-        input: fileStream,
-        crlfDelay: Infinity
-    });
-    // Note: we use the crlfDelay option to recognize all instances of CR LF
-    // ('\r\n') in input.txt as a single line break.
+//     const rl = readline.createInterface({
+//         input: fileStream,
+//         crlfDelay: Infinity
+//     });
+//     // Note: we use the crlfDelay option to recognize all instances of CR LF
+//     // ('\r\n') in input.txt as a single line break.
 
-    let res = [];
-    let verdict = "Accepted";
+//     let res = [];
+//     let verdict = "Accepted";
 
-    for await (const line of rl) {
-        // Each line in input.txt will be successively available here as `line`.
-        // console.log(`Line from file: ${line}`);
+//     for await (const line of rl) {
+//         // Each line in input.txt will be successively available here as `line`.
+//         // console.log(`Line from file: ${line}`);
 
-        if(line === "0") {
-            res.push("Correct");
-        } else if(line === "1") {
-            res.push("Wrong answer");
-            if(verdict === "Accepted") {
-                verdict = "Wrong Answer";
-            }
-        } else if(line === "2") {
-            res.push("Time limit exceeded");
-            if (verdict === "Accepted") {
-                verdict = "Time limit exceeded";
-            }
-        } else {
-            res.push("Runtime error");
-            if (verdict === "Accepted") {
-                verdict = "Runtime Error";
-            }
-        }
-    }
+//         if(line === "0") {
+//             res.push("Correct");
+//         } else if(line === "1") {
+//             res.push("Wrong answer");
+//             if(verdict === "Accepted") {
+//                 verdict = "Wrong Answer";
+//             }
+//         } else if(line === "2") {
+//             res.push("Time limit exceeded");
+//             if (verdict === "Accepted") {
+//                 verdict = "Time limit exceeded";
+//             }
+//         } else {
+//             res.push("Runtime error");
+//             if (verdict === "Accepted") {
+//                 verdict = "Runtime Error";
+//             }
+//         }
+//     }
 
-    if(res.length === 0) {
-        verdict = "Compilation Error";
-    }
+//     if(res.length === 0) {
+//         verdict = "Compilation Error";
+//     }
 
-    let compilerMessage = fs.readFileSync('CheckerEnv/Checker/compilation.txt', "utf8");
+//     let compilerMessage = fs.readFileSync('CheckerEnv/Checker/compilation.txt', "utf8");
     
-    Submission.findByIdAndUpdate(submId, {judged: true, compilerMessage: compilerMessage, results: res, verdict: verdict}, (err, subm) => {
-        if(err || !subm) {
-            console.log();
-            req.flash("fail", "Couldn`t judge your submission. Please try again...");
-            red.redirect("/problemset");
-        } else {
+//     Submission.findByIdAndUpdate(submId, {judged: true, compilerMessage: compilerMessage, results: res, verdict: verdict}, (err, subm) => {
+//         if(err || !subm) {
+//             console.log();
+//             req.flash("fail", "Couldn`t judge your submission. Please try again...");
+//             red.redirect("/problemset");
+//         } else {
             
-            if(verdict === "Accepted") {
-                User.findOne({username: subm.author}, (err, user) => {
-                    if(err || !user) {
-                        ///nothing to worry really
-                    } else {
-                        let alreadySolved = false;
+//             if(verdict === "Accepted") {
+//                 User.findOne({username: subm.author}, (err, user) => {
+//                     if(err || !user) {
+//                         ///nothing to worry really
+//                     } else {
+//                         let alreadySolved = false;
 
-                        for(const pb of user.solvedProblems) 
-                            if(pb === subm.toProblem) {
-                                alreadySolved = true;
-                                break;
-                            }
+//                         for(const pb of user.solvedProblems) 
+//                             if(pb === subm.toProblem) {
+//                                 alreadySolved = true;
+//                                 break;
+//                             }
 
-                        if(!alreadySolved) {
-                            user.solvedProblems.push(subm.toProblem);
-                            user.rating = user.rating + 100;
-                            user.save();
+//                         if(!alreadySolved) {
+//                             user.solvedProblems.push(subm.toProblem);
+//                             user.rating = user.rating + 100;
+//                             user.save();
                             
-                            Problem.findOne({name: subm.toProblem}, (err, prob) => {
-                                if(err || !prob) {
-                                    ///nothing to worry really
-                                } else {
-                                    prob.solvedBy = prob.solvedBy + 1;
-                                    prob.save();
-                                }
-                            });
-                        }
-                    }
-                });
-            }
+//                             Problem.findOne({name: subm.toProblem}, (err, prob) => {
+//                                 if(err || !prob) {
+//                                     ///nothing to worry really
+//                                 } else {
+//                                     prob.solvedBy = prob.solvedBy + 1;
+//                                     prob.save();
+//                                 }
+//                             });
+//                         }
+//                     }
+//                 });
+//             }
             
-            red.redirect("/problemset/" + subm.toProblem);
-        }
-    });
-}
+//             red.redirect("/problemset/" + subm.toProblem);
+//         }
+//     });
+// }
 
 router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) => {
     
@@ -206,19 +206,22 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
                         req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
                         res.redirect("/problemset");
                     } else {
-
+                        
+                        req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
+                        res.redirect("/problemset");
+                        
                         // console.log(subm);
 
-                        fs.writeFileSync("CheckerEnv/Checker/current.txt", submission.cpp, "utf8");
+                        // fs.writeFileSync("CheckerEnv/Checker/current.txt", submission.cpp, "utf8");
 
-                        const commandString = "sh CheckerEnv/Checker/check.sh " + req.params.problemName;
-                        //console.log(commandString);
-                        // req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
-                        // res.redirect("/problemset");
+                        // const commandString = "sh CheckerEnv/Checker/check.sh " + req.params.problemName;
+                        // //console.log(commandString);
+                        // // req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
+                        // // res.redirect("/problemset");
 
-                        shell.exec(commandString);
+                        // shell.exec(commandString);
                         
-                        processLineByLine(req, res, subm.id);
+                        // processLineByLine(req, res, subm.id);
                     }
                 });
             }
