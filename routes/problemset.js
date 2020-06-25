@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const readline = require('readline');
 
-const shell = require('shelljs');
+// const fs = require('fs');
+// const readline = require('readline');
+// const shell = require('shelljs');
 
 const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
@@ -84,6 +84,9 @@ router.get("/problemset/:problemName", (req, res) => {
 });
 
 
+//-------------//
+//MOVED TO QUEUE
+//-------------//
 // async function processLineByLine(req, red, submId) {
 //     const fileStream = fs.createReadStream("CheckerEnv/Checker/results.txt");
 
@@ -210,6 +213,9 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
                         req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
                         res.redirect("/problemset");
                         
+                        //-------------//
+                        //MOVED TO QUEUE
+                        //-------------//
                         // console.log(subm);
 
                         // fs.writeFileSync("CheckerEnv/Checker/current.txt", submission.cpp, "utf8");

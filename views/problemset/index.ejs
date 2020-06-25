@@ -2,9 +2,6 @@
 
 <div class="container">
 
-    <span class="float-right">
-        <a href="/problemset/submissions" class="btn btn-dark needSmallerButton">View queue</a>
-    </span>
     <h1 class="display-2 text-center my-3">Problemset</h1>
 
     <% for(const problem of problems) { %>
@@ -22,6 +19,12 @@
                 </div>
             </div>
         </div>
+    <% } %>
+
+    <a href="/problemset/submissions" class="btn btn-dark my-2" style="width: 100%;">View queue</a>
+
+    <% if(user && user.isOwner) { %>
+        <a href="/problemset/newPb" class="btn btn-dark my-2" style="width: 100%;">Add a new problem</a>
     <% } %>
 
 </div>
