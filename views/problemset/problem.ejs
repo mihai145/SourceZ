@@ -76,8 +76,14 @@
         </table>
         <% } %>
         
-        <a href="/problemset/submissions" class="btn btn-dark my-2 m-auto" style="width: 100%;">View queue</a>
-
+        <% if(user && isLoggedIn) { %>
+            <a href="/problemset/submissions" class="btn btn-dark my-1 mx-auto" style="width: 100%;">View queue</a>
+            
+            <% if(user.isAdmin) { %>
+                <a href="/problemset/<%= problem.name %>/allSubm" class="btn btn-dark my-1 mx-auto" style="width: 100%;">View all submissions for this problem</a>
+            <% } %>
+        
+        <% } %>
     </div>
 
     </div>

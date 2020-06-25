@@ -21,7 +21,9 @@
         </div>
     <% } %>
 
+    <% if(user && isLoggedIn) { %>
     <a href="/problemset/submissions" class="btn btn-dark my-2" style="width: 100%;">View queue</a>
+    <% } %>
 
     <% if(user && user.isOwner) { %>
         <a href="/problemset/newPb" class="btn btn-dark my-2" style="width: 100%;">Add a new problem</a>

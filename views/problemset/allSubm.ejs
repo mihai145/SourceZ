@@ -1,0 +1,53 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <h3 class="display-3 text-center my-3">All submissions for <%= problem %> </h3>
+
+    <table class="table my-2">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Submission time</th>
+                <th scope="col">User</th>
+                <th scope="col">Verdict</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let i = 0; i < submissions.length; i++) { %>
+            <tr>
+                <th scope="row"> <%= i + 1%> </th>
+
+                <td>
+                    <%= submissions[i].created.toDateString() %>
+                    <br>
+                    <%= submissions[i].created.toTimeString().substring(0, 8) %>
+                </td>
+
+                <td> <%= submissions[i].author %> </td>
+
+                <% if(!submissions[i].judged) { %>
+                <td> Waiting for judge... </td>
+                <% } else { %>
+                <% if(submissions[i].verdict === "Accepted") { %>
+                <td style="color:green"> <%= submissions[i].verdict %> </td>
+                <% } else if(submissions[i].verdict === "Compilation Error") { %>
+                <td style="color:orange"> <%= submissions[i].verdict %> </td>
+                <% } else { %>
+                <td style="color:red"> <%= submissions[i].verdict %> </td>
+                <% } %>
+                <% } %>
+
+                <td>
+                    <a href="/problemset/submissions/<%= submissions[i]._id %>">View submission</a>
+                </td>
+
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+</div>
+
+<%- include('../partials/footer'); -%>
