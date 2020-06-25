@@ -36,6 +36,20 @@
 
 </div>
 
+<% if(user.isAdmin) { %>
+    <p class="my-2 p-2 bg-light rounded">User has admin privileges</p>
+<% } %>
+
+<% if(user.isOwner) { %>
+    <form action="/newAdmin" method="POST" class="my-2 p-2 bg-light rounded">
+        <p class="my-2">User has owner privileges. Make a new admin here:</p>
+        <div class="form-group">
+            <input type="text" class="form-control" name="username" placeholder="new admin username...">
+        </div>
+        <button type="submit" class="btn btn-dark">Make admin</button>
+    </form>
+<% } %>
+
 </div>
 
 <%- include('../partials/footer'); -%>

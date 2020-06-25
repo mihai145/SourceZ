@@ -108,6 +108,21 @@ router.get("/me", authMiddleware.isLoggedIn, (req, res) => {
 });
 
 ///-----------------------///
+///MAKE NEW ADMIN
+///-----------------------///
+router.post("/newAdmin", authMiddleware.isLoggedIn, authMiddleware.isOwner, (req, res) => {
+    User.findOneAndUpdate({username: req.body.username}, {isAdmin: true}, (err, user) => {
+        if(err || !user) {
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            res.redirect("/me");
+        } else {
+            req.flash(flashMessages.defaultSuccess.type, flashMessages.defaultSuccess.message);
+            res.redirect("/posts");   
+        }
+    })
+});
+
+///-----------------------///
 ///CATCH ALL
 ///-----------------------///
 router.get("*", (req, res) => {
