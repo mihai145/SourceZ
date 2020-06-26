@@ -16,7 +16,7 @@ const flashMessages = require("../utils/flashMessages");
 ///-----------------------///
 router.get("/posts", (req, res) => {
     Post.find({}).sort({created: -1}).limit(20).then( posts => {
-        User.find().sort({ rating: -1 }).limit(8).then(users => {
+        User.find().sort({ rating: -1 }).limit(5).then(users => {
             res.render("feed/posts", { posts: posts, topUsers: users });
         });
     });

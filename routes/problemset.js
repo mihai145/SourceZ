@@ -83,105 +83,10 @@ router.get("/problemset/:problemName", (req, res) => {
     });
 });
 
-
-//-------------//
-//MOVED TO QUEUE
-//-------------//
-// async function processLineByLine(req, red, submId) {
-//     const fileStream = fs.createReadStream("CheckerEnv/Checker/results.txt");
-
-//     const rl = readline.createInterface({
-//         input: fileStream,
-//         crlfDelay: Infinity
-//     });
-//     // Note: we use the crlfDelay option to recognize all instances of CR LF
-//     // ('\r\n') in input.txt as a single line break.
-
-//     let res = [];
-//     let verdict = "Accepted";
-
-//     for await (const line of rl) {
-//         // Each line in input.txt will be successively available here as `line`.
-//         // console.log(`Line from file: ${line}`);
-
-//         if(line === "0") {
-//             res.push("Correct");
-//         } else if(line === "1") {
-//             res.push("Wrong answer");
-//             if(verdict === "Accepted") {
-//                 verdict = "Wrong Answer";
-//             }
-//         } else if(line === "2") {
-//             res.push("Time limit exceeded");
-//             if (verdict === "Accepted") {
-//                 verdict = "Time limit exceeded";
-//             }
-//         } else {
-//             res.push("Runtime error");
-//             if (verdict === "Accepted") {
-//                 verdict = "Runtime Error";
-//             }
-//         }
-//     }
-
-//     if(res.length === 0) {
-//         verdict = "Compilation Error";
-//     }
-
-//     let compilerMessage = fs.readFileSync('CheckerEnv/Checker/compilation.txt', "utf8");
-    
-//     Submission.findByIdAndUpdate(submId, {judged: true, compilerMessage: compilerMessage, results: res, verdict: verdict}, (err, subm) => {
-//         if(err || !subm) {
-//             console.log();
-//             req.flash("fail", "Couldn`t judge your submission. Please try again...");
-//             red.redirect("/problemset");
-//         } else {
-            
-//             if(verdict === "Accepted") {
-//                 User.findOne({username: subm.author}, (err, user) => {
-//                     if(err || !user) {
-//                         ///nothing to worry really
-//                     } else {
-//                         let alreadySolved = false;
-
-//                         for(const pb of user.solvedProblems) 
-//                             if(pb === subm.toProblem) {
-//                                 alreadySolved = true;
-//                                 break;
-//                             }
-
-//                         if(!alreadySolved) {
-//                             user.solvedProblems.push(subm.toProblem);
-//                             user.rating = user.rating + 100;
-//                             user.save();
-                            
-//                             Problem.findOne({name: subm.toProblem}, (err, prob) => {
-//                                 if(err || !prob) {
-//                                     ///nothing to worry really
-//                                 } else {
-//                                     prob.solvedBy = prob.solvedBy + 1;
-//                                     prob.save();
-//                                 }
-//                             });
-//                         }
-//                     }
-//                 });
-//             }
-            
-//             red.redirect("/problemset/" + subm.toProblem);
-//         }
-//     });
-// }
-
 router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) => {
     
     let now = new Date();
     let diffMs = (now - req.user.lastSubmission);
-
-    // console.log("----");
-    // console.log(now);
-    // console.log(req.user.lastSubmission);
-    // console.log("----");
 
     let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
 
@@ -190,6 +95,21 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
         req.flash("fail", "You submitted a solution less than 2 minutes ago. You can only submit once every two minutes");
         res.redirect("/problemset");
     } else {
+
+        ///BASIC CPP SANITIZATION
+        if(req.body.clientSource.indexOf("remove") !== -1) {
+            req.flash("fail", "Remove is a reserved keyword and it cannot be used in source code");
+            return res.redirect("/problemset/" + req.params.problemName);
+        } else if(req.body.clientSource.indexOf("system") !== -1) {
+            req.flash("fail", "System is a reserved keyword and it cannot be used in source code");
+            return res.redirect("/problemset/" + req.params.problemName);
+        } else if(req.body.clientSource.indexOf("\"" + req.params.problemName + ".in\"") == -1) {
+            req.flash("fail", "Input file named " + req.params.problemName + ".in " + " not detected. Try again...");
+            return res.redirect("/problemset/" + req.params.problemName);
+        } else if (req.body.clientSource.indexOf("\"" + req.params.problemName + ".out\"") == -1) {
+            req.flash("fail", "Output file named " + req.params.problemName + ".out " + " not detected. Try again...");
+            return res.redirect("/problemset/" + req.params.problemName);
+        }
 
         User.findOneAndUpdate({ username: req.user.username }, { lastSubmission: now}, (err, user) => {
             if(err || !user) {
@@ -212,22 +132,6 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
                         
                         req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
                         res.redirect("/problemset");
-                        
-                        //-------------//
-                        //MOVED TO QUEUE
-                        //-------------//
-                        // console.log(subm);
-
-                        // fs.writeFileSync("CheckerEnv/Checker/current.txt", submission.cpp, "utf8");
-
-                        // const commandString = "sh CheckerEnv/Checker/check.sh " + req.params.problemName;
-                        // //console.log(commandString);
-                        // // req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
-                        // // res.redirect("/problemset");
-
-                        // shell.exec(commandString);
-                        
-                        // processLineByLine(req, res, subm.id);
                     }
                 });
             }
