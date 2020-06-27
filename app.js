@@ -8,7 +8,7 @@ const User = require("./models/user");
 const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 
-const session = require("express-session");
+const session = require("cookie-session");
 const methodOverride = require("method-override");
 
 const feedRoutes = require("./routes/feed");
