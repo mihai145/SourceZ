@@ -1,7 +1,7 @@
 {
-  "name": "cutepetproject",
+  "name": "sorucez",
   "version": "1.0.0",
-  "description": "",
+  "description": "competitive programming platform",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
