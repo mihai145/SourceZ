@@ -42,6 +42,26 @@ function isPostOwned(req, res, next) {
     });
 }
 
+function isPostOwnedOrOwner(req, res, next) {
+    if(req.user.isOwner) {
+        next();
+    } else {
+        Post.findById(req.params.id, (err, post) => {
+            if (err || !post) {
+                console.log(err);
+                return res.redirect("/posts");
+            } else {
+                if (post.author !== req.user.username) {
+                    req.flash("fail", "You do not have enough permissions to do that!");
+                    return res.redirect("/posts");
+                } else {
+                    next();
+                }
+            }
+        });
+    }
+}
+
 function isNotPostOwned(req, res, next) {
     Post.findById(req.params.id, (err, post) => {
         if (err || !post) {
@@ -71,6 +91,26 @@ function isCommentOwned(req, res, next) {
             }
         }
     });
+}
+
+function isCommentOwnedOrOwner(req, res, next) {
+    if(req.user.isOwner) {
+        next();
+    } else {
+        Comment.findById(req.params.comment_id, (err, comm) => {
+            if (err || !comm) {
+                console.log(err);
+                return res.redirect("/posts");
+            } else {
+                if (comm.author !== req.user.username) {
+                    req.flash("fail", "You do not have enough permissions to do that!");
+                    return res.redirect("/posts");
+                } else {
+                    next();
+                }
+            }
+        });
+    }
 }
 
 function isAdmin(req, res, next) {
@@ -125,7 +165,10 @@ function submissionAuth(req, res, next) {
 
 authMiddleware.isLoggedIn = isLoggedIn;
 authMiddleware.isPostOwned = isPostOwned;
+authMiddleware.isPostOwnedOrOwner = isPostOwnedOrOwner;
+
 authMiddleware.isCommentOwned = isCommentOwned;
+authMiddleware.isCommentOwnedOrOwner = isCommentOwnedOrOwner;
 
 authMiddleware.isNotLoggedIn = isNotLoggedIn;
 authMiddleware.isNotPostOwned = isNotPostOwned;

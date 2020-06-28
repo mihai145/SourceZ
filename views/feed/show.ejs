@@ -30,8 +30,10 @@
     <%- post.text %>
 </p>
 
-<% if(user && user.username === post.author) { %>
+<% if(user && (user.username === post.author || user.isOwner)) { %>
+    <% if(user.username === post.author) { %>
     <a href="/posts/<%= post._id %>/edit" class="btn border border-dark btn-light"> Edit post </a>
+    <% } %>
     <form action="/posts/<%= post._id %>/?_method=DELETE" method="POST" class="m-2" style="display: inline;">
         <button class="btn btn-danger">
             Delete Post
@@ -47,7 +49,7 @@
     <li class="list-group-item p-2">
         <strong>
             <%= comment.author %>
-            <% if(user && user.username === comment.author) { %>
+            <% if(user && (user.username === comment.author || user.isOwner)) { %>
             <form action="/posts/<%= post._id%>/comments/<%= comment._id%>/?_method=DELETE" method="POST" class="float-right">
                 <button class="btn btn-light needSmallerButton p-0">Delete</button>
             </form>

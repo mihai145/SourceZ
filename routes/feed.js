@@ -34,6 +34,12 @@ router.get("/posts/new", authMiddleware.isLoggedIn, authMiddleware.isAdmin, (req
 ///-----------------------///
 router.post("/posts", authMiddleware.isLoggedIn, authMiddleware.isAdmin, (req, res) => {
     let newPost = req.body.post;
+
+    if(newPost.text.indexOf("script") !== -1) {
+        req.flash("fail", "Script is a reserved keyword and it is not allowed!");
+        return res.redirect("/posts");
+    }
+
     newPost.author = req.user.username;
 
     Post.create(newPost, (err, post) => {
@@ -70,6 +76,12 @@ router.put("/posts/:id", authMiddleware.isLoggedIn, authMiddleware.isPostOwned, 
     // res.send("BINEE");
     const title = req.body.title;
     const text = req.body.text;
+
+    if (text.indexOf("script") !== -1) {
+        req.flash("fail", "Script is a reserved keyword and it is not allowed!");
+        return res.redirect("/posts");
+    }
+
     Post.findByIdAndUpdate(req.params.id, { title: title, text: text }, (err, post) => {
         if (err || !post) {
             console.log(err);
@@ -118,7 +130,7 @@ router.get("/posts/:id", (req, res) => {
 ///-----------------------///
 ///DELETE POST
 ///-----------------------///
-router.delete("/posts/:id", authMiddleware.isLoggedIn, authMiddleware.isPostOwned, (req, res) => {
+router.delete("/posts/:id", authMiddleware.isLoggedIn, authMiddleware.isPostOwnedOrOwner, (req, res) => {
     Post.findById(req.params.id, (err, post) => {
         if (err || !post) {
             console.log(err);

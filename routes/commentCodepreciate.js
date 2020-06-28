@@ -215,7 +215,7 @@ async function DoDelete(req, res, post, comment) {
     DeleteCommentFromPost(req, res, post, comment);
 }
 
-router.delete("/posts/:post_id/comments/:comment_id", authMiddleware.isLoggedIn, authMiddleware.isCommentOwned, (req, res) => {
+router.delete("/posts/:post_id/comments/:comment_id", authMiddleware.isLoggedIn, authMiddleware.isCommentOwnedOrOwner, (req, res) => {
     DoDelete(req, res, req.params.post_id, req.params.comment_id);
 });
 
