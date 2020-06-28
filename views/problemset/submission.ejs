@@ -4,7 +4,7 @@
 
     <ul class="list-group my-3 rounded">
         <li class="list-group-item active">Submission details</li>
-        <li class="list-group-item">Submitted at: <%= submission.created.toDateString() %>, <%= submission.created.toTimeString().substring(0, 8) %> </li>
+        <li class="list-group-item">Submitted at: <%= submission.created.toDateString() %> </li>
         <li class="list-group-item">Submitted by: <%= submission.author%> </li>
         <li class="list-group-item">Submitted to problem: <a href="/problemset/<%= submission.toProblem %>"><%= submission.toProblem %></a> </li>
         <% if(submission.judged) { %>

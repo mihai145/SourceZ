@@ -51,8 +51,22 @@
                         
                         <td>
                             <%= submission.created.toLocaleDateString() %>
+                            <% let diff = new Date() - submission.created; %>
+                            <% let milliseconds=0, seconds=0, minutes=0, hours=0, days=0; %>
+                            <% diff=(diff-(milliseconds=diff%1000))/1000; %>
+                            <% diff=(diff-(seconds=diff%60))/60; %>
+                            <% diff=(diff-(minutes=diff%60))/60; %>
+                            <% days=(diff-(hours=diff%24))/24; %>
+                            <% if(hours < 1) { %>
                             <br>
-                            <%= submission.created.toTimeString().substring(0, 8) %>
+                            <% if(minutes === 0) { %>
+                            right now
+                            <% } else if(minutes > 1) { %>
+                            <%= minutes %> mins ago
+                            <% } else { %>
+                            1 min ago
+                            <% } %>
+                            <% } %>
                         </td>
 
                         <% if(!submission.judged) { %>
