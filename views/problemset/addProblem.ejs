@@ -1,0 +1,94 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-lg-6">
+<form action="/problemset/newPb" method="POST" class="my-4 p-2 bg-light rounded">
+    <p>Add new problem</p>
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" name="problem[name]">
+    </div>
+    <div class="form-group">
+        <label>Author</label>
+        <input type="text" class="form-control" name="problem[author]">
+    </div>
+    <div class="form-group">
+        <label>HTML Content of problem</label>
+        <textarea name="problem[content]" rows="15" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label>Time limit (seconds)</label>
+        <input type="text" class="form-control" name="problem[timeLimit]">
+    </div>
+    <div class="form-group">
+        <label>Memory limit (MB)</label>
+        <input type="text" class="form-control" name="problem[memoryLimit]">
+    </div>
+    
+    <button type="submit" class="btn btn-dark">Submit</button>
+</form>
+</div>
+
+<div class="col-lg-6">
+    <div class="bg-light my-4 p-2">
+    <p class="m-2">HTML boilerplate for problem statement. Also, make sure that the restrictions of the newly added problem are reflected in the local file in the Archive directory.</p>
+    <textarea class="form-control" rows="30">
+    <h3 class="my-2">Statement</h3>
+    <p>
+        Problem statement paragraph 1 ...
+    </p>
+
+    <hr>
+
+    <h3 class="my-2">Input format</h3>
+    <p>
+        Input format paragraph 1 ...
+    </p>
+
+    <hr>
+
+    <h3 class="my-2">Output format</h3>
+    <p>
+        Output format paragraph 1 ...
+    </p>
+
+    <hr>
+
+    <h3 class="my-2">Restrictions</h3>
+    <p>
+        Restrictions paragraph 1 ...
+    </p>
+
+    <hr>
+
+    <h3 class="mt-3">Sample test</h3>
+        <table class="table table-bordered">
+            <thead>
+                    <tr>
+                        <th scope="col"> problem name + .in </th>
+                        <th scope="col"> problem name + .out </th>
+                    </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                            Example 1 input ...
+                    </th>
+                    <th>
+                            Example 1 output ...
+                    </th>
+                </tr>
+            </tbody>
+            </table>
+    </textarea>
+    </div>
+</div>
+
+</div>
+
+</div>
+
+<%- include('../partials/footer'); -%>

@@ -1,0 +1,55 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-lg-6">
+    <div class="card my-4">
+        <img class="card-img-top profilePicture mx-auto"
+            src="https://helloclean.ro/wp-content/uploads/2014/10/no-profile-square.gif" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title text-center">User <%= user.username %></h5>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-6 my-4">
+    <h3>
+        Informations
+    </h3>
+    <p>
+        Rating: <%= user.rating %>
+    </p>
+
+    <% if(user.solvedProblems.length > 0) { %>
+    <ul class="list-group my-3 rounded">
+        <li class="list-group-item">Solved problems</li>
+        <% for(const pb of user.solvedProblems) { %>
+            <li class="list-group-item">
+                <a href="/problemset/<%= pb %>" style="color: green;"> <%= pb%> </a>
+            </li>
+        <% } %>
+    </ul>
+    <% } %>
+</div>
+
+</div>
+
+<% if(user.isAdmin) { %>
+    <p class="my-2 p-2 bg-light rounded">User has admin privileges</p>
+<% } %>
+
+<% if(user.isOwner) { %>
+    <form action="/newAdmin" method="POST" class="my-2 p-2 bg-light rounded">
+        <p class="my-2">User has owner privileges. Make a new admin here:</p>
+        <div class="form-group">
+            <input type="text" class="form-control" name="username" placeholder="new admin username...">
+        </div>
+        <button type="submit" class="btn btn-dark">Make admin</button>
+    </form>
+<% } %>
+
+</div>
+
+<%- include('../partials/footer'); -%>

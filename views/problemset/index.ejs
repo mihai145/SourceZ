@@ -1,0 +1,35 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <h1 class="display-2 text-center my-3 d-none d-md-block">Problemset</h1>
+    <h3 class="display-4 text-center my-3 d-block d-md-none">Problemset</h3>
+
+    <% for(const problem of problems) { %>
+        <div>
+            <div class="card my-2 rounded">
+                <div class="card-body">
+                    <% if(problem.solvedBy !== 1) { %>
+                        <span class="float-right">Solved by <%= problem.solvedBy%> users.</span>
+                    <% } else { %>
+                        <span class="float-right">Solved by 1 user.</span>
+                    <% } %>
+                    <h5 class="card-title"> <%= problem.name %> </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">By <%= problem.author %> </h6>
+                    <a href="/problemset/<%=problem.name%>" class="btn btn-dark card-link">Show problem</a>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+    <% if(user && isLoggedIn) { %>
+    <a href="/problemset/submissions" class="btn btn-dark my-2" style="width: 100%;">View queue</a>
+    <% } %>
+
+    <% if(user && user.isOwner) { %>
+        <a href="/problemset/newPb" class="btn btn-dark my-2" style="width: 100%;">Add a new problem</a>
+    <% } %>
+
+</div>
+
+<%- include('../partials/footer'); -%>

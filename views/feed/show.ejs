@@ -1,0 +1,85 @@
+<%- include('../partials/header'); -%>
+
+<div class="container bg-light my-4 p-2">
+
+<% if(user && isLoggedIn && user.username !== post.author && apreciated !== -1) { %>
+    <span class="float-right m-1">
+        <form action="/posts/<%= post._id %>/codepreciate" method="POST">
+            <button class="btn btn-dark">
+                <% if(apreciated === 0) { %>
+                    ❤️️
+                <% } else { %>
+                    💔
+                <% } %>
+            </button>
+        </form>
+    </span>
+<% } %>
+
+<h1 class="display-5">
+    <%= post.title %>
+</h1>
+
+<blockquote class="blockquote">
+    Written by <cite title="Source Title"><%= post.author %></cite>
+</blockquote>
+
+<hr>
+
+<p>
+    <%- post.text %>
+</p>
+
+<% if(user && (user.username === post.author || user.isOwner)) { %>
+    <% if(user.username === post.author) { %>
+    <a href="/posts/<%= post._id %>/edit" class="btn border border-dark btn-light"> Edit post </a>
+    <% } %>
+    <form action="/posts/<%= post._id %>/?_method=DELETE" method="POST" class="m-2" style="display: inline;">
+        <button class="btn btn-danger">
+            Delete Post
+        </button>
+    </form>
+<% } %>
+
+<hr>
+
+<% if(post.comments.length > 0) { %>
+<ul id="commentSection" class="list-group list-group-flush">
+    <% for(let comment of post.comments) { %>
+    <li class="list-group-item p-2">
+        <strong>
+            <%= comment.author %>
+            <% if(user && (user.username === comment.author || user.isOwner)) { %>
+            <form action="/posts/<%= post._id%>/comments/<%= comment._id%>/?_method=DELETE" method="POST" class="float-right">
+                <button class="btn btn-light needSmallerButton p-0">Delete</button>
+            </form>
+            <% } %>
+        </strong>
+        <br>
+        <%= comment.text %>
+    </li>
+    <% } %>
+</ul>
+<% } %>
+
+<form action="/posts/<%= post._id %>" method="POST" class="m-0 p-0">
+    <div class="row mx-auto my-2 p-0">
+
+        <div class="col-lg-10 my-2">
+            <div class="form-group m-0">
+                <input type="text" name="comment[text]" class="form-control"
+                    required placeholder="Add comment to <%= post.author %>`s post">
+            </div>
+        </div>
+
+        <div class="col-lg-2 m-auto">
+            <button type="submit" class="btn btn-dark needSmallerButton">Add comment</button>
+        </div>
+
+    </div>
+</form>
+</div>
+
+</div>
+
+<%- include('../partials/footer'); -%>

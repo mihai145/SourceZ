@@ -1,0 +1,172 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <div class="row">
+    
+        <div class="col-lg-8 col-xl-9 order-2 order-lg-1">
+                <div class="jumbotron my-4">
+                    <h1 class="display-4">Hello world!</h1>
+                    
+                    <p class="lead">
+                        Welcome to SourceZ
+                        <br>
+                        This is a new platform dedicated to competitive programming. Rn alpha stage 😊
+                    </p>
+                    
+                    <hr class="my-4">
+                    
+                    <p>
+                        Have fun coding!
+                    </p>
+
+                </div>
+
+                <% if(posts) { %>
+                <% for(let post of posts) { %>
+                    <div class="card my-3">
+                        <div class="card-body bg-light">
+                            <h5 class="card-title">
+                                <%= post.title %>
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">by <%= post.author %> </h6>
+                            <p class="card-text my-2">
+                                <% if(post.text.length < 200) { %>
+                                    <%- post.text %>
+                                <% } else { %>
+                                    <%- post.text.substring(0, 200) %>...
+                                <% } %>
+                                
+                            </p>
+
+                            <div>
+                                <small>
+                                    <% if(post.comments.length != 1) { %>
+                                        <%= post.comments.length %> <em>comments</em>,
+                                    <% } else { %>
+                                        1 <em>comment</em>,
+                                    <% } %>
+
+                                    <% if(post.codepreciations != 1) { %>
+                                        <%= post.codepreciations %> <em>codepreciations</em>.
+                                    <% } else { %>
+                                        1 <em>codepreciation</em>.
+                                    <% } %>
+                                </small>
+                            </div>
+
+                        </div>
+
+                        <!-- <% if(post.comments.length > 0) { %>
+                        <ul id="commentSection" class="list-group list-group-flush">
+                            <% for(let comment of post.comments) { %>
+                                <li class="list-group-item p-2">
+                                    <strong>
+                                        <%= comment.author %>
+                                    </strong>
+                                    <br>
+                                    <%= comment.text %>
+                                </li>
+                            <% } %>
+                        </ul>
+                        <% } %>
+
+                    <form action="/posts/<%= post._id %>" method="POST" class="m-0 p-0">
+                        <div class="row mx-auto my-2 p-0">
+                            
+                            <div class="col-lg-10 my-2">
+                                <div class="form-group m-0">
+                                    <input type="text" name="comment[text]" class="form-control"
+                                    placeholder="Add comment to <%= post.author %>`s post">
+                                </div> 
+                            </div>
+                            
+                            <div class="col-lg-2 my-auto pl-3">
+                                <button type="submit" class="btn btn-dark addCommentButton">Add comment</button>
+                            </div>
+
+                        </div>
+                    </form> -->
+
+                    <a href="/posts/<%= post._id%>" class="btn btn-dark m-2">Read More</a>
+
+                    </div>
+
+                <% } %>
+                <% } %>
+                
+        </div>
+
+        <div class="col-lg-4 col-xl-3 my-4 order-1 order-lg-2">
+            
+            <% if(!user || !isLoggedIn) { %>
+            <form action="/login" method="POST" class="my-2 p-2">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                    <small class="form-text text-muted">Never share your password, SourceZer</small>
+                </div>
+                <button type="submit" class="btn btn-dark">Login</button>
+            </form>
+            <% } %>
+
+            <!-- <% if(user && isLoggedIn) { %>
+            <form action="/posts" method="POST" class="border border-light my-3 p-2">
+                <p>Add a new post</p>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="post[title]" placeholder="title">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="post[text]" placeholder="post goes here...">
+                </div>
+                <button type="submit" class="btn btn-dark">Add post</button>
+            </form>
+            <% } %> -->
+
+            <% if(user && isLoggedIn) { %>
+            <div class="card my-profile-card my-2 p-2">
+                <img class="card-img-top profilePicture mx-auto" src="https://helloclean.ro/wp-content/uploads/2014/10/no-profile-square.gif" 
+                alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title text-center">User <%= user.username %></h5>
+                    <a href="/me" class="btn btn-dark btn-block needSmallerButton m-1">View profile</a>
+                    
+                    <% if(user.isAdmin) { %>
+                        <a href="/posts/new" class="btn btn-dark btn-block needSmallerButton m-1">Add new post</a>
+                    <% } %>
+                </div>
+            </div>
+            <% } %>
+
+            <% if(topUsers && topUsers.length > 0) { %>
+                <table class="d-none d-lg-inline table feed-table-bg">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i = 0; i < topUsers.length; i++) { %>
+                        <tr>
+                            <th scope="row"><%= i + 1 %></th>
+                            <td><%= topUsers[i].username %></td>
+                            <td><%= topUsers[i].rating %></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+
+        </div>
+
+    </div>
+
+</div>
+
+<%- include('../partials/footer'); -%>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>SourceZ</title>
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- APP CSS -->
+    <link rel="stylesheet" type="text/css" href="/app.css">
+
+    <!-- codemirror -->
+    <link rel="stylesheet" href="/codemirror.css">
+    <link rel="stylesheet" href="/ttcn.css">
+    <script src="/codemirror.js"></script>
+    <script src="/mode/clike/clike.js"></script>
+
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+    <a class="navbar-brand" href="/">SourceZ</a>
+
+    <!-- Collapse button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapseContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="collapseContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/posts">Feed</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/problemset">Problemset</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/leaderboard">Leaderboard</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav my-2 my-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+            </li>
+            <% if(!user || !isLoggedIn) { %>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+            </li>
+            <% } else {%>
+            <li class="nav-item">
+                <a href="/me" class="nav-link">Hi, <%= user.username %>!</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+            <% } %>
+        </ul>
+
+        <!-- <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> -->
+    </div>
+    </div>
+</nav>
+
+<div class="container">
+    <% if(successFlash.length > 0) { %>
+        <div class="alert alert-success my-2" role="alert">
+            <%= successFlash %>
+        </div>
+    <% } %>
+
+    <% if(failFlash.length > 0) { %>
+        <div class="alert alert-danger my-2" role="alert">
+            <%= failFlash %>
+        </div>
+    <% } %>
+</div>
+
+<body>

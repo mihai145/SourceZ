@@ -1,0 +1,86 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <form action="/register" method="POST" class="border border-light bg-light my-4 p-5"  onsubmit="return checkform(this);">
+        <p class="display-3">Register</p>
+        <div class="form-group my-3">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" name="username" minlength="4" maxlength="12" required>
+        </div>
+        <div class="form-group my-3">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" minlength="4" maxlength="16" required>
+        </div>
+
+        <!-- START CAPTCHA -->
+        <br>
+        <div class="capbox">
+        
+            <div id="CaptchaDiv"></div>
+        
+            <div class="capbox-inner">
+                Type the number:<br>
+        
+                <input type="hidden" id="txtCaptcha">
+                <input type="text" name="CaptchaInput" id="CaptchaInput" size="15"><br>
+        
+            </div>
+        </div>
+        <br><br>
+        <!-- END CAPTCHA -->
+
+        <button type="submit" class="btn btn-dark text-center" style="width: 100%;">Register</button>
+    </form>
+
+    <script type="text/javascript">
+
+        // Captcha Script
+
+        function checkform(theform) {
+            var why = "";
+
+            if (theform.CaptchaInput.value == "") {
+                why += "- Please Enter CAPTCHA Code.\n";
+            }
+            if (theform.CaptchaInput.value != "") {
+                if (ValidCaptcha(theform.CaptchaInput.value) == false) {
+                    why += "- The CAPTCHA Code Does Not Match.\n";
+                }
+            }
+            if (why != "") {
+                alert(why);
+                return false;
+            }
+        }
+
+        var a = Math.ceil(Math.random() * 9) + '';
+        var b = Math.ceil(Math.random() * 9) + '';
+        var c = Math.ceil(Math.random() * 9) + '';
+        var d = Math.ceil(Math.random() * 9) + '';
+        var e = Math.ceil(Math.random() * 9) + '';
+
+        var code = a + b + c + d + e;
+        document.getElementById("txtCaptcha").value = code;
+        document.getElementById("CaptchaDiv").innerHTML = code;
+
+        // Validate input against the generated number
+        function ValidCaptcha() {
+            var str1 = removeSpaces(document.getElementById('txtCaptcha').value);
+            var str2 = removeSpaces(document.getElementById('CaptchaInput').value);
+            if (str1 == str2) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Remove the spaces from the entered and generated code
+        function removeSpaces(string) {
+            return string.split(' ').join('');
+        }
+    </script>
+
+</div>
+
+<%- include('../partials/footer'); -%>

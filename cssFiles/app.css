@@ -1,0 +1,159 @@
+#commentSection {
+    font-size: 14px;
+}
+
+.needSmallerButton {
+    font-size: 12px;
+}
+
+.profilePicture {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.problemName {
+  text-transform: capitalize;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #ECE9E6;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.feed-table-bg {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.rootpage {
+    background-image: none;
+    background-color: black;
+}
+
+.landing-page-form {
+  margin: 60px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.my-profile-card {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.slideshow { 
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.slideshow li { 
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: imageAnimation 50s linear infinite; 
+}
+
+.slideshow li:nth-child(1) { 
+  background-image: url(https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80) 
+}
+.slideshow li:nth-child(2) { 
+  background-image: url(https://cdn.discordapp.com/attachments/722127365085462670/722147768453300254/iphone-notebook-pen-working-34578.jpg);
+  animation-delay: 10s; 
+}
+.slideshow li:nth-child(3) { 
+  background-image: url(https://cdn.discordapp.com/attachments/722127365085462670/722147768210030602/kevin-ku-aiyBwbrWWlo-unsplash.jpg);
+  animation-delay: 20s; 
+}
+.slideshow li:nth-child(4) { 
+  background-image: url(https://cdn.discordapp.com/attachments/722127365085462670/722147771003437066/coding-924920_1920.jpg);
+  animation-delay: 30s; 
+}
+.slideshow li:nth-child(5) { 
+  background-image: url(https://cdn.discordapp.com/attachments/722127365085462670/722147771741896714/computer-1869236_1920.jpg);
+  animation-delay: 40s; 
+}
+
+@keyframes imageAnimation { 
+  0% { 
+    opacity: 0; 
+    animation-timing-function: ease-in;
+  }
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  20% {
+    opacity: 1
+  }
+  30% {
+    opacity: 0
+  }
+}
+
+/* Older browser support - class added by modernizr */
+.no-cssanimations .slideshow li {
+	opacity: 1;
+}
+
+/* COMPACT CAPTCHA */
+
+.capbox {
+	background-color: #BBBBBB;
+	background-image: linear-gradient(#BBBBBB, #9E9E9E);
+	border: black 0px solid;
+	border-width: 2px 2px 2px 20px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	display: inline-block;
+	padding: 5px 8px 5px 8px;
+	border-radius: 4px 4px 4px 4px;
+	}
+
+.capbox-inner {
+	font: bold 12px arial, sans-serif;
+	color: #000000;
+	background-color: 9E9E9E;
+	margin: 0px auto 0px auto;
+	padding: 3px 10px 5px 10px;
+	border-radius: 4px;
+	display: inline-block;
+	vertical-align: middle;
+	}
+
+#CaptchaDiv {
+	color: #000000;
+	font: normal 25px Impact, Charcoal, arial, sans-serif;
+	font-style: italic;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #FFFFFF;
+	user-select: none;
+	display: inline-block;
+	padding: 3px 14px 3px 8px;
+	margin-right: 4px;
+	border-radius: 4px;
+	}
+
+#CaptchaInput {
+	border: black 2px solid;
+	margin: 3px 0px 1px 0px;
+	width: 105px;
+	}
