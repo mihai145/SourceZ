@@ -44,7 +44,7 @@ router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
     let properUsername = true;
 
     for(let i = 0; i < username.length; i++) {
-        if(username[i] == ' ') {
+        if(username[i] == ' ' ) {
             properUsername = false;
             break;
         }

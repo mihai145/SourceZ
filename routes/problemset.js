@@ -139,16 +139,28 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
     }
 });
 
-router.get("/problemset/:problemName/allSubm", authMiddleware.isLoggedIn, authMiddleware.isAdmin, (req, res) => {
-    Submission.find({toProblem: req.params.problemName}).sort({created: -1}).exec((err, submissions) => {
-        if(err || !submissions) {
-            console.log(err);
-            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
-            res.redirect("/problemset");
-        } else {
-            res.render("problemset/allSubm", {problem: req.params.problemName, submissions: submissions});
-        }
-    });
+router.get("/problemset/:problemName/allSubm", authMiddleware.isLoggedIn, (req, res) => {
+    if(req.user.isAdmin) {
+        Submission.find({toProblem: req.params.problemName}).sort({created: -1}).exec((err, submissions) => {
+            if(err || !submissions) {
+                console.log(err);
+                req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+                res.redirect("/problemset");
+            } else {
+                res.render("problemset/allSubm", {problem: req.params.problemName, submissions: submissions});
+            }
+        });
+    } else {
+        Submission.find({toProblem: req.params.problemName, author: req.user.username}).sort({created: -1}).exec((err, submissions) => {
+            if(err || !submissions) {
+                console.log(err);
+                req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+                res.redirect("/problemset");
+            } else {
+                res.render("problemset/allSubm", {problem: req.params.problemName, submissions: submissions});
+            }
+        });   
+    }
 });
 
 module.exports = router;
