@@ -9,13 +9,22 @@
         <div>
             <div class="card my-2 rounded">
                 <div class="card-body">
-                    <% if(problem.solvedBy !== 1) { %>
-                        <span class="float-right">Solved by <%= problem.solvedBy%> users.</span>
-                    <% } else { %>
-                        <span class="float-right">Solved by 1 user.</span>
-                    <% } %>
+                    
+                    <span class="float-right">
+                        <% if(problem.lang === "RO") { %>
+                            RO
+                        <% } else { %>
+                            EN
+                        <% } %>
+                        <br>
+                        Submissions: <%= problem.totalSubmissions %>
+                        <br>
+                        <span style="color: green;">Accepted: <%= problem.acceptedSubmissions %> </span>
+                    </span>
+
                     <h5 class="card-title"> <%= problem.name %> </h5>
                     <h6 class="card-subtitle mb-2 text-muted">By <%= problem.author %> </h6>
+
                     <a href="/problemset/<%=problem.name%>" class="btn btn-dark card-link">Show problem</a>
                 </div>
             </div>

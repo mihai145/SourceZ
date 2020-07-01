@@ -9,12 +9,13 @@
         <li class="list-group-item">Submitted to problem: <a href="/problemset/<%= submission.toProblem %>"><%= submission.toProblem %></a> </li>
         <% if(submission.judged) { %>
             <% if(submission.verdict === "Accepted") { %>
-                <li class="list-group-item" style="color:green"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
+                <li class="list-group-item" style="color:green"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </li>
             <% } else if(submission.verdict === "Compilation Error") { %>
-                <li class="list-group-item" style="color:orange"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
+                <li class="list-group-item" style="color:orange"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </li>
             <% } else { %>
-                <li class="list-group-item" style="color:red"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </td>
+                <li class="list-group-item" style="color:red"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </li>
             <% } %>
+            <li class="list-group-item">Score: <%= submission.score %> points</li>
         <% } else { %>
             <li class="list-group-item">Verdict: waiting...</li>
         <% } %>

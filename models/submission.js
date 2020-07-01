@@ -8,7 +8,8 @@ const submissionSchema = new mongoose.Schema({
     judged: {type: Boolean, default: false},
     compilerMessage: String,
     results: [String],
-    verdict: String
+    verdict: String,
+    score: {type: Number, default: 0}
 });
 
 module.exports = mongoose.model("Submission", submissionSchema);
