@@ -117,7 +117,7 @@
                     <input type="password" class="form-control" name="password" required>
                     <small class="form-text text-muted">Never share your password, SourceZer</small>
                 </div>
-                <button type="submit" class="btn btn-dark">Login</button>
+                <button type="submit" class="btn btn-dark" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Login</button>
             </form>
             <% } %>
 
@@ -140,10 +140,10 @@
                 alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title text-center">User <%= user.username %></h5>
-                    <a href="/me" class="btn btn-dark btn-block needSmallerButton m-1">View profile</a>
+                    <a href="/me" class="btn btn-dark btn-block needSmallerButton m-1" data-tilt data-tilt-max="0" data-tilt-scale="1.05">View profile</a>
                     
                     <% if(user.isAdmin) { %>
-                        <a href="/posts/new" class="btn btn-dark btn-block needSmallerButton m-1">Add new post</a>
+                        <a href="/posts/new" class="btn btn-dark btn-block needSmallerButton m-1" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Add new post</a>
                     <% } %>
                 </div>
             </div>

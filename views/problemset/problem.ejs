@@ -86,9 +86,9 @@
         <% } %>
         
         <% if(user && isLoggedIn) { %>
-            <a href="/problemset/submissions" class="btn btn-dark my-1 mx-auto" style="width: 100%;">View queue</a>
+            <a href="/problemset/submissions" class="btn btn-dark my-1 mx-auto" style="width: 100%;" data-tilt data-tilt-max="0" data-tilt-scale="1.05">View queue</a>
             
-            <a href="/problemset/<%= problem.name %>/allSubm" class="btn btn-dark my-1 mx-auto" style="width: 100%;">View all submissions for this problem</a>
+            <a href="/problemset/<%= problem.name %>/allSubm" class="btn btn-dark my-1 mx-auto" style="width: 100%;" data-tilt data-tilt-max="0" data-tilt-scale="1.05">View all submissions for this problem</a>
         
         <% } %>
     </div>
@@ -102,7 +102,7 @@
     
         <div class="my-2">
             <textarea rows="15" name="clientSource" class="form-control p-2 rounded my-2" id="t">
-#include <bits/stdc++.h>
+#include <fstream>
  
 using namespace std;
 
@@ -124,7 +124,7 @@ int main()
                 });
         </script>
 
-        <button class="btn btn-dark mb-2 mt-3" data-tilt data-tilt-max="30" data-tilt-speed="100" data-tilt-scale="1.2">
+        <button class="btn btn-dark mb-2 mt-3" data-tilt data-tilt-max="10" data-tilt-scale="1.2">
             Submit!
         </button>
 
