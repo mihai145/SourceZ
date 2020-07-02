@@ -30,7 +30,6 @@ router.post('/login',
 router.get("/loginFailed", (req, res) => {
     if(!req.user) {
         req.flash("fail", "Invalid username or password...");
-        
     }
     res.redirect("/posts");
 });
@@ -119,7 +118,7 @@ router.post("/newAdmin", authMiddleware.isLoggedIn, authMiddleware.isOwner, (req
             req.flash(flashMessages.defaultSuccess.type, flashMessages.defaultSuccess.message);
             res.redirect("/posts");   
         }
-    })
+    });
 });
 
 ///-----------------------///

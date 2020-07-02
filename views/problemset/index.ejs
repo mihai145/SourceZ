@@ -5,31 +5,60 @@
     <h1 class="display-2 text-center my-3 d-none d-md-block">Problemset</h1>
     <h3 class="display-4 text-center my-3 d-block d-md-none">Problemset</h3>
 
-    <% for(const problem of problems) { %>
-        <div>
-            <div class="card my-2 rounded">
-                <div class="card-body">
+    <div class="row">
+        <% for(const problem of problems) { %>
+            <div class="col-md-6 col-lg-4">
+                <div class="card my-2 rounded mx-3">
+                    <div class="card-body">
                     
-                    <span class="float-right">
-                        <% if(problem.lang === "RO") { %>
-                            RO
-                        <% } else { %>
-                            EN
-                        <% } %>
+                        <span class="float-right">
+                            <% if(problem.lang === "RO") { %>
+                            Lang: RO
+                            <% } else { %>
+                            Lang: EN
+                            <% } %>
+                        </span>
+
+                        <h5 class="card-title"> <%= problem.name %> </h5>
+                        <h6 class="card-subtitle mb-2 text-muted">By <%= problem.author %> </h6>
+
+                        <div class="row mt-4">
+                            <div class="col-3">
+
+                            </div>
+
+                            <div class="col-6">
+                                <div class="c100 p<%= Math.round((problem.acceptedSubmissions * 100) / problem.totalSubmissions) %> green">
+                                    <% if(problem.totalSubmissions > 0) { %>
+                                        <span> <%= Math.round((problem.acceptedSubmissions * 100) / problem.totalSubmissions) %> %</span>
+                                    <% } else { %>
+                                        <span> !tried </span>
+                                    <% } %>
+                                    <div class="slice">
+                                        <div class="bar"></div>
+                                        <div class="fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-3">
+                            
+                            </div>
+                        </div>
+
                         <br>
                         Submissions: <%= problem.totalSubmissions %>
                         <br>
-                        <span style="color: green;">Accepted: <%= problem.acceptedSubmissions %> </span>
-                    </span>
+                        <span style="color: green;">Accepted: <%= problem.acceptedSubmissions %> </span>     
 
-                    <h5 class="card-title"> <%= problem.name %> </h5>
-                    <h6 class="card-subtitle mb-2 text-muted">By <%= problem.author %> </h6>
+                        <hr>
 
-                    <a href="/problemset/<%=problem.name%>" class="btn btn-dark card-link">Show problem</a>
+                        <a href="/problemset/<%=problem.name%>" class="btn btn-dark card-link my-2" style="width: 100%">Show problem</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    <% } %>
+        <% } %>
+    </div>
 
     <% if(user && isLoggedIn) { %>
     <a href="/problemset/submissions" class="btn btn-dark my-2" style="width: 100%;">View queue</a>

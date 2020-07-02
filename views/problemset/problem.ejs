@@ -26,11 +26,6 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">Time limit: <%= problem.timeLimit%> s</li>
                 <li class="list-group-item">Memory limit: <%= problem.memoryLimit%> mb</li>
-                <% if(problem.solvedBy !== 1) { %>
-                    <li class="list-group-item">Solved by: <%= problem.solvedBy%> users</li>
-                <% } else { %>
-                    <li class="list-group-item">Solved by: 1 user</li>
-                <% } %>
             </ul>
 
         </div>
