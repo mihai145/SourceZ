@@ -24,15 +24,21 @@
 
                 <% if(posts) { %>
                 <% for(let post of posts) { %>
-                    <div class="card my-3">
+                    <div class="card my-3 rounded">
                         <div class="card-body bg-light">
+
                             <span class="float-right">
                                 <% if(post.lang === "RO") { %>
-                                        RO
-                                    <% } else { %>
-                                        EN
+                                Lang:
+                                <img src="https://cdn.discordapp.com/attachments/722127365085462670/728307171674161263/iconfinder_209_Ensign_Flag_Nation_romania_2634396.png"
+                                    class="img-fluid">
+                                <% } else { %>
+                                Lang:
+                                <img src="https://cdn.discordapp.com/attachments/722127365085462670/728307168607993936/iconfinder_273_Ensign_Flag_Nation_kingdom_2634450.png"
+                                    class="img-fluid">
                                 <% } %>
                             </span>
+
                             <h5 class="card-title">
                                 <%= post.title %>
                             </h5>
