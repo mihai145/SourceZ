@@ -157,3 +157,11 @@ body {
 	margin: 3px 0px 1px 0px;
 	width: 105px;
 }
+
+.legendary {
+  color: red;
+}
+
+.legendary span {
+  color: black;
+}
