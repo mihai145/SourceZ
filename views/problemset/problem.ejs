@@ -86,10 +86,9 @@
         <% } %>
         
         <% if(user && isLoggedIn) { %>
-            <a href="/problemset/submissions" class="btn btn-dark my-1 mx-auto" style="width: 100%;" data-tilt data-tilt-max="0" data-tilt-scale="1.05">View queue</a>
-            
-            <a href="/problemset/<%= problem.name %>/allSubm" class="btn btn-dark my-1 mx-auto" style="width: 100%;" data-tilt data-tilt-max="0" data-tilt-scale="1.05">View all submissions for this problem</a>
-        
+            <a href="/problemset/<%= problem.name %>/allSubm" class="btn btn-dark my-1 mx-auto" style="width: 100%;" data-tilt data-tilt-max="0" data-tilt-scale="1.05">View all submissions</a>
+            <a href="/problemset/submissions" class="btn btn-dark my-1 mx-auto" style="width: 100%;" data-tilt data-tilt-max="0"
+                data-tilt-scale="1.05">View queue</a>
         <% } %>
     </div>
 
