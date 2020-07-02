@@ -40,17 +40,34 @@ router.get("/register", authMiddleware.isNotLoggedIn, (req, res) => {
 
 router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
     const username = req.body.username;
-    let properUsername = true;
+    let hasSpace = false;
+    let specialChars = false;
+    let hasLetter = false;
 
     for(let i = 0; i < username.length; i++) {
         if(username[i] == ' ' ) {
-            properUsername = false;
-            break;
+            hasSpace = true;
+        }
+        let code = username.charCodeAt(i);
+        if (!(code > 47 && code < 58) && // numeric (0-9)
+            !(code > 64 && code < 91) && // upper alpha (A-Z)
+            !(code > 96 && code < 123) && // lower alpha (a-z) 
+            !(username[i] == '_')) { 
+                specialChars = true;
+        }
+        if ((code > 64 && code < 91) || (code > 96 && code < 123)) {
+            hasLetter = true;
         }
     }
 
-    if(properUsername == false) {
+    if (hasSpace === true) {
         req.flash("fail", "Any username should be a single word!");
+        return res.redirect("/register");
+    } else if(specialChars === true) {
+        req.flash("fail", "Any username should be alphanumeric. Only underscores are allowed.");
+        return res.redirect("/register");
+    } else if(hasLetter === false) {
+        req.flash("fail", "Any username should have at least one letter.");
         return res.redirect("/register");
     }
 
