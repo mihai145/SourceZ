@@ -83,6 +83,37 @@ router.get("/problemset/:problemName", (req, res) => {
     });
 });
 
+router.get("/problemset/:problemName/edit", authMiddleware.isLoggedIn, authMiddleware.isOwner, (req, res) => {
+    Problem.findOne({ name: req.params.problemName }, (err, problem) => {
+        if (err || !problem) {
+            console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            res.redirect("/problemset");
+        } else {
+            res.render("problemset/editProblem", {problem: problem});
+        }
+    });
+});
+
+router.put("/problemset/:problemId", authMiddleware.isLoggedIn, authMiddleware.isOwner, (req, res) => {
+    let author = req.body.author;
+    let content = req.body.content;
+    let timeLimit = req.body.timeLimit;
+    let memoryLimit = req.body.memoryLimit;
+    
+    Problem.findByIdAndUpdate(req.params.problemId, { author: author, content: content, timeLimit: timeLimit, memoryLimit: memoryLimit}, (err, problem) => {
+        if (err || !problem) {
+            console.log(err);
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            res.redirect("/problemset");
+        } else {
+            req.flash(flashMessages.defaultSuccess.type, flashMessages.defaultSuccess.message);
+            res.redirect("/problemset");
+        }
+    });
+});
+
+
 router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) => {
     
     let now = new Date();
