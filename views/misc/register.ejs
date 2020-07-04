@@ -31,10 +31,21 @@
         <br><br> -->
         <!-- END CAPTCHA -->
 
-        <div class="g-recaptcha my-2" data-sitekey="6Le0Xq0ZAAAAAGoDRI13IU6DbIA-jVqH4WZQ-iqe" required></div>
+        <div class="g-recaptcha my-2" data-sitekey="6Le0Xq0ZAAAAAGoDRI13IU6DbIA-jVqH4WZQ-iqe"></div>
 
         <button type="submit" class="btn btn-dark text-center" style="width: 100%;">Register</button>
     </form>
+
+    <script type="text/javascript">
+        function checkform(form) {
+            const v = grecaptcha.getResponse();
+            if (v.length == 0) {
+                alert("Please complete CAPTCHA!");
+                return false;
+            }
+            return true;
+        }
+    </script>
 
     <!-- <script type="text/javascript">
 
