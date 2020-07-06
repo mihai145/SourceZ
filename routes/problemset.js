@@ -124,7 +124,7 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
     ///final version, modify back to two mins!
     if(diffMins < 1 && (req.user.lastSubmission !== null)) {
         req.flash("fail", "You submitted a solution less than 2 minutes ago. You can only submit once every two minutes");
-        res.redirect("/problemset");
+        res.redirect("/problemset/" + req.params.problemName);
     } else {
 
         ///BASIC CPP SANITIZATION
@@ -146,7 +146,7 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
             if(err || !user) {
                 console.log(err);
                 req.flash("fail", "Couldn`t save your submission. Try again...");
-                res.redirect("/problemset");
+                res.redirect("/problemset/" + req.params.problemName);
             } else {
                 let submission = {};
 
@@ -158,11 +158,11 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
                     if (err || !subm) {
                         console.log(err);
                         req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
-                        res.redirect("/problemset");
+                        res.redirect("/problemset/" + req.params.problemName);
                     } else {
                         
                         req.flash(flashMessages.successfullySubmited.type, flashMessages.successfullySubmited.message);
-                        res.redirect("/problemset");
+                        res.redirect("/problemset/" + req.params.problemName);
                     }
                 });
             }
