@@ -21,27 +21,29 @@
         <% } %>
     </ul>
 
-    <% if(submission.judged && submission.compilerMessage.length > 0) { %>
+    <!-- COMPILER MESSAGE -->
+    <!-- <% if(submission.judged && submission.compilerMessage.length > 0) { %>
         <ul class="list-group my-3 rounded">
             <li class="list-group-item">Compilation message</li>
             <li class="list-group-item"><%= submission.compilerMessage %></li>
         </ul>
-    <% } %>
+    <% } %> -->
 
-    <% if(submission.judged) { %>
-    
-    <ul class="list-group list-group-flush my-3 border rounded">
-        <li class="list-group-item">Individual test results</li>
-        <% for(let i = 0; i < submission.results.length; i++) { %>
-            <% if(submission.results[i] === "Correct") { %>
-                <li class="list-group-item">Test #<%= i + 1%>:
-                    <span style="color: green;"><%= submission.results[i] %></span> </li>
-            <% } else { %>
-                <li class="list-group-item">Test #<%= i + 1%>:
-                    <span style="color: red;"><%= submission.results[i] %></span> </li>
+    <% if(submission.judged) { %>    
+        <% if(submission.verdict !== "Compilation Error") { %>
+            <ul class="list-group list-group-flush my-3 border rounded">
+            <li class="list-group-item">Individual test results</li>
+            <% for(let i = 0; i < submission.results.length; i++) { %>
+                <% if(submission.results[i] === "Correct") { %>
+                    <li class="list-group-item">Test #<%= i + 1%>:
+                        <span style="color: green;"><%= submission.results[i] %></span> </li>
+                <% } else { %>
+                    <li class="list-group-item">Test #<%= i + 1%>:
+                        <span style="color: red;"><%= submission.results[i] %></span> </li>
+                <% } %>
             <% } %>
+            </ul>
         <% } %>
-    </ul>
     <% } else { %>
     <ul class="list-group list-group-flush my-3 rounded">
         <li class="list-group-item"> Waiting for judge to finish... </li>
