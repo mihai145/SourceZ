@@ -5,7 +5,7 @@
 <% if(user && isLoggedIn && user.username !== post.author && apreciated !== -1) { %>
     <span class="float-right m-1">
         <form action="/posts/<%= post._id %>/codepreciate" method="POST">
-            <button class="btn btn-dark">
+            <button class="btn btn-dark" data-tilt data-tilt-max="0" data-tilt-scale="1.05">
                 <% if(apreciated === 0) { %>
                     ❤️️
                 <% } else { %>
@@ -32,10 +32,10 @@
 
 <% if(user && (user.username === post.author || user.isOwner)) { %>
     <% if(user.username === post.author) { %>
-    <a href="/posts/<%= post._id %>/edit" class="btn border border-dark btn-light"> Edit post </a>
+    <a href="/posts/<%= post._id %>/edit" class="btn border border-dark btn-light" data-tilt data-tilt-max="0" data-tilt-scale="1.05"> Edit post </a>
     <% } %>
     <form action="/posts/<%= post._id %>/?_method=DELETE" method="POST" class="m-2" style="display: inline;">
-        <button class="btn btn-danger">
+        <button class="btn btn-danger" data-tilt data-tilt-max="0" data-tilt-scale="1.05">
             Delete Post
         </button>
     </form>
@@ -51,7 +51,7 @@
             <%= comment.author %>
             <% if(user && (user.username === comment.author || user.isOwner)) { %>
             <form action="/posts/<%= post._id%>/comments/<%= comment._id%>/?_method=DELETE" method="POST" class="float-right">
-                <button class="btn btn-light needSmallerButton p-0">Delete</button>
+                <button class="btn btn-light needSmallerButton p-0" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Delete</button>
             </form>
             <% } %>
         </strong>
@@ -73,7 +73,7 @@
         </div>
 
         <div class="col-lg-2 m-auto">
-            <button type="submit" class="btn btn-dark needSmallerButton">Add comment</button>
+            <button type="submit" class="btn btn-dark needSmallerButton" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Add comment</button>
         </div>
 
     </div>

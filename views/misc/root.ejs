@@ -47,7 +47,7 @@
                 <label>Password</label>
                 <input type="password" class="form-control" name="password" placeholder="password" required>
             </div>
-            <button type="submit" class="btn btn-dark">Login</button>
+            <button type="submit" class="btn btn-dark" data-tilt data-tilt-max="0" data-tilt-scale="1.1">Login</button>
         </form>
 
         <hr>
@@ -59,8 +59,8 @@
     <% } else { %>
 
         <div class="float-right m-2 rounded">
-            <a href="/posts" class="btn btn-lg btn-dark m-2">Back to feed</a>
-            <a href="/logout" class="btn btn-lg btn-danger m-2">Logout</a>
+            <a href="/posts" class="btn btn-lg btn-dark m-2" data-tilt data-tilt-max="0" data-tilt-scale="1.1">Back to feed</a>
+            <a href="/logout" class="btn btn-lg btn-danger m-2" data-tilt data-tilt-max="0" data-tilt-scale="1.1">Logout</a>
         </div>
     
     <% } %>
@@ -68,6 +68,21 @@
 </div>
 
 </div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+<!-- Load Tilt.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script>
 
 </body>
 </html>
