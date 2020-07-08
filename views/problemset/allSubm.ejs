@@ -1,8 +1,11 @@
 <%- include('../partials/header'); -%>
 
 <div class="container">
-
     <h3 class="display-4 text-center my-3">All submissions for <%= problem %> </h3>
+
+    <a href="/problemset/<%=problem%>" class="btn btn-dark" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Back to
+        <%=problem%>
+    </a>
 
     <table class="table my-2">
         <thead class="thead-dark">
