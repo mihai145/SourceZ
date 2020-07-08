@@ -65,15 +65,18 @@
                         </td>
 
                         <% if(!submission.judged) { %>
-                            <td> Waiting for judge... </td>
+                        <td> Waiting for judge... </td>
                         <% } else { %>
-                            <% if(submission.verdict === "Accepted") { %>
-                                <td style="color:green"> <%= submission.verdict %> </td>
-                            <% } else if(submission.verdict === "Compilation Error") { %>
-                                <td style="color:orange"> <%= submission.verdict %> </td>
-                            <% } else { %>
-                                <td style="color:red"> <%= submission.verdict %> </td>
-                            <% } %>
+                        
+                        <%if(submission.score <= 20) { %>
+                        <td style="color:red"><%=submission.score%> points</td>
+                        <%} else if(submission.score <= 50) { %>
+                        <td style="color:darksalmon"><%=submission.score%> points</td>
+                        <%} else if(submission.score <= 90){ %>
+                        <td style="color:yellowgreen"><%=submission.score%> points</td>
+                        <%} else { %>
+                        <td style="color:green"><%=submission.score%> points</td>
+                        <%} %>
                         <% } %>
                         
                         <td>

@@ -11,7 +11,7 @@
                 <th scope="col" class="d-none d-lg-table-cell">Submission time</th>
                 <th scope="col">User</th>
                 <th scope="col">Problem</th>
-                <th scope="col">Verdict</th>
+                <th scope="col">Score</th>
                 <th scope="col" class="d-none d-lg-table-cell">Action</th>
             </tr>
         </thead>
@@ -45,15 +45,27 @@
                     <td> <a href="/problemset/<%= submissions[i].toProblem %>"> <%= submissions[i].toProblem %> </a> </td>
 
                     <% if(!submissions[i].judged) { %>
-                        <td> Waiting for judge... </td>
+                    <td> Waiting for judge... </td>
                     <% } else { %>
-                        <% if(submissions[i].verdict === "Accepted") { %>
+                    
+                    <%if(submissions[i].score <= 20) { %>
+                    <td style="color:red"><%=submissions[i].score%> points</td>
+                    <%} else if(submissions[i].score <= 50) { %>
+                    <td style="color:darksalmon"><%=submissions[i].score%> points</td>
+                    <%} else if(submissions[i].score <= 90){ %>
+                    <td style="color:yellowgreen"><%=submissions[i].score%> points</td>
+                    <%} else { %>
+                    <td style="color:green"><%=submissions[i].score%> points</td>
+                    <%} %>
+
+                        <!-- <% if(submissions[i].verdict === "Accepted") { %>
                             <td style="color:green"> <%= submissions[i].verdict %> </td>
                         <% } else if(submissions[i].verdict === "Compilation Error") { %>
                             <td style="color:orange"> <%= submissions[i].verdict %> </td>
                         <% } else { %>
                             <td style="color:red"> <%= submissions[i].verdict %> </td>
-                        <% } %>
+                        <% } %> -->
+
                     <% } %>
                     
                     <% if(user && (user.username === submissions[i].author || user.isAdmin)) { %>

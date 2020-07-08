@@ -121,9 +121,9 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
 
     let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
 
-    ///final version, modify back to two mins!
-    if(diffMins < 1 && (req.user.lastSubmission !== null)) {
-        req.flash("fail", "You submitted a solution less than 2 minutes ago. You can only submit once every two minutes");
+    ///cooldown time between two submissions
+    if(diffMins < 2 && (req.user.lastSubmission !== null)) {
+        req.flash("fail", "You submitted a solution less than two minutes ago. You can only submit once every two minutes");
         res.redirect("/problemset/" + req.params.problemName);
     } else {
 
