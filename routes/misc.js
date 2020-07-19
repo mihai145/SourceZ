@@ -81,23 +81,35 @@ router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
         body: `secret=${process.env.CAPTCHA_API_KEY}&response=${req.body['g-recaptcha-response']}`
     })
     .then(res => res.json())
-    .then(json => console.log(json.success));
+    .then(json => {
+        // console.log(json.success);
+        if(json.success === true) {
+            ///valid captcha
+            console.log("Valid captcha");
 
-    var newUser = new User({ username: username });
-    User.register(newUser, req.body.password, (err, user) => {
-        if (err || !user) {
-            console.log(err);
-            req.flash("fail", err.message);
-            res.redirect("/posts");
+            var newUser = new User({ username: username });
+            User.register(newUser, req.body.password, (err, user) => {
+                if (err || !user) {
+                    console.log(err);
+                    req.flash("fail", err.message);
+                    res.redirect("/posts");
+                }
+                passport.authenticate("local")(req, res, function () {
+                    if (user.username) {
+                        req.flash("success", "Welcome, " + user.username);
+                    } else {
+                        req.flash("Welcome!");
+                    }
+                    res.redirect("/posts");
+                });
+            });
+        } else {
+            ///invalid captcha
+            console.log("Invalid captcha");
+
+            req.flash("fail", "You failed the reCaptcha challenge. Please try again...");
+            res.redirect("/register");
         }
-        passport.authenticate("local")(req, res, function () {
-            if (user.username) {
-                req.flash("success", "Welcome, " + user.username);
-            } else {
-                req.flash("Welcome!");
-            }
-            res.redirect("/posts");
-        });
     });
 });
 
