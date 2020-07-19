@@ -92,7 +92,7 @@ router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
                 if (err || !user) {
                     console.log(err);
                     req.flash("fail", err.message);
-                    res.redirect("/posts");
+                    return res.redirect("/posts");
                 }
                 passport.authenticate("local")(req, res, function () {
                     if (user.username) {
@@ -100,7 +100,7 @@ router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
                     } else {
                         req.flash("Welcome!");
                     }
-                    res.redirect("/posts");
+                    return res.redirect("/posts");
                 });
             });
         } else {
