@@ -93,7 +93,7 @@
             <a href="/problemset/submissions" class="btn btn-dark my-1 mx-auto" style="width: 100%;" data-tilt data-tilt-max="0"
                 data-tilt-scale="1.05">View queue</a>
             
-            <% if(user.isAdmin) { %>
+            <% if(user.isOwner) { %>
                 <a href="/problemset/<%= problem.name %>/edit" class="btn btn-dark my-1 mx-auto" style="width: 100%;" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Edit problem</a>
             <% } %>
             
