@@ -76,7 +76,10 @@ router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
 
     ///check reCaptcha
     fetch('https://www.google.com/recaptcha/api/siteverify', {
-        method: 'POST', secret: process.env.CAPTCHA_API_KEY, response: req.body.token})
+        method: 'POST',
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `secret=${process.env.CAPTCHA_API_KEY}&response=${req.body['g-recaptcha-response']}`
+    })
         .then(res => res.json())
         .then(json => console.log(json));
 
