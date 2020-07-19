@@ -80,8 +80,8 @@ router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `secret=${process.env.CAPTCHA_API_KEY}&response=${req.body['g-recaptcha-response']}`
     })
-        .then(res => res.json())
-        .then(json => console.log(json));
+    .then(res => res.json())
+    .then(json => console.log(json.success));
 
     var newUser = new User({ username: username });
     User.register(newUser, req.body.password, (err, user) => {
