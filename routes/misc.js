@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fetch = require("node-fetch");
 
 const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
@@ -39,6 +40,8 @@ router.get("/register", authMiddleware.isNotLoggedIn, (req, res) => {
 });
 
 router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
+
+    ///check username validity
     const username = req.body.username;
     let hasSpace = false;
     let specialChars = false;
@@ -70,6 +73,12 @@ router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
         req.flash("fail", "Any username should have at least one letter.");
         return res.redirect("/register");
     }
+
+    ///check reCaptcha
+    fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST', secret: "6Le0Xq0ZAAAAAIzOduKBot-NWZZdi5bzjtxWFeX0", response: req.g-recaptcha-response})
+        .then(res => res.json())
+        .then(json => console.log(json));
 
     var newUser = new User({ username: username });
     User.register(newUser, req.body.password, (err, user) => {
