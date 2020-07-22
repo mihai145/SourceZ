@@ -29,7 +29,7 @@
                         <% diff=(diff-(seconds=diff%60))/60; %>
                         <% diff=(diff-(minutes=diff%60))/60; %>
                         <% days=(diff-(hours=diff%24))/24; %>
-                        <% if(hours < 1) { %>
+                        <% if(days < 1 && hours < 1) { %>
                             <br>
                             <% if(minutes === 0) { %>
                                 right now
