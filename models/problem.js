@@ -8,7 +8,9 @@ const problemSchema = new mongoose.Schema({
     timeLimit: String,
     memoryLimit: String, 
     acceptedSubmissions: {type: Number, default: 0},
-    totalSubmissions: {type: Number, default: 0}
+    totalSubmissions: {type: Number, default: 0},
+    fromContest: {type: String, default: "none"},
+    visibleFrom: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model("Problem", problemSchema);

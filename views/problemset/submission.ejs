@@ -7,6 +7,13 @@
         <li class="list-group-item">Submitted at: <%= submission.created.toDateString() %> </li>
         <li class="list-group-item">Submitted by: <%= submission.author%> </li>
         <li class="list-group-item">Submitted to problem: <a href="/problemset/<%= submission.toProblem %>"><%= submission.toProblem %></a> </li>
+        
+        <% if(!submission.toContest || submission.toContest === "") { %>
+            <li class="list-group-item">Submitted in Archive </li>
+        <% } else { %>
+            <li class="list-group-item">Submitted in <%= submission.toContest %> contest </li>
+        <% } %>
+        
         <% if(submission.judged) { %>
             <% if(submission.verdict === "Accepted") { %>
                 <li class="list-group-item" style="color:green"> <span style="color: black;">Verdict:</span> <%= submission.verdict %> </li>

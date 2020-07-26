@@ -1,0 +1,183 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <div class="card my-4">
+        <div class="card-body">
+            <h5 class="card-title display-3"><%= contest.title%></h5>
+            <h6 class="card-subtitle mb-2 text-muted">By author <%= contest.author%></h6>
+            
+            <hr>
+
+            <% if(Date.now() < contest.startDate){ %>
+                <p class="my-2">Contest has not started yet!</p>
+            <% } else if(Date.now() < contest.finishDate) { %>
+                <p class="my-2" style="color: green;">Contest is running!</p>
+            <% } else { %>
+                <p class="my-2">Contest has ended!</p>
+            <% } %>
+
+            <hr>
+
+            <div class="row">
+
+            <div class="col-6">
+
+            <% if(Date.now() >= contest.startDate || (user && user.isOwner)) { %>
+            <a href="/problemset/<%= contest.problem1 %>" class="btn btn-dark my-2" style="width: 100%;" data-tilt data-tilt-max="0"
+                data-tilt-scale="1.05">Problem 1</a>
+            <a href="/problemset/<%= contest.problem2 %>" class="btn btn-dark my-2" style="width: 100%;" data-tilt data-tilt-max="0"
+                data-tilt-scale="1.05">Problem 2</a>
+            <% } else { %>
+            <button class="btn btn-dark my-2" style="width: 100%" disabled>Problem 1</button>
+            <button class="btn btn-dark my-2" style="width: 100%" disabled>Problem 2</button>
+            <% } %>
+            
+            <% if(user && user.isOwner) { %>
+            <div class="d-none d-lg-block">
+            <a href="/contests/<%= contest._id%>/edit" class="btn btn-dark my-2" style="width: 100%;" data-tilt data-tilt-max="0"
+                data-tilt-scale="1.05">Edit contest</a>
+            </div>
+
+            <div class="d-block d-lg-none my-2">
+                Editing a contest is allowed only on desktops.
+            </div>
+
+            <% } %>
+
+            </div>
+
+            <div class="col-6 text-center">
+
+            <p class="my-2"> <%= contest.editorial%> </p>
+            
+            <p class="my-2">Starts: <%= contest.startDate.toLocaleString()%></p>
+            <p class="my-2">Ends: <%= contest.finishDate.toLocaleString()%></p>
+
+            </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <% if(registrations && registrations.length > 0) { %>
+    <% if(Date.now() < contest.startDate) { %>
+        <% let userIsRegistered = false; %>
+        
+        <h3>Registered contestants</h3>
+        <table class="table" style="width:50%">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i = 0; i < registrations.length; i++) { %>
+                    <tr>
+                        <th scope="row"><%= i + 1 %></th>
+
+                        <% if(user && registrations[i].contestant === user.username) { %>
+                            <% userIsRegistered = true; %>
+                            <td> <strong><%= registrations[i].contestant %></strong> </td>
+                        <% } else { %>
+                            <td> <%= registrations[i].contestant %> </td>
+                        <% } %>
+                    </tr>
+                <% } %>
+            </tbody>
+            </table>
+            
+            <% if(!userIsRegistered) { %>
+                <form action="/contests/<%= contest._id%>/register" method="POST">
+                    <button class="btn btn-dark my-2" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Register for contest!</button>
+                </form>
+            <% } else { %>
+                <form action="/contests/<%= contest._id%>/unregister" method="POST">
+                    <button class="btn btn-dark my-2" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Unregister!</button>
+                </form>
+            <% } %>
+
+        
+    <% } else if(Date.now() < contest.finishDate) { %>
+        <h3>Current standings</h3>
+        <div class="d-none d-lg-block">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Score for <%= contest.problem1%> </th>
+                    <th scope="col">Score for <%= contest.problem2%> </th>
+                    <th scope="col">Total score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i = 0; i < registrations.length; i++) { %>
+                <tr>
+                    <th scope="row"><%= i + 1 %></th>
+                    <% if(user && registrations[i].contestant === user.username) { %>
+                    <% userIsRegistered = true; %>
+                    <td> <strong><%= registrations[i].contestant %></strong> </td>
+                    <% } else { %>
+                    <td> <%= registrations[i].contestant %> </td>
+                    <% } %>
+                    <td> <%= registrations[i].p1_score %> </td>
+                    <td> <%= registrations[i].p2_score %> </td>
+                    <td> <%= registrations[i].total_score%> </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        </div>
+        <div class="d-block d-lg-none">
+            <p><%= registrations.length%> users registered. See detailed live results on a desktop.</p>
+        </div>
+    <% } else { %>
+        <h3>Final standings</h3>
+        <div class="d-none d-lg-block">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Score for <%= contest.problem1%> </th>
+                    <th scope="col">Score for <%= contest.problem2%> </th>
+                    <th scope="col">Total score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i = 0; i < registrations.length; i++) { %>
+                <tr>
+                    <th scope="row"><%= i + 1 %></th>
+                    <% if(user && registrations[i].contestant === user.username) { %>
+                    <% userIsRegistered = true; %>
+                    <td> <strong><%= registrations[i].contestant %></strong> </td>
+                    <% } else { %>
+                    <td> <%= registrations[i].contestant %> </td>
+                    <% } %>
+                    <td> <%= registrations[i].p1_score %> </td>
+                    <td> <%= registrations[i].p2_score %> </td>
+                    <td> <%= registrations[i].total_score%> </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        </div>
+        <div class="d-block d-lg-none">
+            <p><%= registrations.length%> users registered. See detailed final results on a desktop.</p>
+        </div>
+    <% } %>
+    <% } else { %>
+        <h3>No registered contestants</p>
+        <% if(Date.now() < contest.startDate) { %>
+            <form action="/contests/<%= contest._id%>/register" method="POST">
+                <button class="btn btn-dark my-2" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Register!</button>
+            </form>
+        <% } %>
+    <% } %>
+
+</div>
+
+<%- include('../partials/footer'); -%>

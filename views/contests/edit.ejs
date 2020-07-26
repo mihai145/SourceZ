@@ -1,0 +1,43 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <form action="/contests/<%=contest.id%>/?_method=PUT" method="POST" class="my-4">
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="contest[title]" value="<%= contest.title%>">
+        </div>
+        <div class="form-group">
+            <label>Author</label>
+            <input type="text" class="form-control" name="contest[author]" value="<%= contest.author%>">
+        </div>
+        <div class="form-group">
+            <label>Editorial</label>
+            <input type="text" class="form-control" name="contest[editorial]" value="<%= contest.editorial%>">
+        </div>
+        <div class="form-group">
+            <label>Start Date</label>
+            <input type="datetime-local" class="form-control" name="contest[startDate]" required>
+        </div>
+        <div class="form-group">
+            <label>End Date</label>
+            <input type="datetime-local" class="form-control" name="contest[finishDate]" required>
+        </div>
+
+        <div class="form-group">
+            <label>Problem 1 name</label>
+            <input type="text" class="form-control" name="p1_name" value="<%= contest.problem1%>">
+        </div>
+            
+        <div class="form-group">
+            <label>Problem 2 name</label>
+            <input type="text" class="form-control" name="p2_name" value="<%= contest.problem2%>">
+        </div>
+
+        <button type="submit" class="btn btn-dark" style:"width: 100%" data-tilt data-tilt-max="0"
+            data-tilt-scale="1.05">Done</button>
+    </form>
+
+</div>
+
+<%- include('../partials/footer'); -%>

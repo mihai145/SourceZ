@@ -1,0 +1,84 @@
+<%- include('../partials/header'); -%>
+
+<div class="container">
+
+    <form action="/contests" method="POST" class="my-4">
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="contest[title]">
+        </div>
+        <div class="form-group">
+            <label>Author</label>
+            <input type="text" class="form-control" name="contest[author]">
+        </div>
+        <div class="form-group">
+            <label>Editorial</label>
+            <input type="text" class="form-control" name="contest[editorial]" value="Contest has no editorial yet!">
+        </div>
+        <div class="form-group">
+            <label>Start Date</label>
+            <input type="datetime-local" class="form-control" name="contest[startDate]">
+        </div>
+        <div class="form-group">
+            <label>End Date</label>
+            <input type="datetime-local" class="form-control" name="contest[finishDate]">
+        </div>
+
+        <div class="row my-2 bg-light rounded p-2">
+
+            <div class="col-lg-6">
+
+                <div class="form-group">
+                    <label>Problem 1 name</label>
+                    <input type="text" class="form-control" name="p1_name">
+                </div>
+
+                <div class="form-group">
+                    <label>Problem 1 statement</label>
+                    <textarea name="p1_statement" rows="15" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Problem 1 time limit</label>
+                    <input type="text" class="form-control" name="p1_tl">
+                </div>
+
+                <div class="form-group">
+                    <label>Problem 1 memory limit</label>
+                    <input type="text" class="form-control" name="p1_ml">
+                </div>
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <div class="form-group">
+                    <label>Problem 2 name</label>
+                    <input type="text" class="form-control" name="p2_name">
+                </div>
+
+                <div class="form-group">
+                    <label>Problem 2 statement</label>
+                    <textarea name="p2_statement" rows="15" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Problem 2 time limit</label>
+                    <input type="text" class="form-control" name="p2_tl">
+                </div>
+
+                <div class="form-group">
+                    <label>Problem 1 memory limit</label>
+                    <input type="text" class="form-control" name="p2_ml">
+                </div>
+
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-dark" style:"width: 100%" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Done</button>
+    </form>
+
+</div>
+
+<%- include('../partials/footer'); -%>

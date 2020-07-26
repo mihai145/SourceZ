@@ -2,21 +2,23 @@
 
 <div class="container">
 
-    <h1 class="display-2 text-center my-3 d-none d-md-block">Problemset</h1>
-    <h3 class="display-4 text-center my-3 d-block d-md-none">Problemset</h3>
+    <div class="row">
+
+    <div class="col-lg-6">
+
+    <h1 class="display-2 text-center my-3 d-none d-md-block">Archive</h1>
+    <h3 class="display-4 text-center my-3 d-block d-md-none">Archive</h3>
 
     <div class="row">
         <% for(const problem of problems) { %>
-            <div class="col-md-6 col-lg-4">
-                <div class="card my-2 rounded mx-3">
+            <div class="col-xl-6">
+                <div class="card my-2 rounded mx-1">
                     <div class="card-body">
                     
                         <span class="float-right">
                             <% if(problem.lang === "RO") { %> 
-                            Lang: 
                             <img src="https://cdn.discordapp.com/attachments/722127365085462670/728307171674161263/iconfinder_209_Ensign_Flag_Nation_romania_2634396.png" class="img-fluid">
                             <% } else { %>
-                            Lang: 
                             <img src="https://cdn.discordapp.com/attachments/722127365085462670/728307168607993936/iconfinder_273_Ensign_Flag_Nation_kingdom_2634450.png" class="img-fluid">
                             <% } %>
                         </span>
@@ -24,12 +26,10 @@
                         <h5 class="card-title"> <%= problem.name %> </h5>
                         <h6 class="card-subtitle mb-2 text-muted">By <%= problem.author %> </h6>
 
-                        <div class="row mt-4">
-                            <div class="col-3">
+                        <div class="mt-4 row">
 
-                            </div>
-
-                            <div class="col-6">
+                        <div class="col-6 col-xl-12">
+                            <div>
                                 <div class="c100 p<%= Math.round((problem.acceptedSubmissions * 100) / problem.totalSubmissions) %> green">
                                     <% if(problem.totalSubmissions > 0) { %>
                                         <span> <%= Math.round((problem.acceptedSubmissions * 100) / problem.totalSubmissions) %> %</span>
@@ -42,20 +42,29 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                             
-                            <div class="col-3">
-                            
-                            </div>
+
+                        <div class="col-6 col-xl-12">
+                        
+                        <div class="d-none d-xl-block">
+                            Submissions: <%= problem.totalSubmissions %>
+                            <br>
+                            <span style="color: green;">Accepted: <%= problem.acceptedSubmissions %> </span>     
                         </div>
 
-                        <br>
-                        Submissions: <%= problem.totalSubmissions %>
-                        <br>
-                        <span style="color: green;">Accepted: <%= problem.acceptedSubmissions %> </span>     
+                        <div class="d-block d-xl-none text-center">
+                            Submissions: <%= problem.totalSubmissions %>
+                            <br>
+                            <span style="color: green;">Accepted: <%= problem.acceptedSubmissions %> </span>
+                            <hr>
+                        </div>
+                        
+                        </div>
 
-                        <hr>
+                        </div>
 
-                        <a href="/problemset/<%=problem.name%>" class="btn btn-dark card-link my-2" style="width: 100%" data-tilt data-tilt-max="7.5" data-tilt-scale="1.075">Show problem</a>
+                        <a href="/problemset/<%=problem.name%>" class="btn btn-dark card-link my-3" style="width: 100%" data-tilt data-tilt-max="7.5" data-tilt-scale="1.075">Show problem</a>
 
                     </div>
                 </div>
@@ -70,6 +79,55 @@
     <% if(user && user.isOwner) { %>
         <a href="/problemset/newPb" class="btn btn-dark my-2" style="width: 100%;" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Add a new problem</a>
     <% } %>
+
+    </div>
+
+    <div class="col-lg-6">
+        <h1 class="display-2 text-center my-3 d-none d-md-block">Contests</h1>
+        <h3 class="display-4 text-center my-3 d-block d-md-none">Contests</h3>
+
+        <% for(const contest of contests) { %>
+            <div class="card mt-4 rounded">
+                <div class="card-body">
+                    <h5 class="card-title"> Contest '<%= contest.title %>' </h5>
+                    <h6 class="card-subtitle mb-2 text-muted"> By author <%= contest.author %> </h6>
+                    <hr>
+                    
+                    <% if(Date.now() < contest.startDate) { %>
+                        <p style="color: black;">Contest not started yet!</p>
+                    <% } else if(Date.now() <= contest.finishDate) { %>
+                        <p style="color: green;">Contest is running!</p>
+                    <% } else { %>
+                        <p style="color: orange;">Contest has ended!</p>
+                    <% } %>
+
+                    <div>
+                    <p class="my-1">Start date: <%= contest.startDate.toLocaleString() %> </p>
+                    <p class="my-1">Finish date: <%= contest.finishDate.toLocaleString() %> </p>
+                    </div>
+
+                    <a href="/contests/<%=contest._id%>" class="btn btn-dark my-2" data-tilt data-tilt-max="0" data-tilt-scale="1.05">
+                        See contest</a>
+
+                </div>
+            </div>
+        <% } %>
+
+        <% if(user && user.isOwner) { %>
+            <div class="d-none d-lg-block">
+            <a href="/contests/new" class="btn btn-dark my-3" style="width: 100%;" data-tilt data-tilt-max="0"
+                data-tilt-scale="1.05">Create a new contest</a>
+            </div>
+            
+            <div class="d-block d-lg-none my-3">
+                Adding a contest is allowed only on desktops.
+            </div>
+
+        <% } %>
+        
+    </div>
+
+    </div>
 
 </div>
 

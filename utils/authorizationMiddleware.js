@@ -1,10 +1,13 @@
 const passportLocalMongoose = require("passport-local-mongoose");
 
+const flashMessages = require("../utils/flashMessages");
+
 const Post = require("../models/post");
 const Comment = require("../models/comment");
 const Submission = require("../models/submission");
-
-const flashMessages = require("../utils/flashMessages"); 
+const Contest = require("../models/contest");
+const Registration = require("../models/registration"); 
+const registration = require("../models/registration");
 
 const authMiddleware = {};
 
@@ -163,6 +166,60 @@ function submissionAuth(req, res, next) {
     });
 }
 
+function isNotRegisteredForContest(req, res, next) {
+    
+    Contest.findById(req.params.contestId, (err, contest) => {
+
+        if(err || !contest) {
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            return res.redirect("/problemset");
+        } else {
+
+            if(Date.now() < contest.startDate) {
+                Registration.findOne({contestant: req.user.username, contest: contest.title}, (err, reg) => {
+
+                    if(reg) { 
+                        req.flash("fail", "Already registered!");
+                        return res.redirect("/problemset");
+                    } else {
+                        return next();
+                    }
+                });
+            } else {
+                req.flash("fail", "Too late to register!");
+                return res.redirect("/problemset");
+            }
+        }
+    });
+}
+
+function isRegisteredForContest(req, res, next) {
+
+    Contest.findById(req.params.contestId, (err, contest) => {
+
+        if (err || !contest) {
+            req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
+            return res.redirect("/problemset");
+        } else {
+
+            if (Date.now() < contest.startDate) {
+                Registration.findOne({ contestant: req.user.username, contest: contest.title }, (err, reg) => {
+
+                    if (reg) {
+                        return next();
+                    } else {
+                        req.flash("fail", "You are not registered!");
+                        return res.redirect("/problemset");
+                    }
+                });
+            } else {
+                req.flash("fail", "Too late to unregister!");
+                return res.redirect("/problemset");
+            }
+        }
+    });
+}
+
 authMiddleware.isLoggedIn = isLoggedIn;
 authMiddleware.isPostOwned = isPostOwned;
 authMiddleware.isPostOwnedOrOwner = isPostOwnedOrOwner;
@@ -177,5 +234,8 @@ authMiddleware.isAdmin = isAdmin;
 authMiddleware.isOwner = isOwner;
 
 authMiddleware.submissionAuth = submissionAuth;
+
+authMiddleware.isNotRegisteredForContest = isNotRegisteredForContest;
+authMiddleware.isRegisteredForContest = isRegisteredForContest;
 
 module.exports = authMiddleware;

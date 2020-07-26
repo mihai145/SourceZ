@@ -15,6 +15,7 @@ const feedRoutes = require("./routes/feed");
 const commentCodepreciateRoutes = require("./routes/commentCodepreciate");
 const miscRoutes = require("./routes/misc");
 const problemsetRoutes = require("./routes/problemset");
+const contestRoutes = require("./routes/contests");
 
 ///-----------------------///
 ///APP SETUP
@@ -69,6 +70,7 @@ mongoose.connect(process.env.DB_URI, {
 app.use(feedRoutes);
 app.use(commentCodepreciateRoutes);
 app.use(problemsetRoutes);
+app.use(contestRoutes);
 app.use(miscRoutes);
 
 ///-----------------------///
