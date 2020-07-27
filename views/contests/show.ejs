@@ -120,12 +120,16 @@
                     <% if(user && registrations[i].contestant === user.username) { %>
                     <% userIsRegistered = true; %>
                     <td> <strong><%= registrations[i].contestant %></strong> </td>
+                    <td> <strong><%= registrations[i].p1_score %></strong> </td>
+                    <td> <strong><%= registrations[i].p2_score %></strong> </td>
+                    <td> <strong><%= registrations[i].total_score%></strong> </td>
                     <% } else { %>
                     <td> <%= registrations[i].contestant %> </td>
-                    <% } %>
                     <td> <%= registrations[i].p1_score %> </td>
                     <td> <%= registrations[i].p2_score %> </td>
                     <td> <%= registrations[i].total_score%> </td>
+                    <% } %>
+                    
                 </tr>
                 <% } %>
             </tbody>
@@ -154,12 +158,15 @@
                     <% if(user && registrations[i].contestant === user.username) { %>
                     <% userIsRegistered = true; %>
                     <td> <strong><%= registrations[i].contestant %></strong> </td>
+                    <td> <strong><%= registrations[i].p1_score %></strong> </td>
+                    <td> <strong><%= registrations[i].p2_score %></strong> </td>
+                    <td> <strong><%= registrations[i].total_score%></strong> </td>
                     <% } else { %>
                     <td> <%= registrations[i].contestant %> </td>
-                    <% } %>
                     <td> <%= registrations[i].p1_score %> </td>
                     <td> <%= registrations[i].p2_score %> </td>
                     <td> <%= registrations[i].total_score%> </td>
+                    <% } %>
                 </tr>
                 <% } %>
             </tbody>
