@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.use(methodOverride('_method'))
 
 app.use(session({ 
-    secret: "mihai145",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false
 }));
