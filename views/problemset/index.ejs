@@ -124,7 +124,7 @@
                         <% diff=(diff-(milliseconds=diff%1000))/1000; %>
                         <% diff=(diff-(seconds=diff%60))/60; %>
                         <% diff=(diff-(minutes=diff%60))/60; %>
-                        <p class="my-2">Time left: <%= hours%> hours, <%= minutes%> minutes.%>
+                        <p class="my-2">Time left: <%= hours%> hours, <%= minutes + 1%> minutes.%>
                             <% } %>
 
                     </div>
