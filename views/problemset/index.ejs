@@ -102,8 +102,24 @@
                     <% } %>
 
                     <div>
-                    <p class="my-1">Start date: <%= contest.startDate.toLocaleString() %> </p>
-                    <p class="my-1">Finish date: <%= contest.finishDate.toLocaleString() %> </p>
+                        <% if(Date.now() < contest.startDate) { %>
+                        <% let diff = contest.startDate - new Date(); %>
+                        <% let milliseconds=0, seconds=0, minutes=0, hours=0, days=0; %>
+                        <% diff=(diff-(milliseconds=diff%1000))/1000; %>
+                        <% diff=(diff-(seconds=diff%60))/60; %>
+                        <% diff=(diff-(minutes=diff%60))/60; %>
+                        <% days=(diff-(hours=diff%24))/24; %>
+                        <p class="my-2">Contest starts in: <%= days%> days, <%= hours%> hours, <%= minutes + 1%> minutes.%>
+                        
+                        <% diff = contest.finishDate - contest.startDate; %>
+                        <% milliseconds=0, seconds=0, minutes=0, hours=0; %>
+                        <% diff=(diff-(milliseconds=diff%1000))/1000; %>
+                        <% diff=(diff-(seconds=diff%60))/60; %>
+                        <% diff=(diff-(minutes=diff%60))/60; %>
+                        <p class="my-2">Contest will last: <%= hours%> hours, <%= minutes%> minutes.%>
+                        
+                        <% } %>
+
                     </div>
 
                     <a href="/contests/<%=contest._id%>" class="btn btn-dark my-2" data-tilt data-tilt-max="0" data-tilt-scale="1.05">
