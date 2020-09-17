@@ -65,6 +65,7 @@
                 <% diff=(diff-(milliseconds=diff%1000))/1000; %>
                 <% diff=(diff-(seconds=diff%60))/60; %>
                 <% diff=(diff-(minutes=diff%60))/60; %>
+                <% days=(diff-(hours=diff%24))/24; %>
                 <p class="my-2">Contest will last: <%= hours%> hours, <%= minutes%> minutes.%>
             <% } else if(Date.now() < contest.finishDate) { %>
                 <% let diff = contest.finishDate - new Date(); %>
@@ -72,7 +73,8 @@
                 <% diff=(diff-(milliseconds=diff%1000))/1000; %>
                 <% diff=(diff-(seconds=diff%60))/60; %>
                 <% diff=(diff-(minutes=diff%60))/60; %>
-                <p class="my-2">Time left: <%= hours%> hours, <%= minutes%> minutes.%>
+                <% days=(diff-(hours=diff%24))/24; %>
+                <p class="my-2">Time left: <%= hours%> hours, <%= minutes + 1%> minutes.%>
             <% } %>
             
             <!-- <p class="my-2">Starts: <%= contest.startDate.toLocaleString()%></p>
