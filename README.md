@@ -1,4 +1,4 @@
-# SourceZ
+# SourceZ (https://sourcez.herokuapp.com/)
 SourceZ is an online programming platform developed by mihai145. It uses NodeJs and MongoDB as the key technologies. Main features:
 
 -Blog section: you can add posts, comment or appreciate other posts
