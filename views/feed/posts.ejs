@@ -70,37 +70,6 @@
 
                         </div>
 
-                        <!-- <% if(post.comments.length > 0) { %>
-                        <ul id="commentSection" class="list-group list-group-flush">
-                            <% for(let comment of post.comments) { %>
-                                <li class="list-group-item p-2">
-                                    <strong>
-                                        <%= comment.author %>
-                                    </strong>
-                                    <br>
-                                    <%= comment.text %>
-                                </li>
-                            <% } %>
-                        </ul>
-                        <% } %>
-
-                    <form action="/posts/<%= post._id %>" method="POST" class="m-0 p-0">
-                        <div class="row mx-auto my-2 p-0">
-                            
-                            <div class="col-lg-10 my-2">
-                                <div class="form-group m-0">
-                                    <input type="text" name="comment[text]" class="form-control"
-                                    placeholder="Add comment to <%= post.author %>`s post">
-                                </div> 
-                            </div>
-                            
-                            <div class="col-lg-2 my-auto pl-3">
-                                <button type="submit" class="btn btn-dark addCommentButton">Add comment</button>
-                            </div>
-
-                        </div>
-                    </form> -->
-
                     <a href="/posts/<%= post._id%>" class="btn btn-dark m-2" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Read More</a>
 
                     </div>
@@ -126,19 +95,6 @@
                 <button type="submit" class="btn btn-dark" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Login</button>
             </form>
             <% } %>
-
-            <!-- <% if(user && isLoggedIn) { %>
-            <form action="/posts" method="POST" class="border border-light my-3 p-2">
-                <p>Add a new post</p>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="post[title]" placeholder="title">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="post[text]" placeholder="post goes here...">
-                </div>
-                <button type="submit" class="btn btn-dark">Add post</button>
-            </form>
-            <% } %> -->
 
             <% if(user && isLoggedIn) { %>
             <div class="card my-profile-card my-2 p-2">

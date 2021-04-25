@@ -28,14 +28,6 @@
         <% } %>
     </ul>
 
-    <!-- COMPILER MESSAGE -->
-    <!-- <% if(submission.judged && submission.compilerMessage.length > 0) { %>
-        <ul class="list-group my-3 rounded">
-            <li class="list-group-item">Compilation message</li>
-            <li class="list-group-item"><%= submission.compilerMessage %></li>
-        </ul>
-    <% } %> -->
-
     <% if(submission.judged) { %>    
         <% if(submission.verdict !== "Compilation Error") { %>
             <ul class="list-group list-group-flush my-3 border rounded">

@@ -13,24 +13,6 @@
             <input type="password" class="form-control" name="password" minlength="4" maxlength="16" required>
         </div>
 
-        <!-- OLD CAPTCHA -->
-        <!-- START CAPTCHA -->
-        <!-- <br>
-        <div class="capbox">
-        
-            <div id="CaptchaDiv"></div>
-        
-            <div class="capbox-inner">
-                Type the number:<br>
-        
-                <input type="hidden" id="txtCaptcha">
-                <input type="text" name="CaptchaInput" id="CaptchaInput" size="15"><br>
-        
-            </div>
-        </div>
-        <br><br> -->
-        <!-- END CAPTCHA -->
-
         <div class="g-recaptcha my-2" data-sitekey="6LeI8MwZAAAAAFEZ8nki6keOLT0shyAS5txPYb-1"></div>
 
         <button type="submit" class="btn btn-dark text-center my-2" style="width: 100%;" data-tilt data-tilt-max="0" data-tilt-scale="1.05">Register</button>
@@ -46,54 +28,6 @@
             return true;
         }
     </script>
-
-    <!-- <script type="text/javascript">
-
-        // Captcha Script
-
-        function checkform(theform) {
-            var why = "";
-
-            if (theform.CaptchaInput.value == "") {
-                why += "- Please Enter CAPTCHA Code.\n";
-            }
-            if (theform.CaptchaInput.value != "") {
-                if (ValidCaptcha(theform.CaptchaInput.value) == false) {
-                    why += "- The CAPTCHA Code Does Not Match.\n";
-                }
-            }
-            if (why != "") {
-                alert(why);
-                return false;
-            }
-        }
-
-        var a = Math.ceil(Math.random() * 9) + '';
-        var b = Math.ceil(Math.random() * 9) + '';
-        var c = Math.ceil(Math.random() * 9) + '';
-        var d = Math.ceil(Math.random() * 9) + '';
-        var e = Math.ceil(Math.random() * 9) + '';
-
-        var code = a + b + c + d + e;
-        document.getElementById("txtCaptcha").value = code;
-        document.getElementById("CaptchaDiv").innerHTML = code;
-
-        // Validate input against the generated number
-        function ValidCaptcha() {
-            var str1 = removeSpaces(document.getElementById('txtCaptcha').value);
-            var str2 = removeSpaces(document.getElementById('CaptchaInput').value);
-            if (str1 == str2) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        // Remove the spaces from the entered and generated code
-        function removeSpaces(string) {
-            return string.split(' ').join('');
-        }
-    </script> -->
 
 </div>
 
