@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
 
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");
 const User = require("./models/user");
-const passport = require('passport')
-    , LocalStrategy = require('passport-local').Strategy;
+const passport = require("passport"),
+  LocalStrategy = require("passport-local").Strategy;
 
 const session = require("cookie-session");
 const methodOverride = require("method-override");
@@ -24,18 +24,23 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/cssFiles"));
 app.use(express.static(__dirname + "/lib"));
 
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-    extended: true
-})); 
+app.use(bodyParser.json()); // to support JSON-encoded bodies
+app.use(
+  bodyParser.urlencoded({
+    // to support URL-encoded bodies
+    extended: true,
+  })
+);
 
-app.use(methodOverride('_method'))
+app.use(methodOverride("_method"));
 
-app.use(session({ 
+app.use(
+  session({
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: false
-}));
+    saveUninitialized: false,
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -48,20 +53,20 @@ passport.deserializeUser(User.deserializeUser());
 app.use(require("connect-flash")());
 
 app.use(function (req, res, next) {
-    res.locals.user = req.user;
-    res.locals.isLoggedIn = req.isAuthenticated();
-    res.locals.successFlash = req.flash("success");
-    res.locals.failFlash = req.flash("fail");
-    next();
+  res.locals.user = req.user;
+  res.locals.isLoggedIn = req.isAuthenticated();
+  res.locals.successFlash = req.flash("success");
+  res.locals.failFlash = req.flash("fail");
+  next();
 });
 
 ///-----------------------///
 ///DATABASE SETUP
 ///-----------------------///
 mongoose.connect(process.env.DB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 
 ///-----------------------///
@@ -79,9 +84,9 @@ app.use(miscRoutes);
 
 let port = process.env.PORT;
 if (port == null || port == "") {
-    port = 3000;
+  port = 3000;
 }
 
 app.listen(port, () => {
-    //console.log("Server started. Listening to port 3000...");
+  //console.log("Server started. Listening to port 3000...");
 });
