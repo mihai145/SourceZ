@@ -1,3 +1,7 @@
+///-----------------------///
+///SCRIPT THAT INSERTS DUMMY DATA INTO THE DATABASE TO TEST THE FUNCTIONALITY OF THE BLOG
+///-----------------------///
+
 const mongoose = require("mongoose");
 const Post = require("./models/post");
 const Comment = require("./models/comment");

@@ -40,7 +40,6 @@ router.get("/register", authMiddleware.isNotLoggedIn, (req, res) => {
 });
 
 router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
-
     ///check username validity
     const username = req.body.username;
     let hasSpace = false;
@@ -82,7 +81,6 @@ router.post("/register", authMiddleware.isNotLoggedIn, function (req, res) {
     })
     .then(res => res.json())
     .then(json => {
-        // console.log(json.success);
         if(json.success === true) {
             ///valid captcha
             console.log("Valid captcha");

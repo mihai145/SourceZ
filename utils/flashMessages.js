@@ -1,3 +1,7 @@
+///-----------------------///
+///FLASH MESSAGES
+///-----------------------///
+
 const messages = {
     defaultFail: {
         type: "fail",

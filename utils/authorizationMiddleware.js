@@ -1,3 +1,7 @@
+///-----------------------///
+///MIDDLEWARES
+///-----------------------///
+
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const flashMessages = require("../utils/flashMessages");

@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// const fs = require('fs');
-// const readline = require('readline');
-// const shell = require('shelljs');
-
 const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 
@@ -17,6 +13,9 @@ const User = require('../models/user');
 const Contest = require("../models/contest");
 const Registration = require("../models/registration");
 
+///-----------------------///
+///PROBLEMSET INDEX PAGE
+///-----------------------///
 router.get("/problemset", (req, res) => {
     Problem.find({fromContest: "none"}, (err, problems) => {
         Contest.find({}).sort({created: -1}).then(contests => {
@@ -25,12 +24,18 @@ router.get("/problemset", (req, res) => {
     });
 });
 
+///-----------------------///
+///PROBLEMSET SUBMISSIONS PAGE
+///-----------------------///
 router.get("/problemset/submissions", authMiddleware.isLoggedIn, (req, res) => {
     Submission.find({}).sort({ created: -1 }).limit(20).then(submissions => {
         res.render("problemset/queue", {submissions: submissions});
     });
 });
 
+///-----------------------///
+///SUBMISSION VIEW PAGE
+///-----------------------///
 router.get("/problemset/submissions/:id", authMiddleware.isLoggedIn, authMiddleware.submissionAuth, (req, res) => {
     Submission.findById(req.params.id, (err, submission) => {
         if (err || !submission) {
@@ -43,10 +48,16 @@ router.get("/problemset/submissions/:id", authMiddleware.isLoggedIn, authMiddlew
     });
 });
 
+///-----------------------///
+///NEW PROBLEM FORM
+///-----------------------///
 router.get("/problemset/newPb", authMiddleware.isOwner, (req, res) => {
     res.render("problemset/addProblem");
 });
 
+///-----------------------///
+///ADD NEW PROBLEM
+///-----------------------///
 router.post("/problemset/newPb", authMiddleware.isOwner, (req, res) => {
     const prob = req.body.problem;
 
@@ -62,6 +73,9 @@ router.post("/problemset/newPb", authMiddleware.isOwner, (req, res) => {
     });
 });
 
+///-----------------------///
+///PROBLEM VIEW PAGE
+///-----------------------///
 router.get("/problemset/:problemName", (req, res) => {
     Problem.findOne({name: req.params.problemName}, (err, problem) => {
         if(err || !problem) {
@@ -87,6 +101,9 @@ router.get("/problemset/:problemName", (req, res) => {
     });
 });
 
+///-----------------------///
+///PROBLEM EDIT FORM
+///-----------------------///
 router.get("/problemset/:problemName/edit", authMiddleware.isLoggedIn, authMiddleware.isOwner, (req, res) => {
     Problem.findOne({ name: req.params.problemName }, (err, problem) => {
         if (err || !problem) {
@@ -99,6 +116,9 @@ router.get("/problemset/:problemName/edit", authMiddleware.isLoggedIn, authMiddl
     });
 });
 
+///-----------------------///
+///EDIT PROBLEM
+///-----------------------///
 router.put("/problemset/:problemId", authMiddleware.isLoggedIn, authMiddleware.isOwner, (req, res) => {
     let author = req.body.author;
     let content = req.body.content;
@@ -117,6 +137,9 @@ router.put("/problemset/:problemId", authMiddleware.isLoggedIn, authMiddleware.i
     });
 });
 
+///-----------------------///
+///SUBMIT PROBLEM
+///-----------------------///
 function SubmitProblem(req, res, toContest, problemNumber) {
     let now = new Date();
     let diffMs = (now - req.user.lastSubmission);
@@ -194,16 +217,12 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
                     
                     if(Date.now() < contest.finishDate) {
                         ///CHECK IF USER IS REGISTERED FOR CONTEST
-
                         Registration.findOne({contestant: req.user.username, contest: problem.fromContest}, (err, reg) => {
                             if(err || !reg) {
                                 req.flash("fail", "You are not registered to this contest. You can try this problem after the contest ends.");
                                 return res.redirect("/problemset");
                             } else {
                                 ///NON-OWNER SUBMITTING IN CONTEST MODE
-                                
-                                // console.log(contest.problem1);
-                                // console.log(req.params.problemName);
                                 if(contest.problem1 == req.params.problemName) {
                                     SubmitProblem(req, res, problem.fromContest, 1);
                                 } else {
@@ -227,6 +246,9 @@ router.post("/problemset/:problemName", authMiddleware.isLoggedIn, (req, res) =>
     }
 });
 
+///-----------------------///
+///VIEW ALL SUBMISSIONS FOR A CERTAIN PROBLEM
+///-----------------------///
 function FetchSubmissions(req, res) {
     if (req.user.isAdmin) {
         Submission.find({ toProblem: req.params.problemName }).sort({ created: -1 }).exec((err, submissions) => {

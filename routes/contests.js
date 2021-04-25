@@ -9,19 +9,15 @@ const Contest = require("../models/contest");
 const Registration = require("../models/registration");
 
 ///-----------------///
+///NEW CONTEST FORM
 ///-----------------///
-///-----------------///
-
-///CONTESTS///
-
-///-----------------///
-///-----------------///
-///-----------------///
-
 router.get("/contests/new", authMiddleware.isLoggedIn, authMiddleware.isAdmin, (req, res) => {
     res.render("contests/new");
 });
 
+///-----------------///
+///CONTEST VIEW PAGE
+///-----------------///
 router.get("/contests/:id", (req, res) => {
     Contest.findById(req.params.id, (err, contest) => {
         if (err || !contest) {
@@ -36,6 +32,9 @@ router.get("/contests/:id", (req, res) => {
     });
 });
 
+///-----------------///
+///ADD NEW CONTEST
+///-----------------///
 router.post("/contests", authMiddleware.isLoggedIn, authMiddleware.isAdmin, (req, res) => {
 
     const problem1 = {}, problem2 = {};
@@ -74,6 +73,9 @@ router.post("/contests", authMiddleware.isLoggedIn, authMiddleware.isAdmin, (req
     });
 });
 
+///-----------------///
+///REGISTER FOR CONTEST
+///-----------------///
 router.post("/contests/:contestId/register", authMiddleware.isLoggedIn, authMiddleware.isNotRegisteredForContest, (req, res) => {
     const registration = {};
 
@@ -106,6 +108,9 @@ router.post("/contests/:contestId/register", authMiddleware.isLoggedIn, authMidd
 
 });
 
+///-----------------///
+///UNREGISTER FROM CONTEST
+///-----------------///
 router.post("/contests/:contestId/unregister", authMiddleware.isLoggedIn, authMiddleware.isRegisteredForContest, (req, res) => {
 
     Contest.findById(req.params.contestId, (err, contest) => {
@@ -131,6 +136,9 @@ router.post("/contests/:contestId/unregister", authMiddleware.isLoggedIn, authMi
 
 });
 
+///-----------------///
+///EDIT CONTEST FORM
+///-----------------///
 router.get("/contests/:contestId/edit", authMiddleware.isLoggedIn, authMiddleware.isOwner, (req, res) => {
     Contest.findById(req.params.contestId, (err, contest) => {
         if (err || !contest) {
@@ -143,6 +151,9 @@ router.get("/contests/:contestId/edit", authMiddleware.isLoggedIn, authMiddlewar
     });
 });
 
+///-----------------///
+///EDIT CONTEST
+///-----------------///
 router.put("/contests/:contestId", authMiddleware.isLoggedIn, authMiddleware.isOwner, (req, res) => {
     const editedContest = req.body.contest;
     editedContest.problem1 = req.body.p1_name;

@@ -14,32 +14,6 @@ const flashMessages = require("../utils/flashMessages");
 ///-----------------------///
 ///CODEPRECIATE POST
 ///-----------------------///
-
-//OLD CODE, I USED TO ADD RATING TO AUTHOR ON CODEPRECIATION
-// async function AddRating(name, add) {
-//     let userId = -1, userRating = -1;
-
-//     await User.findOne({ username: name }, (err, user) => {
-//         if (err || !user) {
-//             console.log(err);
-//         } else {
-//             userId = user._id;
-//             userRating = user.rating;
-//         }
-//     });
-
-//     // console.log(userId);
-//     // console.log(userRating);
-
-//     if (userId && userRating && userId !== -1 && userRating !== -1) {
-//         User.findByIdAndUpdate(userId, { rating: userRating + add }, (err, user) => {
-//             if (err || !user) {
-//                 console.log(err);
-//             }
-//         });
-//     }
-// }
-
 router.post("/posts/:id/codepreciate", authMiddleware.isLoggedIn, authMiddleware.isNotPostOwned, (req, res) => {
 
     Post.findById(req.params.id, (err, post) => {
@@ -59,8 +33,6 @@ router.post("/posts/:id/codepreciate", authMiddleware.isLoggedIn, authMiddleware
             }
 
             if (!apreciated) {
-                // AddRating(post.author, +3);
-
                 post.codepreciations += 1;
                 post.codepreciatedBy.push(req.user.username);
 
@@ -76,8 +48,6 @@ router.post("/posts/:id/codepreciate", authMiddleware.isLoggedIn, authMiddleware
                 });
 
             } else {
-                // AddRating(post.author, -3);
-
                 post.codepreciations -= 1;
 
                 let indexToDelete = -1;
@@ -154,37 +124,16 @@ async function DeleteCommentFromPost(req, res, post, comment) {
             req.flash(flashMessages.defaultFail.type, flashMessages.defaultFail.message);
             return res.redirect("/posts");
         } else {
-
             const commentId = comment.toString();
             let indexToDelete = -1;
 
-            //-----------DEBUG CODE----------------------//
-            // console.log("-------------------BEFOR-----");
-            // for (let i = 0; i < post.comments.length; i++)
-            //     console.log(post.comments[i]._id.toString());
-            //-----------DEBUG CODE----------------------//
-
             for (let i = 0; i < post.comments.length; i++) {
-
-                //-----------DEBUG CODE----------------------//
-                // console.log("--------------");
-                // console.log(indexToDelete);
-                // console.log(post.comments[i]._id.toString());
-                // console.log("--------------");
-                //-----------DEBUG CODE----------------------//
-
                 if (commentId === post.comments[i]._id.toString()) {
                     indexToDelete = i;
                 }
             }
 
             post.comments.splice(indexToDelete, 1);
-
-            //-----------DEBUG CODE----------------------//
-            // console.log("-------------------AFTR-----");
-            // for (let i = 0; i < post.comments.length; i++)
-            //     console.log(post.comments[i]._id.toString());
-            //-----------DEBUG CODE----------------------//
 
             post.save((err, post) => {
                 if (err || !post) {
