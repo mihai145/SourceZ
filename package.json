@@ -17,7 +17,7 @@
     "express-session": "^1.17.2",
     "method-override": "^3.0.0",
     "mongoose": "^5.13.7",
-    "mquery": "^3.2.5",
+    "mquery": "^4.0.0",
     "node-fetch": "^2.6.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
