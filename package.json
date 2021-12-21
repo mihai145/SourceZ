@@ -19,7 +19,7 @@
     "mongoose": "^6.1.2",
     "mquery": "^4.0.0",
     "node-fetch": "^3.1.0",
-    "passport": "^0.5.0",
+    "passport": "^0.5.2",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.1.0",
     "shelljs": "^0.8.4",
